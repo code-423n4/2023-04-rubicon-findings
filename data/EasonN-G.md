@@ -1,4 +1,4 @@
-**[G1]No need to explicitly initialize variables with default values**
+**[G-01] No need to explicitly initialize variables with default values**
 If a variable is not set/initialized, it is assumed to have the default value (`0` for `uint`, `false` for `bool`, `address(0)` for `address`…). Explicitly initializing it with its default value is an anti-pattern and wastes gas.
 I suggest removing explicit initializations for default values.
 ```
@@ -6,7 +6,7 @@ contracts/BathHouseV2.sol
 122:        for (uint256 i = 0; i < buddies.length; ++i) {
 ```
 
-**[G2]use `uint` instead of `bool` for `locked`**
+**[G-02] use `uint` instead of `bool` for `locked`**
 Change this:
 ```
 contracts/RubiconMarket.sol
@@ -30,4 +30,12 @@ contracts/RubiconMarket.sol
       _;
      locked = 1;
     }
+```
+
+[G-03] `++i` costs less gas compared to `i++` or `i += 1`
+++i costs less gas compared to i++ or i += 1 for unsigned integer, as pre-increment is cheaper (about 5 gas per iteration). This statement is true even with the optimizer enabled.
+I suggest using ++i instead of i++ to increment the value of an uint variable.
+```
+contracts/RubiconMarket.sol
+569:        last_offer_id++;
 ```
