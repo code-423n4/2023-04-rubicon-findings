@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Darshan",
+  "risk": "2",
+  "title": "Dependency Confusion Attack Deu to Unclamed Package",
+  "issueId": 4,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/4"
+}
