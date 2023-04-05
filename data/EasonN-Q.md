@@ -9,6 +9,10 @@ Furthermore, this thwarts any attempts to frontrun the initialization tx of thes
 contracts/BathHouseV2.sol
 32:    function initialize(address _comptroller, address _pAdmin) external {
 ```
+```
+contracts/RubiconMarket.sol
+700:    function initialize(address _feeTo) public {
+```
 
 [N01]Avoid floating pragmas: the version should be locked
 ```
