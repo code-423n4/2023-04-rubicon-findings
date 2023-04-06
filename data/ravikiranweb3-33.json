@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ravikiranweb3",
+  "risk": "2",
+  "title": "IsClosed() function in RubiConMarket is hardcoded to return false.",
+  "issueId": 33,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/33"
+}
