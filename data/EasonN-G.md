@@ -56,3 +56,9 @@ File: contracts/RubiconMarket.sol
 523:        require(buy_amt > 0);
 1289:       while (_best[address(t_buy_gem)][address(t_pay_gem)] > 0) {
 ```
+
+**[G-05] Short the following require messages**
+The following require messages are of length more than 32 and we think are short enough to short them into exactly 32 characters such that it will be placed in one slot of memory and the require function will cost less gas.
+The list:
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L376
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L726
