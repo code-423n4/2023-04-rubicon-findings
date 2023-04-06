@@ -1,0 +1,3 @@
+As for contract V2Migrator.sol can be deployed onece, it should have additional asset management functions, in case of developers miss any v1 or v2 tokens or make a mistake in tokens addresses. 
+
+I would recommend to add functions like addV1toV2() to add more tokens for migration possibility, and updateToken() to fix any mistakes in addresses. Also an onlyOwner modifier should be provided for these functions. 
