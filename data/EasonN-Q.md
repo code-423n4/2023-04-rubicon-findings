@@ -49,6 +49,13 @@ File: contracts/RubiconMarket.sol
 700:    function initialize(address _feeTo) public {
 ```
 
+**[L-05] `last_offer_id` can lead to DoS**
+`last_offer_id` is `uint256`. No upper bound.
+As `last_offer_id` can grow quite large, Consider introducing a reasonable upper limit based on block gas limits and rewrite `can_offer()` to limit `last_offer_id`.
+File: contracts/RubiconMarket.sol
+569:        last_offer_id++;
+```
+
 **[N-01]Avoid floating pragmas: the version should be locked**
 ```
 File: contracts/RubiconMarket.sol
