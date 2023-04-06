@@ -56,3 +56,7 @@ or
 function getOwner(uint256 id) public view returns (address) {
    return offers[id].owner;
 }
+
+h) make() is not used anywhere
+==============================
+make is an external function and not used anywhere. Should be deleted.
