@@ -73,3 +73,9 @@ File: contracts/RubiconMarket.sol
 873:    ) public override can_cancel(id) returns (bool success) {
 ```
 
+**[G-07] The `this` keyword is not necessary**
+The this keyword is not necessary here because offer is already defined within the same contract.
+```
+File: contracts/RubiconMarket.sol
+900:            this.offer(
+```
