@@ -38,6 +38,17 @@ File: contracts/RubiconMarket.sol
 533:        info.owner = owner;
 ```
 
+**[L-04] FRONT-RUNNABLE INITIALIZERS**
+By front-running the contract deployers to initialize the contract, the incorrect parameters may be supplied, leaving the contract needing to be redeployed.
+```
+File: contracts/BathHouseV2.sol
+32:    function initialize(address _comptroller, address _pAdmin) external {
+```
+```
+File: contracts/RubiconMarket.sol
+700:    function initialize(address _feeTo) public {
+```
+
 **[N-01]Avoid floating pragmas: the version should be locked**
 ```
 File: contracts/RubiconMarket.sol
