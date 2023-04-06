@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "volodya",
+  "risk": "3",
+  "title": "Due to a fee error, users who are opening a position are being forced to accept a bad deal.",
+  "issueId": 40,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/40"
+}
