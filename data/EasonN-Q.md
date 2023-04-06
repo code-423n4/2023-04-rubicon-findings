@@ -1,4 +1,4 @@
-**[L01] Add constructor initializers**
+**[L-01] Add constructor initializers**
 
 As per [OpenZeppelin’s (OZ) recommendation](https://forum.openzeppelin.com/t/uupsupgradeable-vulnerability-post-mortem/15680/6), “The guidelines are now to make it impossible for *anyone* to run `initialize` on an implementation contract, by adding an empty constructor with the `initializer` modifier. So the implementation contract gets initialized automatically upon deployment.”
 
@@ -14,7 +14,7 @@ contracts/RubiconMarket.sol
 700:    function initialize(address _feeTo) public {
 ```
 
-[N01]Avoid floating pragmas: the version should be locked
+[N-01]Avoid floating pragmas: the version should be locked
 ```
 contracts/RubiconMarket.sol
 2:  pragma solidity ^0.8.9;
