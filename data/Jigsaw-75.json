@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Jigsaw",
+  "risk": "2",
+  "title": "Market Logic uses uint128 instead of uint256",
+  "issueId": 75,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/75"
+}
