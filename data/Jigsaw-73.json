@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Jigsaw",
+  "risk": "2",
+  "title": "Close Position fails when Owner uses full balance to gain leverage",
+  "issueId": 73,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/73"
+}
