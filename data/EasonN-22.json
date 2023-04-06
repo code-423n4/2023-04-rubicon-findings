@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "EasonN",
+  "risk": "2",
+  "title": "Use safeTransfer/safeTransferFrom consistently instead of transfer/transferFrom",
+  "issueId": 22,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/22"
+}
