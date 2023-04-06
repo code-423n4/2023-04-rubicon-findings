@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "MHKK33",
+  "risk": "3",
+  "title": "There is no input validation for the newBud parameter, which is used as the address of the BathToken contract.",
+  "issueId": 67,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/67"
+}
