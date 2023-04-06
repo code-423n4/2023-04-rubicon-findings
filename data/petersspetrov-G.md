@@ -4,6 +4,7 @@
 | [G-01] |Using double `require` instead of operator `&&` can save more gas| 2 |
 | [G-02] |Using `> 0` costs more gas than `!= 0` when used on a `uint` in a `require()` statement| 9 |
 | [G-03] |Using `delete` instead of setting state variable/mapping to 	`0` saves gas| 1 |
+| [G-04] |Using `ternary` operator instead of the `if else` statement saves gas.| 4 |
 
 ## [G-01] Use double `require` instead of using `&&`
 Using double `require` instead of operator `&&` can save more gas
@@ -31,7 +32,7 @@ File:contracts/utilities/poolsUtility/Position.sol
             );
 ```
 
-## [G-03]Using > 0 costs more gas than != 0 when used on a uint in a require() statement
+## [G-02]Using > 0 costs more gas than != 0 when used on a uint in a require() statement
 This change saves 6 gas per instance.
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1410
@@ -82,10 +83,49 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 File: contracts/utilities/poolsUtility/Position.sol
 require(_max > 0, "_maxBorrow: can't borrow 0");
 ```
-## [G-04]Using delete instead of setting state variable/mapping to 0 saves gas.
+## [G-03]Using delete instead of setting state variable/mapping to 0 saves gas.
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L251
 ```
 File: contracts/periphery/BathBuddy.sol
  tokenRewards[token][account] = earned(account, token);
 ```
+
+## [G-04]Using ternary operator where possible instead of the if else statement saves gas.
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L36-L40
+```solidity
+File: contracts/RubiconMarket.sol
+  if (src == owner) {
+            return true;
+        } else {
+            return false;
+        }
+ ```
+ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L876-L880
+ ```solidity
+File: contracts/RubiconMarket.sol
+ if (isOfferSorted(id)) {
+                require(_unsort(id));
+            } else {
+                require(_hide(id), "can't hide");
+            }
+ ```
+ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1186-L1191
+  ```solidity
+File: contracts/RubiconMarket.sol
+  if (isOfferSorted(id)) {
+                //offers[id] must be removed from sorted list because all of it is bought
+                _unsort(id);
+            } else {
+                _hide(id);
+            }
+ ```
+ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L51-L55
+ ```
+ contracts/utilities/FeeWrapper.sol
+  if (msg.value == 0) {
+            return _rubicall(params);
+        } else {
+            return _rubicallPayable(params);
+        }
+ ```
