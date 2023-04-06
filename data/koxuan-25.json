@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "koxuan",
+  "risk": "2",
+  "title": "Adversary can grief BathBuddy rewards for other liquidity providers",
+  "issueId": 25,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/25"
+}
