@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "volodya",
+  "risk": "3",
+  "title": "Users will not be able to open a position for a token that does not have 18 decimals.",
+  "issueId": 29,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/29"
+}
