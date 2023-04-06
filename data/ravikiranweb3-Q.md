@@ -30,3 +30,9 @@ c) modifier onlyBuddy() in BathBuddy contract
 d) Multiple version of Solidity
 ===============================
 It is better to bring all the solidity files to a common compiler version. Consider that even the compound contracts are at 0.8+ version, it would be worth while to upgrade the version of project files to 0.8+ version
+
+
+e) Lot of commented code
+========================
+Remove the comment code and leave only the extent of code that will be qualified for deployment.
+Example RubiconMarket.sol, so many events are commented out.
