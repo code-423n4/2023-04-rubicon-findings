@@ -62,3 +62,14 @@ The following require messages are of length more than 32 and we think are short
 The list:
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L376
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L726
+
+**[G-06] Use `external` instead of `public`**
+Use `external` instead of `public` to save gas, those are only call by external owner.
+The list:
+```
+File: contracts/RubiconMarket.sol
+858:    ) public override can_buy(id) returns (bool) {
+
+873:    ) public override can_cancel(id) returns (bool success) {
+```
+
