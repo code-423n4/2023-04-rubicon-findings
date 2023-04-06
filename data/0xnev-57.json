@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xnev",
+  "risk": "3",
+  "title": "`rewardPerToken` function overestimates reward per token for tokens with low decimals",
+  "issueId": 57,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/57"
+}
