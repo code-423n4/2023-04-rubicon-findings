@@ -32,10 +32,27 @@ File: contracts/RubiconMarket.sol
     }
 ```
 
-[G-03] `++i` costs less gas compared to `i++` or `i += 1`
+**[G-03] `++i` costs less gas compared to `i++` or `i += 1`**
 ++i costs less gas compared to i++ or i += 1 for unsigned integer, as pre-increment is cheaper (about 5 gas per iteration). This statement is true even with the optimizer enabled.
 I suggest using ++i instead of i++ to increment the value of an uint variable.
 ```
 File: contracts/RubiconMarket.sol
 569:        last_offer_id++;
+```
+
+**[G-04] `> 0` is less efficient than `!= 0`**
+`> 0` is used in the following location(s):
+```
+File: contracts/RubiconMarket.sol
+277:        return offers[id].timestamp > 0;
+```
+```
+File: contracts/RubiconMarket.sol
+345:        if (makerFee() > 0) {
+```
+```
+File: contracts/RubiconMarket.sol
+521:        require(pay_amt > 0);
+523:        require(buy_amt > 0);
+1289:       while (_best[address(t_buy_gem)][address(t_pay_gem)] > 0) {
 ```
