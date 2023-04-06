@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "SpicyMeatball",
+  "risk": "2",
+  "title": "No input validation in `V2Migrator.sol` constructor",
+  "issueId": 31,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/31"
+}
