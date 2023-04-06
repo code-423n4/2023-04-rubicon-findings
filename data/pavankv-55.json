@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "pavankv",
+  "risk": "2",
+  "title": "isClosed() return always false ,leads to fail can_cancel() modifier ",
+  "issueId": 55,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/55"
+}
