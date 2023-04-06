@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "rvierdiiev",
+  "risk": "3",
+  "title": "Attacker can steal all rewards from BathBuddy by transferring tokens to different accounts",
+  "issueId": 34,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/34"
+}
