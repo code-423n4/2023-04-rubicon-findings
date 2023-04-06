@@ -36,3 +36,23 @@ e) Lot of commented code
 ========================
 Remove the comment code and leave only the extent of code that will be qualified for deployment.
 Example RubiconMarket.sol, so many events are commented out.
+
+
+g) Function signature with return def - redundant
+=================================================
+Original:
+
+function getOwner(uint256 id) public view returns (address owner) {
+        return offers[id].owner;
+    }
+
+Proposed:
+function getOwner(uint256 id) public view returns (address owner) {
+   owner = offers[id].owner;
+}
+
+or 
+
+function getOwner(uint256 id) public view returns (address) {
+   return offers[id].owner;
+}
