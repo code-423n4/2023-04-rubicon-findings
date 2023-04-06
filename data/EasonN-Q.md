@@ -6,16 +6,34 @@ Note that this behaviour is also incorporated the [OZ Wizard](https://wizard.op
 
 Furthermore, this thwarts any attempts to frontrun the initialization tx of these contracts:
 ```
-contracts/BathHouseV2.sol
+File: contracts/BathHouseV2.sol
 32:    function initialize(address _comptroller, address _pAdmin) external {
 ```
 ```
-contracts/RubiconMarket.sol
+File: contracts/RubiconMarket.sol
 700:    function initialize(address _feeTo) public {
+```
+
+**[L-02] Input array lengths may differ**
+If the caller makes a copy-paste error, the lengths may be mismatchd and an operation believed to have been completed may not in fact have been completed
+```
+File: contracts/RubiconMarket.sol
+887:    function batchOffer(
+
+```
+```
+File: contracts/RubiconMarket.sol
+910:    function batchCancel(uint[] calldata ids) external {
+
+```
+```
+File: contracts/RubiconMarket.sol
+917:    function batchRequote(
+
 ```
 
 [N-01]Avoid floating pragmas: the version should be locked
 ```
-contracts/RubiconMarket.sol
+File: contracts/RubiconMarket.sol
 2:  pragma solidity ^0.8.9;
 ```
