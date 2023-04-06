@@ -32,7 +32,13 @@ File: contracts/RubiconMarket.sol
 
 ```
 
-[N-01]Avoid floating pragmas: the version should be locked
+**[L-03] Missing checks for address(0x0) when assigning values to address state variables**
+```
+File: contracts/RubiconMarket.sol
+533:        info.owner = owner;
+```
+
+**[N-01]Avoid floating pragmas: the version should be locked**
 ```
 File: contracts/RubiconMarket.sol
 2:  pragma solidity ^0.8.9;
