@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xastronatey",
+  "risk": "3",
+  "title": "Reentrancy vulnerability in V2Migrator contract",
+  "issueId": 18,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/18"
+}
