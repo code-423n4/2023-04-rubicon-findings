@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ravikiranweb3",
+  "risk": "2",
+  "title": "updateReward modifier in BathBuddy is altering contract state. Modifier should only after the behaviour of the function, not state.",
+  "issueId": 19,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/19"
+}
