@@ -1,3 +1,28 @@
+RUBICON MARKET
+Instead of using the “&&” operator in a single require statement to check multiple conditions, using multiple require statements with 1 condition per “require” statement will save 3 GAS per “&&”. Following changes could save some gas:
+
+Old:
+function del_rank (uint256 id) external returns (bool) {
+require (!locked);
+require ( !isActive(id) && _rank[id].delb != 0 && _rank[id].delb < block.number - 10);
+
+New: 
+function del_rank (uint256 id) external returns (bool) {
+require (!locked);
+require ( !isActive(id)); 
+require (_rank[id].delb != 0);
+require (_rank[id].delb < block.number - 10);
+
+The following one is the same recommendation as above but for the function _unsort(...); line 1405 to 1415
+Old:
+require (_rank[id].delb == 0 && isOfferSorted(id));
+
+New:
+require (_rank[id].delb == 0); 
+require (isOfferSorted(id));
+
+
+
 BATHHOUSEV2
 1.	Use immutable variables instead of storage variables - Immutable variables are stored in the bytecode instead of in storage, which can save gas. The “admin” and “proxyAdmin” variables in the BathHouseV2 contract could be declared as immutable since they are never modified after initialization.
 
