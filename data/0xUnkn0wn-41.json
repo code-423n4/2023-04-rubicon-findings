@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xUnkn0wn",
+  "risk": "2",
+  "title": "setOwner uses one step owner transfer",
+  "issueId": 41,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/41"
+}
