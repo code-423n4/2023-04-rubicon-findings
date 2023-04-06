@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "mrpathfindr",
+  "risk": "2",
+  "title": "Unable to buy offers if recipient address is set to 0. Rendering the offer useless. ",
+  "issueId": 72,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/72"
+}
