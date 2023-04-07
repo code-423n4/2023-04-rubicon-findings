@@ -120,3 +120,27 @@ Manual Analysis
 Consider using only one approach throughout the codebase, e.g. only uint or only uint256.
 
 
+# 5: DECLARE INTERFACES ON SEPARATE FILES
+
+Vulnerability details
+
+## Context:
+
+Declare interfaces on separate files
+
+## Proof of Concept
+
+> ***File: contracts/periphery/BathBuddy.sol***
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L9-L21
+
+
+> ***File: contracts/V2Migrator.sol***
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L8-L14
+
+### Tools Used
+
+Manual Analysis
+
+
