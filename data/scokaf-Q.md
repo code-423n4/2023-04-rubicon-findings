@@ -65,3 +65,30 @@ import {FixedPointMathLib} from "solmate/utils/FixedPointMathLib.sol";
 import {ERC1155, ERC1155TokenReceiver} from "solmate/tokens/ERC1155.sol";
 import {toWadUnsafe, toDaysWadUnsafe} from "solmate/utils/SignedWadMath.sol";
 
+# 3: USE UNDERSCORES FOR NUMBER LITERALS
+
+Vulnerability details
+
+## Impact:
+
+There are occasions where certain numbers have been hardcoded, either in variables or in the code itself. Large numbers can become hard to read.
+
+## Proof of Concept
+
+> ***File: contracts/utilities/poolsUtility/Position.sol*** 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L459
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L481
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L490
+
+## Tools Used
+
+Manual Analysis
+
+### Recommended Mitigation Steps
+
+Consider using underscores for number literals to improve their readability.
+
+
