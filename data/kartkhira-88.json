@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "kartkhira",
+  "risk": "2",
+  "title": "Token balance before and after should be checked during any transfer calls from contract",
+  "issueId": 88,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/88"
+}
