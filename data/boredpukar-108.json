@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "boredpukar",
+  "risk": "2",
+  "title": "Result of transfer using transfer and transferFrom is not checked.",
+  "issueId": 108,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/108"
+}
