@@ -5,7 +5,7 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol
-
+##
 ##L-01
 Title
 Local variable shadowing
@@ -59,6 +59,379 @@ Manual review
 
 Recommendation
 Rename the local variables that shadow another component.
+##
+##L-02
+missing-zero-address-validation: 
+
+BathHouseV2.initialize(address,address)._pAdmin (contracts/BathHouseV2.sol#32) lacks a zero-check on : 
+
+- proxyAdmin = _pAdmin (contracts/BathHouseV2.sol#36) 
+
+DSAuth.setOwner(address).owner_ (contracts/RubiconMarket.sol#25) lacks a zero-check on : 
+
+- owner = owner_ (contracts/RubiconMarket.sol#26) 
+
+BathBuddy.spawnBuddy(address,address,address)._owner (contracts/periphery/BathBuddy.sol#72) lacks a zero-check on : 
+
+- owner = _owner (contracts/periphery/BathBuddy.sol#77) 
+
+BathBuddy.spawnBuddy(address,address,address).newBud (contracts/periphery/BathBuddy.sol#73) lacks a zero-check on : 
+
+- myBathTokenBuddy = newBud (contracts/periphery/BathBuddy.sol#78) 
+
+BathBuddy.spawnBuddy(address,address,address)._bathHouse (contracts/periphery/BathBuddy.sol#74) lacks a zero-check on : 
+
+- bathHouse = _bathHouse (contracts/periphery/BathBuddy.sol#79) 
+##
+
+##L-03
+calls-inside-a-loop: 
+
+BathHouseV2.claimRewards(address[],address[]) (contracts/BathHouseV2.sol#115-128) has external calls inside a loop: IBathBuddy(buddies[i]).getReward(IERC20(rewardsTokens[i]),msg.sender) (contracts/BathHouseV2.sol#123-126) 
+
+RubiconMarket.batchOffer(uint256[],address[],uint256[],address[]) (contracts/RubiconMarket.sol#887-907) has external calls inside a loop: this.offer(payAmts[i],ERC20(payGems[i]),buyAmts[i],ERC20(buyGems[i])) (contracts/RubiconMarket.sol#900-905) 
+
+SimpleMarket.cancel(uint256) (contracts/RubiconMarket.sol#452-485) has external calls inside a loop: require(bool)(_offer.pay_gem.transfer(_offer.recipient,_offer.pay_amt)) (contracts/RubiconMarket.sol#459-461) 
+
+SimpleMarket.cancel(uint256) (contracts/RubiconMarket.sol#452-485) has external calls inside a loop: require(bool)(_offer.pay_gem.transfer(_offer.owner,_offer.pay_amt)) (contracts/RubiconMarket.sol#459-461) 
+
+RubiconMarket.batchRequote(uint256[],uint256[],address[],uint256[],address[]) (contracts/RubiconMarket.sol#917-933) has external calls inside a loop: this.offer(payAmts[i],ERC20(payGems[i]),buyAmts[i],ERC20(buyGems[i])) (contracts/RubiconMarket.sol#926-931) 
+
+##
+##L-04
+Reentrancy: 
+
+Reentrancy in RubiconMarket._buys(uint256,uint256) (contracts/RubiconMarket.sol#1183-1205): 
+
+External calls: 
+
+- require(bool)(super.buy(id,amount)) (contracts/RubiconMarket.sol#1194) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,feeTo,fee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#339-342) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.recipient,mFee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#350-357) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.owner,mFee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#359-362) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.recipient,spend),_offer.buy_gem.transferFrom(msg.sender, _offer.recipient, spend) failed - check that you can pay the fee) (contracts/RubiconMarket.sol#374-377) 
+
+- require(bool,string)(_offer.pay_gem.transfer(msg.sender,quantity),_offer.pay_gem.transfer(msg.sender, quantity) failed) (contracts/RubiconMarket.sol#379-382) 
+
+State variables written after the call(s): 
+
+- dustId = id (contracts/RubiconMarket.sol#1201) 
+
+Reentrancy in RubiconMarket._matcho(uint256,ERC20,uint256,ERC20,uint256,bool,address,address) (contracts/RubiconMarket.sol#1273-1341): 
+
+External calls: 
+
+- id = super.offer(t_pay_amt,t_pay_gem,t_buy_amt,t_buy_gem,owner,recipient) (contracts/RubiconMarket.sol#1330-1337) 
+
+- require(bool)(pay_gem.transferFrom(msg.sender,address(this),pay_amt)) (contracts/RubiconMarket.sol#538) 
+
+State variables written after the call(s): 
+
+- _sort(id,pos) (contracts/RubiconMarket.sol#1339) 
+
+- _rank[pos].prev = id (contracts/RubiconMarket.sol#1384) 
+
+- _rank[id].next = pos (contracts/RubiconMarket.sol#1385) 
+
+- _rank[prev_id].next = id (contracts/RubiconMarket.sol#1396) 
+
+- _rank[id].prev = prev_id (contracts/RubiconMarket.sol#1397) 
+
+- _sort(id,pos) (contracts/RubiconMarket.sol#1339) 
+
+- _span[address(pay_gem)][address(buy_gem)] ++ (contracts/RubiconMarket.sol#1400) 
+
+Reentrancy in BathHouseV2.createBathToken(address,InterestRateModel,uint256,address,bytes) (contracts/BathHouseV2.sol#60-111): 
+
+External calls: 
+
+- bathToken = address(new CErc20Delegator(underlying,comptroller,interestRateModel,initialExchangeRateMantissa,name,symbol,decimals,address(proxyAdmin),implementation,becomeImplementationData)) (contracts/BathHouseV2.sol#87-100) 
+
+- buddy.spawnBuddy(admin,bathToken,address(this)) (contracts/BathHouseV2.sol#104) 
+
+State variables written after the call(s): 
+
+- bathTokenToBuddy[bathToken] = address(buddy) (contracts/BathHouseV2.sol#107) 
+
+Reentrancy in RubiconMarket._buys(uint256,uint256) (contracts/RubiconMarket.sol#1183-1205): 
+
+External calls: 
+
+- require(bool)(super.buy(id,amount)) (contracts/RubiconMarket.sol#1194) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,feeTo,fee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#339-342) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.recipient,mFee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#350-357) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.owner,mFee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#359-362) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.recipient,spend),_offer.buy_gem.transferFrom(msg.sender, _offer.recipient, spend) failed - check that you can pay the fee) (contracts/RubiconMarket.sol#374-377) 
+
+- require(bool,string)(_offer.pay_gem.transfer(msg.sender,quantity),_offer.pay_gem.transfer(msg.sender, quantity) failed) (contracts/RubiconMarket.sol#379-382) 
+
+- cancel(id) (contracts/RubiconMarket.sol#1202) 
+
+- require(bool)(_offer.pay_gem.transfer(_offer.recipient,_offer.pay_amt)) (contracts/RubiconMarket.sol#459-461) 
+
+- require(bool)(_offer.pay_gem.transfer(_offer.owner,_offer.pay_amt)) (contracts/RubiconMarket.sol#459-461) 
+
+Event emitted after the call(s): 
+
+- LogItemUpdate(id) (contracts/RubiconMarket.sol#463) 
+
+- cancel(id) (contracts/RubiconMarket.sol#1202) 
+
+- emitCancel(bytes32(id),keccak256(bytes)(abi.encodePacked(_offer.pay_gem,_offer.buy_gem)),_offer.owner,_offer.pay_gem,_offer.buy_gem,uint128(_offer.pay_amt),uint128(_offer.buy_amt)) (contracts/RubiconMarket.sol#474-482) 
+
+- cancel(id) (contracts/RubiconMarket.sol#1202) 
+
+Reentrancy in RubiconMarket._matcho(uint256,ERC20,uint256,ERC20,uint256,bool,address,address) (contracts/RubiconMarket.sol#1273-1341): 
+
+External calls: 
+
+- id = super.offer(t_pay_amt,t_pay_gem,t_buy_amt,t_buy_gem,owner,recipient) (contracts/RubiconMarket.sol#1330-1337) 
+
+- require(bool)(pay_gem.transferFrom(msg.sender,address(this),pay_amt)) (contracts/RubiconMarket.sol#538) 
+
+Event emitted after the call(s): 
+
+- LogSortedOffer(id) (contracts/RubiconMarket.sol#1401) 
+
+- _sort(id,pos) (contracts/RubiconMarket.sol#1339) 
+
+Reentrancy in RubiconMarket.batchRequote(uint256[],uint256[],address[],uint256[],address[]) (contracts/RubiconMarket.sol#917-933): 
+
+External calls: 
+
+- cancel(ids[i]) (contracts/RubiconMarket.sol#925) 
+
+- require(bool)(_offer.pay_gem.transfer(_offer.recipient,_offer.pay_amt)) (contracts/RubiconMarket.sol#459-461) 
+
+- require(bool)(_offer.pay_gem.transfer(_offer.owner,_offer.pay_amt)) (contracts/RubiconMarket.sol#459-461) 
+
+- this.offer(payAmts[i],ERC20(payGems[i]),buyAmts[i],ERC20(buyGems[i])) (contracts/RubiconMarket.sol#926-931) 
+
+Event emitted after the call(s): 
+
+- LogItemUpdate(id) (contracts/RubiconMarket.sol#463) 
+
+- cancel(ids[i]) (contracts/RubiconMarket.sol#925) 
+
+- emitCancel(bytes32(id),keccak256(bytes)(abi.encodePacked(_offer.pay_gem,_offer.buy_gem)),_offer.owner,_offer.pay_gem,_offer.buy_gem,uint128(_offer.pay_amt),uint128(_offer.buy_amt)) (contracts/RubiconMarket.sol#474-482) 
+
+- cancel(ids[i]) (contracts/RubiconMarket.sol#925) 
+
+Reentrancy in SimpleMarket.buy(uint256,uint256) (contracts/RubiconMarket.sol#314-448): 
+
+External calls: 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,feeTo,fee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#339-342) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.recipient,mFee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#350-357) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.owner,mFee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#359-362) 
+
+Event emitted after the call(s): 
+
+- emitFee(bytes32(id),msg.sender,_offer.owner,keccak256(bytes)(abi.encodePacked(_offer.pay_gem,_offer.buy_gem)),_offer.buy_gem,mFee) (contracts/RubiconMarket.sol#365-372) 
+
+Reentrancy in SimpleMarket.buy(uint256,uint256) (contracts/RubiconMarket.sol#314-448): 
+
+External calls: 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,feeTo,fee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#339-342) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.recipient,mFee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#350-357) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.owner,mFee),Insufficient funds to cover fee) (contracts/RubiconMarket.sol#359-362) 
+
+- require(bool,string)(_offer.buy_gem.transferFrom(msg.sender,_offer.recipient,spend),_offer.buy_gem.transferFrom(msg.sender, _offer.recipient, spend) failed - check that you can pay the fee) (contracts/RubiconMarket.sol#374-377) 
+
+- require(bool,string)(_offer.pay_gem.transfer(msg.sender,quantity),_offer.pay_gem.transfer(msg.sender, quantity) failed) (contracts/RubiconMarket.sol#379-382) 
+
+Event emitted after the call(s): 
+
+- LogItemUpdate(id) (contracts/RubiconMarket.sol#384) 
+
+- emitDelete(bytes32(id),keccak256(bytes)(abi.encodePacked(_offer.pay_gem,_offer.buy_gem)),_offer.owner) (contracts/RubiconMarket.sol#440-444) 
+
+- emitFee(bytes32(id),msg.sender,feeTo,keccak256(bytes)(abi.encodePacked(_offer.pay_gem,_offer.buy_gem)),_offer.buy_gem,fee) (contracts/RubiconMarket.sol#419-426) 
+
+- emitTake(bytes32(id),keccak256(bytes)(abi.encodePacked(_offer.pay_gem,_offer.buy_gem)),msg.sender,_offer.owner,_offer.pay_gem,_offer.buy_gem,uint128(quantity),uint128(spend)) (contracts/RubiconMarket.sol#398-407) 
+
+Reentrancy in SimpleMarket.cancel(uint256) (contracts/RubiconMarket.sol#452-485): 
+
+External calls: 
+
+- require(bool)(_offer.pay_gem.transfer(_offer.recipient,_offer.pay_amt)) (contracts/RubiconMarket.sol#459-461) 
+
+- require(bool)(_offer.pay_gem.transfer(_offer.owner,_offer.pay_amt)) (contracts/RubiconMarket.sol#459-461) 
+
+Event emitted after the call(s): 
+
+- LogItemUpdate(id) (contracts/RubiconMarket.sol#463) 
+
+- emitCancel(bytes32(id),keccak256(bytes)(abi.encodePacked(_offer.pay_gem,_offer.buy_gem)),_offer.owner,_offer.pay_gem,_offer.buy_gem,uint128(_offer.pay_amt),uint128(_offer.buy_amt)) (contracts/RubiconMarket.sol#474-482) 
+
+Reentrancy in Position.closePosition(uint256) (contracts/utilities/poolsUtility/Position.sol#210-223): 
+
+External calls: 
+
+- _repay(asset,quote,posId) (contracts/utilities/poolsUtility/Position.sol#219) 
+
+- balance = CTokenInterface(bathToken).borrowBalanceCurrent(address(this)) (contracts/utilities/poolsUtility/Position.sol#66-68) 
+
+- IERC20(_quote).approve(address(rubiconMarket),_maxFill) (contracts/utilities/poolsUtility/Position.sol#465) 
+
+- rubiconMarket.buyAllAmount(ERC20(_asset),_buyAmount,ERC20(_quote),_maxFill) (contracts/utilities/poolsUtility/Position.sol#467-472) 
+
+- IERC20(_asset).transferFrom(msg.sender,address(this),_payAmount.sub(_assetBalance).add(_fee)) (contracts/utilities/poolsUtility/Position.sol#493-497) 
+
+- IERC20(_asset).approve(address(rubiconMarket),IERC20(_asset).balanceOf(address(this))) (contracts/utilities/poolsUtility/Position.sol#500-503) 
+
+- IERC20(_quote).approve(_bathTokenQuote,_amountToRepay) (contracts/utilities/poolsUtility/Position.sol#297) 
+
+- rubiconMarket.sellAllAmount(ERC20(_asset),_payAmount,ERC20(_quote),_minFill) (contracts/utilities/poolsUtility/Position.sol#505-510) 
+
+- require(bool,string)(CErc20Interface(_bathTokenQuote).repayBorrow(_amountToRepay) == 0,_repay: ERROR) (contracts/utilities/poolsUtility/Position.sol#298-301) 
+
+- _redeem(asset,bathTokenAmount) (contracts/utilities/poolsUtility/Position.sol#220) 
+
+- require(bool,string)(comptroller.exitMarket(_bathToken) == 0,_exitMarket: ERROR) (contracts/utilities/poolsUtility/Position.sol#344) 
+
+- balance = CTokenInterface(bathToken).borrowBalanceCurrent(address(this)) (contracts/utilities/poolsUtility/Position.sol#66-68) 
+
+- require(bool,string)(CErc20Interface(_bathTokenAsset).redeem(_bathTokenAmount) == 0,_redeem: REDEEM FAILED) (contracts/utilities/poolsUtility/Position.sol#385-388) 
+
+Event emitted after the call(s): 
+
+- PositionClosed(_positionId) (contracts/utilities/poolsUtility/Position.sol#423) 
+
+- _removePosition(posId) (contracts/utilities/poolsUtility/Position.sol#222) 
+
+Reentrancy in BathHouseV2.createBathToken(address,InterestRateModel,uint256,address,bytes) (contracts/BathHouseV2.sol#60-111): 
+
+External calls: 
+
+- bathToken = address(new CErc20Delegator(underlying,comptroller,interestRateModel,initialExchangeRateMantissa,name,symbol,decimals,address(proxyAdmin),implementation,becomeImplementationData)) (contracts/BathHouseV2.sol#87-100) 
+
+- buddy.spawnBuddy(admin,bathToken,address(this)) (contracts/BathHouseV2.sol#104) 
+
+Event emitted after the call(s): 
+
+- BathTokenCreated(bathToken,underlying) (contracts/BathHouseV2.sol#109) 
+
+- BuddySpawned(bathToken,address(buddy)) (contracts/BathHouseV2.sol#110) 
+
+Reentrancy in V2Migrator.migrate(IBathToken) (contracts/V2Migrator.sol#38-74): 
+
+External calls: 
+
+- bathTokenV1.transferFrom(msg.sender,address(this),bathBalance) (contracts/V2Migrator.sol#44) 
+
+- amountWithdrawn = bathTokenV1.withdraw(bathBalance) (contracts/V2Migrator.sol#47) 
+
+- underlying.approve(bathTokenV2,amountWithdrawn) (contracts/V2Migrator.sol#53) 
+
+- require(bool,string)(CErc20Interface(bathTokenV2).mint(amountWithdrawn) == 0,migrate: MINT FAILED) (contracts/V2Migrator.sol#54-57) 
+
+- IERC20(bathTokenV2).transfer(msg.sender,IERC20(bathTokenV2).balanceOf(address(this))) (contracts/V2Migrator.sol#59-62) 
+
+Event emitted after the call(s): 
+
+- Migrated(msg.sender,address(bathTokenV1),address(bathTokenV2),amountWithdrawn) (contracts/V2Migrator.sol#68-73) 
+
+Reentrancy in SimpleMarket.offer(uint256,ERC20,uint256,ERC20,address,address) (contracts/RubiconMarket.sol#511-562): 
+
+External calls: 
+
+- require(bool)(pay_gem.transferFrom(msg.sender,address(this),pay_amt)) (contracts/RubiconMarket.sol#538) 
+
+Event emitted after the call(s): 
+
+- LogItemUpdate(id) (contracts/RubiconMarket.sol#540) 
+
+- emitOffer(bytes32(id),keccak256(bytes)(abi.encodePacked(pay_gem,buy_gem)),msg.sender,pay_gem,buy_gem,uint128(pay_amt),uint128(buy_amt)) (contracts/RubiconMarket.sol#553-561) 
+
+##
+##L-05
+block-timestamp and Dangerous comparisons
+
+SimpleMarket.isActive(uint256) (contracts/RubiconMarket.sol#276-278) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- offers[id].timestamp > 0 (contracts/RubiconMarket.sol#277) 
+
+SimpleMarket.buy(uint256,uint256) (contracts/RubiconMarket.sol#314-448) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- _offer.owner == address(0) && getRecipient(id) != address(0) (contracts/RubiconMarket.sol#349) 
+
+- offers[id].pay_amt == 0 (contracts/RubiconMarket.sol#436) 
+
+RubiconMarket.del_rank(uint256) (contracts/RubiconMarket.sol#937-948) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- require(bool)(! isActive(id) && _rank[id].delb != 0 && _rank[id].delb < block.number - 10) (contracts/RubiconMarket.sol#940-944) 
+
+RubiconMarket._buys(uint256,uint256) (contracts/RubiconMarket.sol#1183-1205) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- amount == offers[id].pay_amt (contracts/RubiconMarket.sol#1185) 
+
+- isActive(id) && offers[id].pay_amt < _dust[address(offers[id].pay_gem)] (contracts/RubiconMarket.sol#1198-1199) 
+
+RubiconMarket._findpos(uint256,uint256) (contracts/RubiconMarket.sol#1225-1258) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- pos != 0 && ! isActive(pos) (contracts/RubiconMarket.sol#1229) 
+
+RubiconMarket._matcho(uint256,ERC20,uint256,ERC20,uint256,bool,address,address) (contracts/RubiconMarket.sol#1273-1341) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- mul(m_buy_amt,t_buy_amt) > mul(t_pay_amt,m_pay_amt) + m_buy_amt + t_buy_amt + t_pay_amt + m_pay_amt (contracts/RubiconMarket.sol#1301-1307) 
+
+RubiconMarket._sort(uint256,uint256) (contracts/RubiconMarket.sol#1362-1402) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- pos == 0 || offers[pos].pay_gem != pay_gem || offers[pos].buy_gem != buy_gem || ! isOfferSorted(pos) (contracts/RubiconMarket.sol#1372-1377) 
+
+RubiconMarket._unsort(uint256) (contracts/RubiconMarket.sol#1405-1435) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- require(bool)(_span[pay_gem][buy_gem] > 0) (contracts/RubiconMarket.sol#1410) 
+
+BathBuddy.lastTimeRewardApplicable(address) (contracts/periphery/BathBuddy.sol#112-119) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- block.timestamp < periodFinish[token] (contracts/periphery/BathBuddy.sol#115-118) 
+
+BathBuddy.notifyRewardAmount(uint256,IERC20) (contracts/periphery/BathBuddy.sol#191-228) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- block.timestamp >= periodFinish[address(rewardsToken)] (contracts/periphery/BathBuddy.sol#195) 
+
+- require(bool,string)(rewardRates[address(rewardsToken)] <= balance.div(rewardsDuration[address(rewardsToken)]),Provided reward too high) (contracts/periphery/BathBuddy.sol#217-221) 
+
+BathBuddy.setRewardsDuration(uint256,address) (contracts/periphery/BathBuddy.sol#232-242) uses timestamp for comparisons 
+
+Dangerous comparisons: 
+
+- require(bool,string)(block.timestamp > periodFinish[token],Previous rewards period must be complete before changing the duration for the new period) (contracts/periphery/BathBuddy.sol#236-239) 
 
 ##
 ##N-01
