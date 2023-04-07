@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "popular00",
+  "risk": "3",
+  "title": "Malicious user can completely DOS trading for a token pair due to missing address(0) checks on offer owners/recipients",
+  "issueId": 165,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/165"
+}
