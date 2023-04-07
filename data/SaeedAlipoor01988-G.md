@@ -40,3 +40,4 @@ https://code4rena.com/reports/2023-01-timeswap/#g-22-use-assembly-to-write-addre
 
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L33
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L35
