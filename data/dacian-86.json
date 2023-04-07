@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "dacian",
+  "risk": "2",
+  "title": "Position. _marketBuy() & _marketSell() incorrect fee calculation",
+  "issueId": 86,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/86"
+}
