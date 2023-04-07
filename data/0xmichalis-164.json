@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xmichalis",
+  "risk": "3",
+  "title": "`BathBuddy.earned()` does not take into account for how long a user holds BathTokens",
+  "issueId": 164,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/164"
+}
