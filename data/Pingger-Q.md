@@ -82,6 +82,10 @@ BathBuddy.spawnBuddy(address,address,address).newBud (contracts/periphery/BathBu
 BathBuddy.spawnBuddy(address,address,address)._bathHouse (contracts/periphery/BathBuddy.sol#74) lacks a zero-check on : 
 
 - bathHouse = _bathHouse (contracts/periphery/BathBuddy.sol#79) 
+
+Tools Used
+Manual review
+
 ##
 
 ##L-03
@@ -96,6 +100,9 @@ SimpleMarket.cancel(uint256) (contracts/RubiconMarket.sol#452-485) has external 
 SimpleMarket.cancel(uint256) (contracts/RubiconMarket.sol#452-485) has external calls inside a loop: require(bool)(_offer.pay_gem.transfer(_offer.owner,_offer.pay_amt)) (contracts/RubiconMarket.sol#459-461) 
 
 RubiconMarket.batchRequote(uint256[],uint256[],address[],uint256[],address[]) (contracts/RubiconMarket.sol#917-933) has external calls inside a loop: this.offer(payAmts[i],ERC20(payGems[i]),buyAmts[i],ERC20(buyGems[i])) (contracts/RubiconMarket.sol#926-931) 
+
+Tools Used
+Manual review
 
 ##
 ##L-04
@@ -357,6 +364,9 @@ Event emitted after the call(s):
 
 - emitOffer(bytes32(id),keccak256(bytes)(abi.encodePacked(pay_gem,buy_gem)),msg.sender,pay_gem,buy_gem,uint128(pay_amt),uint128(buy_amt)) (contracts/RubiconMarket.sol#553-561) 
 
+Tools Used
+Manual review
+
 ##
 ##L-05
 block-timestamp and Dangerous comparisons
@@ -432,6 +442,9 @@ BathBuddy.setRewardsDuration(uint256,address) (contracts/periphery/BathBuddy.sol
 Dangerous comparisons: 
 
 - require(bool,string)(block.timestamp > periodFinish[token],Previous rewards period must be complete before changing the duration for the new period) (contracts/periphery/BathBuddy.sol#236-239) 
+
+Tools Used
+Manual review
 
 ##
 ##N-01
