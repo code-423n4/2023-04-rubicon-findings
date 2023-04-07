@@ -24,6 +24,9 @@ RubiconMarket.AqueductAddress (contracts/RubiconMarket.sol#684) should be consta
 RubiconMarket.AqueductDistributionLive (contracts/RubiconMarket.sol#682) should be constant  
 ```
 
+Tools Used
+Manual review
+
 Recommendation
 Add the constant attribute to state variables that never change.
 
@@ -65,6 +68,9 @@ Position.oracle (contracts/utilities/poolsUtility/Position.sol#45) should be imm
 
 Position.rubiconMarket (contracts/utilities/poolsUtility/Position.sol#46) should be immutable  
 ```
+
+Tools Used
+Manual review
 
 Recommendation
 Add the immutable attribute to state variables that never change or are set only in the constructor.
