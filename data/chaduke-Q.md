@@ -18,6 +18,9 @@ QA2. migrate() fails to check that both bathTokenV1 is whitelisted in the migrat
 
 Mitigation: check that ``v1ToV2Pools[address(bathTokenV1)] != 0`` in ``migrate()``.
 
+QA3. The condition of `` msg.sender != address(0)`` can be eliminated since it is impossible for msg.sender to be zero. 
+
+[https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L97](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L97)
 
 
 
