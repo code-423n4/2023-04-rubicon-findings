@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "2997ms",
+  "risk": "2",
+  "title": "DSAuth cannot set the owner successfully because the logic is in a loop.",
+  "issueId": 104,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/104"
+}
