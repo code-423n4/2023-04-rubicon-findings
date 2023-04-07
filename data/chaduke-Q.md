@@ -11,3 +11,13 @@ Mitigation:
             v1ToV2Pools[bathTokensV1[i]] = bathTokensV2[i];
         }
     }
+
+QA2. migrate() fails to check that both bathTokenV1 is whitelisted in the migration list, ``v1ToV2Pools``. One needs to check that ``v1ToV2Pools[address(bathTokenV1)] != 0``.
+
+[https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L38-L74](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L38-L74)
+
+Mitigation: check that ``v1ToV2Pools[address(bathTokenV1)] != 0`` in ``migrate()``.
+
+
+
+
