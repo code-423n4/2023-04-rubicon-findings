@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "PierrickGT",
+  "risk": "2",
+  "title": "RubiconMarket: offer() accounting should be performed after transferring tokens",
+  "issueId": 83,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/83"
+}
