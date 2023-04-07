@@ -91,4 +91,32 @@ Manual Analysis
 
 Consider using underscores for number literals to improve their readability.
 
+# 4: INTERCHANGEABLE USAGE OF UINT AND UINT256
+
+Vulnerability details
+
+## Context:
+
+Interchangeable usage of uint and uint256. Below are instances where uint was used rather than uint256 like in the rest of the code.
+
+## Proof of Concept
+
+> ***File: contracts/RubiconMarket.sol***
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L785
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L899
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L911
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L924
+
+## Tools Used
+
+Manual Analysis
+
+### Recommended Mitigation Steps
+
+Consider using only one approach throughout the codebase, e.g. only uint or only uint256.
+
 
