@@ -8,3 +8,34 @@ In the specific case of calling keccak256() at runtime to compute a value, using
     bytes32 internal constant MAKER_FEE_SLOT = keccak256("WOB_MAKER_FEE"); 
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L232
+
+
+
+
+
+## Unsafe use of transfer()/transferFrom() with IERC20 
+
+
+The issue with the provided code is that it uses the transfer() function from the IERC20 interface to transfer tokens, which may not be safe for all tokens that implement the ERC20 standard. Some tokens, like Tether (USDT), do not follow the standard by not returning a boolean value as required by the specification. This can lead to unexpected behavior and potential vulnerabilities in the smart contract. 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L59 
+
+    IERC20(bathTokenV2).transfer(
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L102 
+
+    IERC20(_feeToken).transfer(_feeTo, _feeAmount); 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L380 
+
+     require(
+            _offer.pay_gem.transfer(msg.sender, quantity),
+            "_offer.pay_gem.transfer(msg.sender, quantity) failed"
+        ); 
+
+
+
+    /// @dev V1 orders after V2 upgrade will point to address(0) in owner
+        _offer.owner == address(0) && msg.sender == _offer.recipient
+            ? require(_offer.pay_gem.transfer(_offer.recipient, _offer.pay_amt))
+            : require(_offer.pay_gem.transfer(_offer.owner, _offer.pay_amt));
