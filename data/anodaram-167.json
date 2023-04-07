@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "anodaram",
+  "risk": "2",
+  "title": "Making an offer before _dust is set. (Can think as a Front running attack)",
+  "issueId": 167,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/167"
+}
