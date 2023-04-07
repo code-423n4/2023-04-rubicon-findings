@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "koxuan",
+  "risk": "2",
+  "title": "isClosed is hardcoded to always return false and hence the functionality of closing RubiconMarket does not exist ",
+  "issueId": 84,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/84"
+}
