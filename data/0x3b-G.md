@@ -120,7 +120,20 @@ When having a require/if statement with 2 or more expressions needed,always plac
 [RubiconMarket.sol/L1200](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1200)
 [RubiconMarket.sol/L1324-L1327](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1324-L1327)
 
-# [G-09] Miscellaneous(3 instances)
+# [G-09] Duplicated require() checks should be moved to a modifier/function
+
+[BathBuddy.sol/L122](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L122)
+[BathBuddy.sol/L143](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L143)
+
+    require(friendshipStarted, "I have not started a bathToken friendship");
+
+[Position.sol/L76](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L76)
+[Position.sol/L212](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L212)
+[Position.sol/L228](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L228)
+
+    require(pos.isActive, "increaseMargin: POS ISN'T ACTIVE");
+
+# [G-10] Miscellaneous(3 instances)
 Saved gas: ~7816 on deployment 
 
 -Remove unused function [`Bump`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L297-L310)
@@ -130,4 +143,5 @@ Saved gas: ~7816 on deployment
 -Remove `getTime()` since it is not used and it is cheaper to call block.timestamp anyway 
 [RubiconMarket.sol/L624](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L624-L626)
 
+**Tools used: Foundry and remix**
 
