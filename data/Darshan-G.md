@@ -125,3 +125,16 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.
         require(_span[pay_gem][buy_gem] > 0);
 
         while (uid > 0 && uid != id) {
+
+
+## solidity v0.8.0 SafeMath library is used by default in arithmetic operations
+
+Since solidity v0.8.0 SafeMath library is used by default in arithmetic operations. Using external SafeMath libraries is unnecessary. 
+
+Proof of Concept
+https://blog.soliditylang.org/2020/12/16/solidity-v0.8.0-release-announcement/#:~:text=the%20near%20future.-,Checked,-arithmetic%2C%20i.e
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L6 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L6 
+
