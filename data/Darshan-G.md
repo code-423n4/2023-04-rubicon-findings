@@ -13,7 +13,7 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeW
 
 ## variable = 0
 
-Setting a variable to 0 will actually waste gas.
+Setting a variable to 0 will actually waste gas. it should get inlined to save gas:
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1062
 
@@ -25,4 +25,41 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.
                 _near[id] = 0; //delete order from unsorted order list
 
 
+
+## Inline a modifier that’s only used once 
+
+As   modifier onlyAdmin()    is only used once in this contract 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L66 
+
+
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "onlyAdmin: !admin");
+        _;
+    } 
+
+
+    function createBathToken(
+        address underlying,
+        InterestRateModel interestRateModel,
+        uint256 initialExchangeRateMantissa,
+        address implementation,
+        bytes memory becomeImplementationData
+    ) external onlyAdmin {
+        // underlying can be used only for one bathToken
+        require(
+            tokenToBathToken[underlying] == address(0),
+            "createBathToken: BATHTOKEN WITH THIS ERC20 EXIST ALDREADY"
+        );
+        require(
+            underlying != address(0),
+            "createBathToken: UNDERLYING == ADDRESS 0"
+        );
+        require(
+            implementation != address(0),
+            "createBathToken: IMPLEMENTATION == ADDRESS 0"
+        );
+
+
+Refer - https://code4rena.com/reports/2022-03-timeswap/#low-risk-and-non-critical-issues 
 
