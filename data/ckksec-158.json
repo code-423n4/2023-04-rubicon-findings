@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ckksec",
+  "risk": "2",
+  "title": "Wrong division leads to wrong fee calculation",
+  "issueId": 158,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/158"
+}
