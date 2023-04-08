@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "J4de",
+  "risk": "2",
+  "title": "`Position#_repay` does not consider the balance in the contract when judging the obtained quote",
+  "issueId": 238,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/238"
+}
