@@ -31,7 +31,7 @@ updated code:
                     emit FeeUpdate(tokenId, feeBalances[tokenId]);
                         }
 
-in this code I just replaced the use of div with the equivalent multiplication by the reciprocal, which is a more efficient arithmetic operation. We also changed the order of the operations to avoid unnecessary storage updates, and used the compound assignment operator += to update the balances and fee balances in a more concise way. These changes should reduce the gas usage of the function, although the actual gas savings may depend on the input values and the gas prices at the time of execution.
+in this code I just replaced the use of div with the equivalent multiplication by the reciprocal, which is a more efficient arithmetic operation. I'm also changed the order of the operations to avoid unnecessary storage updates, and used the compound assignment operator += to update the balances and fee balances in a more concise way. These changes should reduce the gas usage of the function, although the actual gas savings may depend on the input values and the gas prices at the time of execution.
 
 # [Gas-02]-Lack of gas limit check in executeMarketOrder function
 
