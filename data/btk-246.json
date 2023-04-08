@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "btk",
+  "risk": "2",
+  "title": "#ExpiringMarket.sol pause mechanism always returns false",
+  "issueId": 246,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/246"
+}
