@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "When migrating positions, fees is not refunded to users which can lead to lesser than expected bathTokenV2 minted",
+  "issueId": 186,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/186"
+}
