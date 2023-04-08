@@ -74,3 +74,8 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/pool
       IERC20(_token).safeApprove(_bathToken, _amount); 
 
 
+## migrate() still does transfers when the transfer is to the same address
+
+There's no check that the old address isn't the same as the new address, and there's no check that the Migration has already happened 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L38
