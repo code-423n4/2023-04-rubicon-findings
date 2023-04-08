@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "memexpo",
+  "risk": "3",
+  "title": "Creation of new orders can become impossible on active pairs because of gas issues",
+  "issueId": 259,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/259"
+}
