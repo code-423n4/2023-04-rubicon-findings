@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ginlee",
+  "risk": "2",
+  "title": "It is not allowed to define two functions in the same contract with the exact same function name, parameter list, and visibility",
+  "issueId": 202,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/202"
+}
