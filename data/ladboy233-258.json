@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Incorrect decimal handling in Position.sol truncate accured interest rate",
+  "issueId": 258,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/258"
+}
