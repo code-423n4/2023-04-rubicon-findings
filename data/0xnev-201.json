@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xnev",
+  "risk": "3",
+  "title": "Borrower could repay lesser amount due to flawed logic in `Position._repay()` ",
+  "issueId": 201,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/201"
+}
