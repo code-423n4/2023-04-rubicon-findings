@@ -61,3 +61,16 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.
 
     /// @notice Batch offer functionality - multuple offers in a single transaction // Multiple 
 
+
+## safeApprove() is deprecated 
+
+the function safeApprove() is deprecated, which means it is no longer recommended to use it. Instead, two other functions called safeIncreaseAllowance() and safeDecreaseAllowance() should be used as alternatives.
+
+The reason for deprecating safeApprove() is to address potential security concerns related to race conditions and multiple transactions. Using safeIncreaseAllowance() or safeDecreaseAllowance() is considered safer when setting allowances in ERC20 contracts.
+
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L358 
+
+      IERC20(_token).safeApprove(_bathToken, _amount); 
+
+
