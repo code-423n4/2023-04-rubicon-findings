@@ -1,6 +1,7 @@
-### Optimize `calcAmountAfterFee()`
+### FINDING 1: Optimize `calcAmountAfterFee()`
+This method can be optimized to use less operations, making it more efficient, especially when makerFee() > 0. Note that `makerFee() > 0` was switched to `makerFee() != 0`. This was a minor optimization that can be reverted if needed.
 
-*Proposed change*
+**Proposed change**
 ```solidity
 function calcAmountAfterFee6(
         uint256 amount
@@ -10,7 +11,7 @@ function calcAmountAfterFee6(
     }
 ```
 
-*Saves a max of 752 gas when makerFee() != 0*
+Saves a max of 752 gas when makerFee() != 0
 
 *Instances (1)*
 ```solidity
@@ -27,7 +28,8 @@ File: contracts/RubiconMarket.sol
 
 
 
-### Replace uint128 cast with with inequality check of to size of uint128
+### FINDING 2: Replace uint128 cast with with inequality check of to size of uint128
+Casting can be inefficient in terms of gas cost. If you are just using casting to check if a variable is less than the size of a uint128, consider using an inequality check to the size of a uint128 instead of a cast.
 
 *Proposed change:*
 ```solidity
