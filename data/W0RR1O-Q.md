@@ -1,4 +1,6 @@
-Lack of proper validation checks for the `feeType` and `feeValue` parameters in the `calculateFee` function.
+## QA Report (low/non-critical)
+
+[L-01] Lack of proper validation checks for the `feeType` and `feeValue` parameters in the `calculateFee` function.
 ===============================================================================================================
 ## Impact
 The `calculateFee` function in the contract `FeeWrapper.sol` does not perform proper validation for the `feeType` and `feeValue` parameters. If a third-party application does not set appropriate validation for these parameters as well and sets them to the value `0`, it will cause the calculation `fees[i] = (tokenAmounts[i] * feeValue) / feeType` to revert. This will cause the `calculateFee` function to not work as expected and possibly result in incorrect fee calculations.
@@ -78,7 +80,7 @@ function calculateFee(
 ```
 
 
-Missing Re-entrancy lock in `offer()` functions in the contract `RubiconMarket.sol`
+[L-02] Missing Re-entrancy lock in `offer()` functions in the contract `RubiconMarket.sol`
 ===================================================================================
 ## Impact
   Three `offer` functions in the contract do not include a reentrancy lock. This means that an attacker could potentially trigger a reentrancy attack on the contract by calling one of these functions multiple times before the previous call completes. Although the impact of such an attack is low due to the limited functionality of the offer functions, it could still result in unexpected behaviour, such as the duplication of orders or the loss of funds.
