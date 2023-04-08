@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ginlee",
+  "risk": "2",
+  "title": "abi.encodePacked()  should not be used with dynamic types when passing the result to a hash function such as keccak256()",
+  "issueId": 182,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/182"
+}
