@@ -33,11 +33,30 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 ## Use assembly to write address storage values
 https://code4rena.com/reports/2023-01-timeswap/#g-22-use-assembly-to-write-address-storage-values
 
-- 42:           address = new address;
-+                  assembly {                      
-+                      sstore(address.slot, newAddress)
-+                  }     
+CHANGE address = new address TO
+assembly {                      
+sstore(address.slot, newAddress)
+}     
 
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L33
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L35
+
+## use STORAGE keyword instead of memory when creating new struct instance
+
+https://ethereum.stackexchange.com/questions/128380/why-using-storage-keyword-instead-of-memory-cost-less-gas
+
+method 1 MEMORY :
+
+    load full User struct from storage (2 sloads)
+    store User struct in memory (mstore)
+    load user.isActive from memory (mload), store on stack
+    load user.userAge from memory (mload), store on stack
+
+method 1 STORAGE :
+
+    store storage pointer user (stack)
+    load user.isActive (sload), store on stack
+    load user.userAge (sload), store on stack
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L408
