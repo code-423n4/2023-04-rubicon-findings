@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "P-384",
+  "risk": "2",
+  "title": "Contracts can be frontrun and attacker could become an admin before initialization is done by the protocol owner admin:",
+  "issueId": 174,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/174"
+}
