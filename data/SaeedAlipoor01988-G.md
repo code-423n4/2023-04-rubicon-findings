@@ -44,7 +44,7 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 
 ## use STORAGE keyword instead of memory when creating new struct instance
 
-https://ethereum.stackexchange.com/questions/128380/why-using-storage-keyword-instead-of-memory-cost-less-gas
+https://ethereum.stackexchange.com/a/128397
 
 method 1 MEMORY :
 
