@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xnacho",
+  "risk": "2",
+  "title": "Use `safeTransfer()` or `safeTransferFrom()` methods instead of `transfer()`/`transferFrom()`",
+  "issueId": 215,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/215"
+}
