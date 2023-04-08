@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "SaeedAlipoor01988",
+  "risk": "2",
+  "title": "Missing zero address check can set _oracle, _rubiconMarket, _bathHouseV2 to zero address",
+  "issueId": 208,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/208"
+}
