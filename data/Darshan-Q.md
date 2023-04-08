@@ -39,3 +39,25 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.
         _offer.owner == address(0) && msg.sender == _offer.recipient
             ? require(_offer.pay_gem.transfer(_offer.recipient, _offer.pay_amt))
             : require(_offer.pay_gem.transfer(_offer.owner, _offer.pay_amt));
+
+## Typos 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L70 
+
+    "createBathToken: BATHTOKEN WITH THIS ERC20 EXIST ALDREADY" // ALREADY  
+
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L7
+  
+    /// @notice allows 3rd party protocols to charge their own fees, from interatcions with the Rubicon Protocol
+    //interactions 
+
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L75
+
+    /// @notice rotuer call with ETH sent //router 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L886
+
+    /// @notice Batch offer functionality - multuple offers in a single transaction // Multiple 
+
