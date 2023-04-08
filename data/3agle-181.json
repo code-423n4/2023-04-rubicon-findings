@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "3agle",
+  "risk": "2",
+  "title": "Missing constructor for owner assignment in DSAuth",
+  "issueId": 181,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/181"
+}
