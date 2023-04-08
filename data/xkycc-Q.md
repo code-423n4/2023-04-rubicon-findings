@@ -23,7 +23,7 @@ function wmul(uint256 x, uint256 y) internal pure returns (uint256 z) {
 
 Proposed new code:
 ```solidity
-add(wmul(_assetAmount, _collateralFactor), _max);
+548: _loopBorrowed = add(wmul(_assetAmount, _collateralFactor), _max);
 ```
 
 *Instances (1)*
