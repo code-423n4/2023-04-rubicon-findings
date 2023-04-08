@@ -17,3 +17,7 @@ good practice to check arrays are not empty
 ## QA-4
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L917
 equal arrays length shall be checked
+
+## QA-5
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L511
+It isn't checked that `buy_gem` is a contract while creating an offer, so users can create offers with EOA as tokens
