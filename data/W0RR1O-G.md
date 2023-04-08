@@ -35,3 +35,19 @@ Proof Of Concept:
     
 
 ```
+
+[G-02] `<x> += <y>` costs more gas than `<x> = <x> + <y>` for state variables `(-= too)`
+=====================================================================================
+
+Using the addition operator instead of plus-equals saves `113 gas`. Subtractions act the same way.
+
+There are two instances found in the contract `RubiconMarket.sol`:
+
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L583
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L586
+
+There are three instances found in the contract `Position.sol`:
+
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L184
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L431
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L560
