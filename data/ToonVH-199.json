@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ToonVH",
+  "risk": "3",
+  "title": "Position.withdraw() is exposed to user, allowing them to withdraw all funds (including collateral) in Position contract",
+  "issueId": 199,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/199"
+}
