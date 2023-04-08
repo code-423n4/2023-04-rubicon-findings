@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "sces60107",
+  "risk": "2",
+  "title": "fee could be zero in `SimpleMarket.buy`, it could brick the functionality of `SimpleMarket.buy`.",
+  "issueId": 192,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/192"
+}
