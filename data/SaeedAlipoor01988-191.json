@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "SaeedAlipoor01988",
+  "risk": "2",
+  "title": "possiblity front-running on the contracts/V2Migrator.sol:migrate() function",
+  "issueId": 191,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/191"
+}
