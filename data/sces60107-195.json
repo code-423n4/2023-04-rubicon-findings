@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "sces60107",
+  "risk": "3",
+  "title": "The funds could be stuck in RubiconMarket if both `recipient` and `owner` are not set.",
+  "issueId": 195,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/195"
+}
