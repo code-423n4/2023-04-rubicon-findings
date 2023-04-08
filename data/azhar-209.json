@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "azhar",
+  "risk": "3",
+  "title": "Arbitrary External Call Vulnerability",
+  "issueId": 209,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/209"
+}
