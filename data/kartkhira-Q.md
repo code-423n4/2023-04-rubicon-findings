@@ -1,0 +1,2 @@
+Commets in any of the code part is not in Natspec format. Using Naptspec format makes code more readable for developers and layman users alike. 
+Please use https://docs.soliditylang.org/en/latest/natspec-format.html#natspec for the formatting details.
