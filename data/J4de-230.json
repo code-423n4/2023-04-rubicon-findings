@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "J4de",
+  "risk": "2",
+  "title": "If it is still in the reward duration, the newly added reward will always inherit the original reward duration",
+  "issueId": 230,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/230"
+}
