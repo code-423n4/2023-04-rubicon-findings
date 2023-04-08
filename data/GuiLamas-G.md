@@ -37,7 +37,12 @@ require(isOfferSorted(id));
 -------Lines: 33 ("BathHouseV2 already initialized!");
 -------------- 70; 74; 78 also contain strings longer than 32 characters;
 
-*** BathBuddy ***
+*** V2MIGRATOR  ***
+
+1)Strings that are more than 32 characters will require more than 1 storage slot, costing more gas. Consider reducing the message length to less than 32 characters or use error codes:
+--------Line 65 ("migrate: BATH TOKENS V2 STUCK IN THE CONTRACT");
+
+*** BATHBUDDY ***
 1)Same recommendation as the RubiconMarket, instead of multiples "&&" use multiples "require" to save 3 gas per "&&":
 
 Old (lines 94-102):
@@ -53,9 +58,6 @@ modifier onlyBuddy() {
         require(friendshipStarted, "You are not my buddy!");
         _;
     }
-2)Strings that are more than 32 characters will require more than 1 storage slot, costing more gas. Consider reducing the message length to less than 32 characters or use error codes:
---------Line 65 ("migrate: BATH TOKENS V2 STUCK IN THE CONTRACT");
-
 
 2) Same recommendation as in BathHouseV2: Use immutable variables instead of state variables. Immutable variables are initialized at deployment time, and their values are hardcoded into the bytecode. Accessing them is generally cheaper than accessing state variables, which require a storage read operation. The following variables can be made immutable Lines 46-48:
 
