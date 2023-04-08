@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ginlee",
+  "risk": "2",
+  "title": "Bad params in function _bathify will  have bad influence on function createBathToken",
+  "issueId": 242,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/242"
+}
