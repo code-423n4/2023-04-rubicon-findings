@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xnacho",
+  "risk": "3",
+  "title": "A protocol can use a malicious router address to steal all the ETH sent by the user",
+  "issueId": 188,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/188"
+}
