@@ -11,14 +11,9 @@ A 3rd party protocol can call the `rubicall` with different fees than the ones c
 
 https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/FeeWrapper.sol#L48-L56
 
-### `rubicall` has reentrancy risk
+### Remove unused events in the `BathBuddy` smart contract
 
-**Affected code**
-
-https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/FeeWrapper.sol#L48-L56
-https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/FeeWrapper.sol#L66-L68
-https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/FeeWrapper.sol#L66-L68
-
-## Impact
-
-A custom malicious router (target) contract can 
+Unused events:
+[L262](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L262): `event Staked(address indexed user, uint256 amount);`
+[L263](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L263): `event Withdrawn(address indexed user, uint256 amount);`
+[L266](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L266): `event Recovered(address token, uint256 amount);`
