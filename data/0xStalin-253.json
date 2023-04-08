@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xStalin",
+  "risk": "3",
+  "title": "Reward tokens can be drained by re-utilizing BathTokens among different accounts by an user who was not even a holder",
+  "issueId": 253,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/253"
+}
