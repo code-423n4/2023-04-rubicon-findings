@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Incorrect usage of block.number wrongly accures interest rate in Position.sol",
+  "issueId": 257,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/257"
+}
