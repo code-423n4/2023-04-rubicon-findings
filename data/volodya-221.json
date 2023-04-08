@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "volodya",
+  "risk": "2",
+  "title": "Users may receive less funds for their position than they should due to incorrect price estimation",
+  "issueId": 221,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/221"
+}
