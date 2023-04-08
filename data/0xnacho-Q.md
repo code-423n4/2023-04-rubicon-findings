@@ -25,3 +25,7 @@ Since the smart contract supports multiple reward tokens, it's a good idea to sp
 [L261](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L261): `event RewardAdded(uint256 reward);`
 [L264](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L264): `event RewardPaid(uint256 reward);`
 [L265](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L265): `event RewardsDurationUpdated(uint256 newDuration);`
+
+### Remove unused `onlyBuddy` modifier in `BathBuddy` contract
+
+https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L104-L107
