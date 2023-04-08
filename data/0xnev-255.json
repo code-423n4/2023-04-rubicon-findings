@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "`FeeWrapper._chargeFeePayable` may revert as checks is too restrictive",
+  "issueId": 255,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/255"
+}
