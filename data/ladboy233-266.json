@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "DOS order fill in RubiconMarket.sol and Position.sol repay / borrow if user create order with a blocklisted recipient address",
+  "issueId": 266,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/266"
+}
