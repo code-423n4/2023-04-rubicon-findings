@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xStalin",
+  "risk": "3",
+  "title": "Unclaimable rewards from the Comptroller when claiming using the getReward()",
+  "issueId": 225,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/225"
+}
