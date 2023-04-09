@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "CRYP70",
+  "risk": "3",
+  "title": "Cancel() in RubiconMarket may fail resulting in a loss of funds if the user wishes to cancel",
+  "issueId": 347,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/347"
+}
