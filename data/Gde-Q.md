@@ -115,11 +115,11 @@ Consider having events associated with setter/update functions to track importan
 ```solidity
 File: contracts/RubiconMarket.sol
 
-1467:     function setFeeBPS(uint256 _newFeeBPS) external auth returns (bool) {
+1466:     function setFeeBPS(uint256 _newFeeBPS) external auth returns (bool) {
 
-1472:     function setMakerFee(uint256 _newMakerFee) external auth returns (bool) {
+1471:     function setMakerFee(uint256 _newMakerFee) external auth returns (bool) {
 
-1477:     function setFeeTo(address newFeeTo) external auth returns (bool) {
+1476:     function setFeeTo(address newFeeTo) external auth returns (bool) {
 
 ```
 [Link to code](https://github.com/code-423n4/2023-04-rubiconcontracts/RubiconMarket.sol)
