@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "SpicyMeatball",
+  "risk": "2",
+  "title": "Reward rate calculation is not very precise in `BathBuddy.sol` for small decimal amount tokens like USDC",
+  "issueId": 302,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/302"
+}
