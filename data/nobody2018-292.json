@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nobody2018",
+  "risk": "2",
+  "title": "Attacker can steal tokens of external protocols by FeeWrapper.rubicalls",
+  "issueId": 292,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/292"
+}
