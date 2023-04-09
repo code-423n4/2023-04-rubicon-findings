@@ -1,4 +1,6 @@
-1.  There is no check on the safeTrasnferFrom to ensure enough asset is transferred
+1.  
+
+There is no check on the safeTrasnferFrom to ensure enough asset is transferred
 ```solidity 
 IERC20(asset).safeTransferFrom(msg.sender, address(this), initMargin);
 ```
@@ -13,7 +15,9 @@ IERC20(asset).safeTransferFrom(msg.sender, address(this), initMargin);
 ```
 
 
-2. In function `openPosition` bool OK is unnecessary, since there is no scenario where OK = false and gets return. All logics involved in the `openPosition` would simply revert if checks fail.
+2. 
+
+In function `openPosition` bool OK is unnecessary, since there is no scenario where OK = false and gets return. All logics involved in the `openPosition` would simply revert if checks fail.
 
 https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L125-L206
 
