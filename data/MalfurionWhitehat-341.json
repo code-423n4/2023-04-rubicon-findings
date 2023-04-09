@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "MalfurionWhitehat",
+  "risk": "3",
+  "title": "Protocol does not check return value of ERC-20 token transfers",
+  "issueId": 341,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/341"
+}
