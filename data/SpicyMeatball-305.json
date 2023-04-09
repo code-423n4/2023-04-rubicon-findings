@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "SpicyMeatball",
+  "risk": "3",
+  "title": "Malicious user can claim all rewards for himself from the `BathBuddy.sol`",
+  "issueId": 305,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/305"
+}
