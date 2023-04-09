@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "bytes032",
+  "risk": "2",
+  "title": "Missing pause and unpause functions in BathBuddy Contract",
+  "issueId": 299,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/299"
+}
