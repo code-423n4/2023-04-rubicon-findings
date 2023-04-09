@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Trade can be wrongly settled if owner address is not address(0) and recipient is address(0)",
+  "issueId": 270,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/270"
+}
