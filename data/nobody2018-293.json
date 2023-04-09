@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nobody2018",
+  "risk": "2",
+  "title": "Both buyAllAmountWithLeverage and sellAllAmountWithLeverage always revert",
+  "issueId": 293,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/293"
+}
