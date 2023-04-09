@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "stop() function in ExpiringMarket is not working as expected since it's not used in isClosed()",
+  "issueId": 286,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/286"
+}
