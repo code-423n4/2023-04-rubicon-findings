@@ -694,7 +694,7 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 `return` data `(bool OK,)` has to be stored due to EVM architecture, but in a usage like below, ‘out’ and ‘outsize’ values are given (0,0), this storage disappears and gas optimization is provided.
 
 *Instances (1)*:
-```solidity
+```diff
 File: 2023-04-rubicon/contracts/RubiconMarket.sol
 
 117:        // transfer fee to the 3rd party protocol
