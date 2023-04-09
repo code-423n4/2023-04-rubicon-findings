@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nobody2018",
+  "risk": "3",
+  "title": "Attacker can drain all reward tokens of all BathBuddy",
+  "issueId": 294,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/294"
+}
