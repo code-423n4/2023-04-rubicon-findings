@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "CRYP70",
+  "risk": "2",
+  "title": "CToken when calculating _maxBorrow in Position contract is assumed to be 1e18",
+  "issueId": 351,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/351"
+}
