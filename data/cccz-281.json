@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cccz",
+  "risk": "3",
+  "title": "Due to the loss of precision, openPosition will make the user's leverage higher than expected",
+  "issueId": 281,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/281"
+}
