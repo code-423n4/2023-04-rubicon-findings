@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ljmanini",
+  "risk": "2",
+  "title": "FeeOnTransfer tokens break internal accounting",
+  "issueId": 346,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/346"
+}
