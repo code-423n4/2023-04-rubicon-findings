@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Cryptor",
+  "risk": "2",
+  "title": "Function batchrequote does not check if pay.gem arrays are the same length",
+  "issueId": 280,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/280"
+}
