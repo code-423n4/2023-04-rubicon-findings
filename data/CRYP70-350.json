@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "CRYP70",
+  "risk": "2",
+  "title": "Orders may break with tokens that require a fee on transfer",
+  "issueId": 350,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/350"
+}
