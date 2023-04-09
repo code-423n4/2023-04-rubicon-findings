@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "MalfurionWhitehat",
+  "risk": "2",
+  "title": "`Position._calculateDebt` interest rate calculation is specific to `WhitePaperInterestRateModel`, but `BathHouseV2` can create bath tokens with different models",
+  "issueId": 343,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/343"
+}
