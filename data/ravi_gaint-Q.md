@@ -1,3 +1,6 @@
+# Note: I'm new to sm audit, may be I'm not correctly rated a severity like H,M,L,N,G
+
+
 # [N-01] Potential Uninitialized Variable
 
 ## Description: 
