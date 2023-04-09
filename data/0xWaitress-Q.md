@@ -14,6 +14,7 @@ IERC20(asset).safeTransferFrom(msg.sender, address(this), initMargin);
 @> require(IERC20(asset).balanceOf(address(this)) >= vars.initAssetBalance + initMargin);
 ```
 
+\n
 
 2. 
 
@@ -25,8 +26,7 @@ Recommendation:
 
 Simply call openPosition without returning bool, since there is no case that a false boolean `OK` would be returned.
 
-
-
+\n
 3. can_cancel in RubiconMarket has a useless isClosed() check which always gives false
 
 ```solidity
