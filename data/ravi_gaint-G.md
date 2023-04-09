@@ -7,7 +7,7 @@ To address this issue, it is recommended to optimize the function to reduce gas 
 
 The line link for the _take function: https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L252-L311.
 
-updated code: 
+### updated code: 
 
      function _take(uint256 tokenId, address taker, uint256 shares) internal {
          // Calculate token price and value of shares
@@ -39,9 +39,71 @@ in this code I just replaced the use of div with the equivalent multiplication b
 ## Description: 
 The executeMarketOrder function can potentially use an excessive amount of gas if the provided gas limit is not sufficient. Consider implementing a check to ensure that the gas limit provided by the caller is sufficient to complete the function execution.
 
+## Mitigation
+
+To use the `gasleft()` function to determine how much gas is left at the start of the function and subtract a safety margin to ensure that there is enough gas to complete the function execution. The safety margin should be set based on the gas cost of the most expensive operation in the function
+
 
 ### Line link: 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L262-L290
+
+### Updated Code:
+
+    function executeMarketOrder(uint256 tokenId, uint256 shareAmount, address currency) external payable {
+    require(isMarketOpen(tokenId), "Market is not open");
+    require(shareAmount > 0, "Share amount must be greater than zero");
+
+    uint256 gasStart = gasleft();
+    uint256 cost = 50000 + (isMarketMaker(tokenId) ? 100000 : 0);
+
+    uint256 shares = shareAmount;
+    if (currency != address(0)) {
+        uint256 balanceBefore = IERC20(currency).balanceOf(address(this));
+        IERC20(currency).safeTransferFrom(msg.sender, address(this), shareAmount);
+        uint256 balanceAfter = IERC20(currency).balanceOf(address(this));
+        shares = balanceAfter.sub(balanceBefore);
+    }
+
+    uint256 tokenPrice = prices[tokenId];
+    uint256 shareValue = tokenPrice.mul(shares).div(10**18);
+
+    if (msg.value > 0) {
+        require(msg.value == shareValue, "Incorrect ETH value");
+
+        uint256 feeValue = shareValue.mul(fee).div(10**18);
+        uint256 ownerValue = shareValue.sub(feeValue);
+
+        feeBalances[tokenId] = feeBalances[tokenId].add(feeValue);
+        balances[ownerOf(tokenId)][tokenId] = balances[ownerOf(tokenId)][tokenId].add(ownerValue);
+
+        emit FeeUpdate(tokenId, feeBalances[tokenId]);
+        emit BalanceUpdate(tokenId, ownerOf(tokenId), balances[ownerOf(tokenId)][tokenId]);
+    } else if (currency != address(0)) {
+        uint256 feeValue = shareValue.mul(fee).div(10**18);
+        uint256 ownerValue = shareValue.sub(feeValue);
+
+        feeBalances[tokenId] = feeBalances[tokenId].add(feeValue);
+        balances[ownerOf(tokenId)][tokenId] = balances[ownerOf(tokenId)][tokenId].add(ownerValue);
+
+        emit FeeUpdate(tokenId, feeBalances[tokenId]);
+        emit BalanceUpdate(tokenId, ownerOf(tokenId), balances[ownerOf(tokenId)][tokenId]);
+
+        // Transfer currency to owner
+        IERC20(currency).safeTransfer(ownerOf(tokenId), shareAmount);
+    } else {
+        require(balances[msg.sender][tokenId] >= shareAmount, "Insufficient shares");
+
+        uint256 feeValue = shareValue.mul(fee).div(10**18);
+        uint256 ownerValue = shareValue.sub(feeValue);
+
+        totalShares[tokenId] = totalShares[tokenId].sub(shareAmount);
+        balances[msg.sender][tokenId] = balances[msg.sender][tokenId].sub(shareAmount);
+        feeBalances[tokenId] = feeBalances[tokenId].add(feeValue);
+        balances[ownerOf(tokenId)][tokenId] = balances[ownerOf(tokenId)][tokenId].add(ownerValue);
+
+        emit 
+    SharesTransfer(tokenId, msg
+
 
 # [Gas-03]-Excessive gas usage in `claimMarketInterest` function
 
