@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Cryptor",
+  "risk": "3",
+  "title": "SpawnBuddy cannot be called more than once ",
+  "issueId": 275,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/275"
+}
