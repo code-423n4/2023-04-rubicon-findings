@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "CRYP70",
+  "risk": "2",
+  "title": "Partial orders  will fail because buy() reverts when there is not enough liquidity in the market",
+  "issueId": 349,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/349"
+}
