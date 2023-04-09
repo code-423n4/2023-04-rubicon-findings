@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ljmanini",
+  "risk": "2",
+  "title": "Incorrect fee calculation logic leads to charging fees on an amount which has already been detracted such fee (both taker, and maker if present)",
+  "issueId": 326,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/326"
+}
