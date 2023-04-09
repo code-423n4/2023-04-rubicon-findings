@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "georgits",
+  "risk": "2",
+  "title": "User 's tokens can be stuck if owner sets too high the minimum sell amount",
+  "issueId": 320,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/320"
+}
