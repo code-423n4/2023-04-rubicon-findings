@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cccz",
+  "risk": "2",
+  "title": "FeeWrapper._chargeFee : Must approve 0 first",
+  "issueId": 339,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/339"
+}
