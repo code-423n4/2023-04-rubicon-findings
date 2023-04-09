@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "T1MOH",
+  "risk": "3",
+  "title": "User is unable to close position in Position.sol due to incorrect calculation of trading fee",
+  "issueId": 361,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/361"
+}
