@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "koxuan",
+  "risk": "2",
+  "title": "rounding down error for buy in RubiconMarket will cause loss of funds to offer maker",
+  "issueId": 277,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/277"
+}
