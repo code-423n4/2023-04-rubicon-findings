@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "`RubiconMarket_matcho::t_pay_amt` does not have check to make sure it is non-zero, leading to division of zero error",
+  "issueId": 300,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/300"
+}
