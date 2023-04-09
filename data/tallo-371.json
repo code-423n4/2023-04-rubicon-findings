@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "tallo",
+  "risk": "3",
+  "title": "Incorrect usage of 'this.offer' function call inside batchOffer and batchRequote results in all access control being bypassed and entire contract funds being drained",
+  "issueId": 371,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/371"
+}
