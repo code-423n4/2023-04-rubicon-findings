@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "IceBear",
+  "risk": "2",
+  "title": "isClosed() always returns false",
+  "issueId": 313,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/313"
+}
