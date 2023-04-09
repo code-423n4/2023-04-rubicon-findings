@@ -6,3 +6,5 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 ## _bathify function - Malicious token can have the same name and symbol
 
 
+## No whitelist of tokens
+Readme says that they intend to allow only blue chip tokens to use in the protocol. However, there is no whitelist of tokens found anywhere in the protocol. This makes the protocol vulnerable to malicious tokens
