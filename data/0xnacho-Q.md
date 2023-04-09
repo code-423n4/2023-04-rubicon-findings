@@ -59,7 +59,7 @@ However, it's a good idea for the contract owner to be able to pause the rewards
 ```solidity
 contract BathBuddy is ReentrancyGuard, IBathBuddy, Pausable {
 ...
-function pause() external onlyOwner {
+    function pause() external onlyOwner {
         _pause();
     }
 
