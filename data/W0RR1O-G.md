@@ -91,3 +91,18 @@ There is one instance in the contract `BathBuddy.sol`:
 There is two instance in the contract `Position.sol`:
 * https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L591-#L594
 * https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L595-#L598
+
+[G-04] `Public` functions not called by the contract should be declared `external` instead
+========================================================================================
+Contracts are allowed to override their parents’ functions and change the visibility from external to public and can save gas by doing so.
+
+There are six instances in the contracr `RubiconMarket.sol`:
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L574
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L624
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L998
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1010
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1016
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1149
+
+There is one instance in the contract `BathBuddy.sol`:
+* https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L139
