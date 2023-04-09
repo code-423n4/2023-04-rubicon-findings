@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Go-Langer",
+  "risk": "2",
+  "title": "[M-01] Initial user/s will not be set a rewards duration or rewards amount by the admin in setRewardsDuration() and notifyRewardAmount().",
+  "issueId": 355,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/355"
+}
