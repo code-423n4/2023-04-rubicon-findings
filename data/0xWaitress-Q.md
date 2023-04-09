@@ -64,7 +64,7 @@ Simply call _unsort without returning bool, since there is no case that a false 
 --- \n
 
 5. 
-Use struct in batchOffer if all arguments have the same lengths:
+Use struct in batchOffer if all arguments have the same lengths and the length checks are not needed:
 ```solidity
 // *** Batch Functionality ***
     /// @notice Batch offer functionality - multuple offers in a single transaction
@@ -74,6 +74,13 @@ Use struct in batchOffer if all arguments have the same lengths:
         uint[] calldata buyAmts,
         address[] calldata buyGems
     ) external {
+    require(
+            payAmts.length == payGems.length &&
+                payAmts.length == buyAmts.length &&
+                payAmts.length == buyGems.length,
+            "Array lengths do not match"
+        );
+}
 ```
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1324-L1328
 
@@ -90,3 +97,4 @@ function batchOffer(BatchOfferInfo[] calldata offers) {
     _;
 }
 ```
+Same suggestion for function `batchRequote`
