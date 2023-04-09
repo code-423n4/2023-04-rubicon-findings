@@ -1,3 +1,13 @@
+- [[QA-01] Unnecessary usage of DSMath with Solidity 0.8.x](#-qa-01--unnecessary-usage-of-dsmath-with-solidity-08x)
+- [[QA-02] Remove unused functions](#-qa-02--remove-unused-functions)
+- [[QA-03] Incorrect parameter emitted on `RubiconMarket.emitFee` event](#-qa-03--incorrect-parameter-emitted-on--rubiconmarketemitfee--event)
+- [[QA-04] Prefix unused variables with an underscore](#-qa-04--prefix-unused-variables-with-an-underscore)
+- [[QA-05] Redundant comparisons on `BathBuddy.sol` smart contract](#-qa-05--redundant-comparisons-on--bathbuddysol--smart-contract)
+- [[QA-06] `BathBuddy.sol` events do not distinguish for which vested token the event was emitted](#-qa-06---bathbuddysol--events-do-not-distinguish-for-which-vested-token-the-event-was-emitted)
+- [[QA-07] Wrong documentation on `FeeWrapper` regarding `CallParams.args`](#-qa-07--wrong-documentation-on--feewrapper--regarding--callparamsargs-)
+
+
+
 # [QA-01] Unnecessary usage of DSMath with Solidity 0.8.x
 
 DSMath is being used unnecessarily with Solidity 0.8.x. The code is relying on DSMath functions that are already included in the latest version of Solidity, resulting in redundant code that can lead to increased gas costs and potential errors. We recommend that the use of DSMath be removed from the smart contract code and replaced with the corresponding built-in Solidity math functions. This will not only improve the efficiency of the code but also ensure compatibility with future versions of Solidity.
