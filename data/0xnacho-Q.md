@@ -29,3 +29,43 @@ Since the smart contract supports multiple reward tokens, it's a good idea to sp
 ### Remove unused `onlyBuddy` modifier in `BathBuddy` contract
 
 https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L104-L107
+
+### `BathBuddy` smart contract doesn't implement pausable functionality which makes `Pausable` inheritance redundant
+
+**Context:**
+- [L38](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L38):  `contract BathBuddy is ReentrancyGuard, IBathBuddy, Pausable {`
+- [L168-L177](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L168-L177): 
+
+`whenNotPaused` modifier usage:
+
+```solidity
+function getReward(
+        IERC20 rewardsToken,
+        address holderRecipient
+    )
+        external
+        override
+        nonReentrant
+        whenNotPaused
+        updateReward(holderRecipient, address(rewardsToken))
+        onlyBathHouse
+```
+
+
+The inheritance of `Pausable` contract can be safely removed from the `BathBuddy` contract since the contract doesn't have any function that allows the contract owner to pause/unpause the contract. In this case, the only actions required are removing the `whenNotPaused` modifier usage, `Pausable` inheritance, and the import statement(`import "@openzeppelin/contracts/security/Pausable.sol";`).  
+
+However, it's a good idea for the contract owner to be able to pause the rewards distribution or other user-facing operations. For this, the `BathBuddy` contract should have owner-only functions for pausing or unpausing user-facing operations. Here's an example:
+
+```solidity
+contract BathBuddy is ReentrancyGuard, IBathBuddy, Pausable {
+...
+function pause() external onlyOwner {
+        _pause();
+    }
+
+    function resume() external onlyOwner {
+        _unpause();
+    }
+...
+}
+```
