@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nobody2018",
+  "risk": "3",
+  "title": "Attacker can profit from front-run closePosition to cause user losses",
+  "issueId": 296,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/296"
+}
