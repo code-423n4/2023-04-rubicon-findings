@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "taker with quantity below newly updated MinSell would get their fund dissolved after matching the first offer during `_matcho`",
+  "issueId": 332,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/332"
+}
