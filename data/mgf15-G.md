@@ -17,6 +17,10 @@
 | [GAS-12](#GAS-12) | Use != 0 instead of > 0 for unsigned integer comparison | 21 |
 | [GAS-13](#GAS-13) | `internal` functions not called by the contract should be removed | 4 |
 | [GAS-14](#GAS-14) | 10 ** 18,10 **  27 and 10 ** 9 can be changed to 1e18 , 1e27 , 1e9 and save some gas | 12 |
+| [GAS-15](#GAS-15) | Functions guaranteed to revert when called by normal users can be marked payable | 14 |
+| [GAS-16](#GAS-16) | Unuesd events  | 6 |
+| [GAS-17](#GAS-17) | Unuesd Functions | 3 |
+| [GAS-18](#GAS-18) | With assembly, .call (bool success) transfer can be done gas-optimized | 1 |
 ### [GAS-1] Use assembly to check for `address(0)`
 *Saves 6 gas per instance*
 
@@ -553,4 +557,154 @@ File: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 317:        _max = (_liq.mul(10 ** 18)).div(_price);
 
 331:         ).div(10 ** 18);
+```
+
+
+[G-15] Functions guaranteed to revert when called by normal users can be marked payable
+
+If a function modifier such as onlyOwner is used, the function will revert if a normal user tries to pay the function. Marking the function as payable will lower the gas cost for legitimate callers because the compiler will not include checks for whether a payment was provided. The extra opcodes avoided are CALLVALUE(2),DUP1(3),ISZERO(3),PUSH2(3),JUMPI(10),PUSH1(3),DUP1(3),REVERT(0),JUMPDEST(1),POP(2), which costs an average of about 21 gas per call to the function, in addition to the extra deployment cost.
+
+*Instances (14)*:
+```solidity
+File: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+25:    function setOwner(address owner_) external auth {
+26:        owner = owner_;
+27:        emit LogSetOwner(owner);
+28:    }
+
+628:    function stop() external auth {
+629:        stopped = true;
+630:    }
+
+955:    function setMinSell(
+956:        ERC20 pay_gem, //token to assign minimum sell amount to
+957:        uint256 dust //maker (ask) minimum sell amount
+958:    ) external auth note returns (bool) {
+959:        _dust[address(pay_gem)] = dust;
+960:        emit LogMinSell(address(pay_gem), dust);
+961:        return true;
+962:    }
+
+1466:    function setFeeBPS(uint256 _newFeeBPS) external auth returns (bool) {
+1467:        feeBPS = _newFeeBPS;
+1468:        return true;
+1469:    }
+
+1471:    function setMakerFee(uint256 _newMakerFee) external auth returns (bool) {
+1472:        StorageSlot.getUint256Slot(MAKER_FEE_SLOT).value = _newMakerFee;
+1473:        return true;
+1474:    }
+
+1476:    function setFeeTo(address newFeeTo) external auth returns (bool) {
+1477:        require(newFeeTo != address(0));
+1478:        feeTo = newFeeTo;
+1479:        return true;
+1480:    }
+
+```
+
+```solidity
+File: 2023-04-rubicon/contracts/BathHouseV2.sol
+
+60:    function createBathToken(
+61:        address underlying,
+62:        InterestRateModel interestRateModel,
+63:        uint256 initialExchangeRateMantissa,
+64:        address implementation,
+65:        bytes memory becomeImplementationData
+66:    ) external onlyAdmin {
+
+191:    function notifyRewardAmount(
+192:        uint256 reward,
+193:        IERC20 rewardsToken
+194:    ) external onlyOwner updateReward(address(0), address(rewardsToken)) {
+```
+
+```solidity
+File: 2023-04-rubicon/contracts/BathBuddy.sol
+232:    function setRewardsDuration(
+233:        uint256 _rewardsDuration,
+234:        address token
+235:    ) external onlyOwner {
+
+```
+
+```solidity
+File: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+93:    function buyAllAmountWithLeverage(
+94:        address quote,
+95:        address asset,
+96:        uint256 quotePayAmount,
+97:        uint256 leverage
+98:    ) external onlyOwner {
+
+
+107:    function sellAllAmountWithLeverage(
+108:        address asset,
+109:        address quote,
+110:        uint256 assetPayAmount,
+111:        uint256 leverage
+112:    ) external onlyOwner {
+
+210:    function closePosition(uint256 posId) external onlyOwner {
+
+226:    function increaseMargin(uint256 posId, uint256 amount) external onlyOwner {
+
+242:    function withdraw(address token, uint256 amount) external onlyOwner {
+```
+
+[G-16] Unuesd events 
+
+Unused events increase contract size and gas usage at deployment. 
+*Instances (6)*:
+```solidity
+File: 2023-04-rubicon/contracts/BathBuddy.sol
+
+261:    event RewardAdded(uint256 reward);
+262:    event Staked(address indexed user, uint256 amount);
+263:    event Withdrawn(address indexed user, uint256 amount);
+264:    event RewardPaid(address indexed user, uint256 reward);
+265:    event RewardsDurationUpdated(uint256 newDuration);
+266:    event Recovered(address token, uint256 amount);
+```
+
+[G-17] Unuesd Functions 
+
+*Instances (3)*:
+```solidity
+File: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+66:    function imin(int256 x, int256 y) internal pure returns (int256 z) {
+67:        return x <= y ? x : y;
+68:    }
+
+70:    function imax(int256 x, int256 y) internal pure returns (int256 z) {
+71:        return x >= y ? x : y;
+72:    }
+
+77:    function wmul(uint256 x, uint256 y) internal pure returns (uint256 z) {
+78:        z = add(mul(x, y), WAD / 2) / WAD;
+79:    }
+```
+
+[G-18] With assembly, .call (bool success) transfer can be done gas-optimized
+
+`return` data `(bool OK,)` has to be stored due to EVM architecture, but in a usage like below, ‘out’ and ‘outsize’ values are given (0,0), this storage disappears and gas optimization is provided.
+
+*Instances (1)*:
+```solidity
+File: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+117:        // transfer fee to the 3rd party protocol
+-        (bool OK, ) = payable(_feeTo).call{value: _feeAmount}("");
++	 bool OK;
++	 assembly {                                    
++                OK := call(gas(), _feeTo, _feeAmount, 0, 0, 0, 0)
++            }                                             
++                  
+119:		require(OK, "ETH transfer failed");
+120:        _msgValue = msg.value - _feeAmount;
+
 ```
