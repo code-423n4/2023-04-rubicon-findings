@@ -82,7 +82,7 @@ Use struct in batchOffer if all arguments have the same lengths and the length c
         );
 }
 ```
-https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1324-L1328
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L886-L898
 
 Recommendation:
 
