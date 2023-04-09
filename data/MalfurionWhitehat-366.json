@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "MalfurionWhitehat",
+  "risk": "2",
+  "title": "`RubiconMarket.isClosed` always returns false and the market cannot be stopped",
+  "issueId": 366,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/366"
+}
