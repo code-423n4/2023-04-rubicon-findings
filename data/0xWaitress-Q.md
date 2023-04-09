@@ -49,3 +49,14 @@ Simply call openPosition without returning bool, since there is no case that a f
 
 Recommendation:
 remove isClose() in the function can_cancel.
+
+
+--- \n
+4. 
+In function `_unsort ` bool return is unnecessary, since there is no scenario where false is returned. All logics involved in the `_unsort` would simply revert if checks fail.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1405
+
+Recommendation:
+
+Simply call _unsort without returning bool, since there is no case that a false boolean would be returned.
