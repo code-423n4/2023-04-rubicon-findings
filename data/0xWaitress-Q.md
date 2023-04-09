@@ -60,3 +60,33 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.
 Recommendation:
 
 Simply call _unsort without returning bool, since there is no case that a false boolean would be returned.
+
+--- \n
+
+5. 
+Use struct in batchOffer if all arguments have the same lengths:
+```solidity
+// *** Batch Functionality ***
+    /// @notice Batch offer functionality - multuple offers in a single transaction
+    function batchOffer(
+        uint[] calldata payAmts,
+        address[] calldata payGems,
+        uint[] calldata buyAmts,
+        address[] calldata buyGems
+    ) external {
+```
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1324-L1328
+
+Recommendation:
+
+```solidity
+struct BatchOfferInfo {
+   uint payAmt;
+   address payGem;
+   uint buyAmt;
+   address buyGem;
+};
+function batchOffer(BatchOfferInfo[] calldata offers) {
+    _;
+}
+```
