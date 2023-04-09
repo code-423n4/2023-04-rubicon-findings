@@ -1,3 +1,6 @@
+# 2023-04-rubicon-v2-QA
+QA Report for rubicon-v2
+
 
 ## Non Critical Issues
 
@@ -11,6 +14,10 @@
 | [NC-5](#NC-5) | Event is missing `indexed` fields | 17 |
 | [NC-6](#NC-6) | Constants should be defined rather than using magic numbers | 1 |
 | [NC-7](#NC-7) | Functions not used internally could be marked external | 10 |
+| [NC-8](#NC-8) | FLOATING PRAGMAS | 2 |
+| [NC-9](#NC-9) | MISSING TWO-STEP PROCEDURES FOR CHANGING OWNER | 1 |
+| [NC-10](#NC-10) | Order of function  | 4 |
+
 ### [NC-1] Missing checks for `address(0)` when assigning values to address state variables
 
 *Instances (5)*:
@@ -166,6 +173,9 @@ File: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 465:         IERC20(_quote).approve(address(rubiconMarket), _maxFill);
 
 500:         IERC20(_asset).approve(
+501:            address(rubiconMarket),
+502:            IERC20(_asset).balanceOf(address(this))
+503:        );
 
 ```
 
@@ -254,14 +264,18 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 ```solidity
 File: 2023-04-rubicon/contracts/BathHouseV2.sol
 
-45:     function getBathTokenFromAsset(
+45:   function getBathTokenFromAsset(
+46:        address asset
+47:    ) public view returns (address) {
 
 ```
 
 ```solidity
 File: 2023-04-rubicon/contracts/RubiconMarket.sol
 
-288:     function getOffer(
+288:         function getOffer(
+289:        uint256 id
+290:    ) public view returns (uint256, ERC20, uint256, ERC20) {
 
 574:     function getFeeBPS() public view returns (uint256) {
 
@@ -270,17 +284,91 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 700:     function initialize(address _feeTo) public {
 
 733:     function make(
+734:        ERC20 pay_gem,
+735:        ERC20 buy_gem,
+736:        uint128 pay_amt,
+737:        uint128 buy_amt
+738:    ) public override returns (bytes32) {
 
-998:     function getOfferCount(
+998:      function getOfferCount(
+999:        ERC20 sell_gem,
+1000:        ERC20 buy_gem
+1001:    ) public view returns (uint256) {
 
 1010:     function getFirstUnsortedOffer() public view returns (uint256) {
 
 1016:     function getNextUnsortedOffer(uint256 id) public view returns (uint256) {
 
 1149:     function getPayAmountWithFee(
+1150:        ERC20 pay_gem,
+1151:        ERC20 buy_gem,
+1152:        uint256 buy_amt
+1153:    ) public view returns (uint256 fill_amt) {
 
 ```
 
+[NC-8] FLOATING PRAGMAS
+
+It is a best practice to lock pragmas instead of using floating pragmas to ensure that contracts are tested and deployed with the intended compiler version. Accidentally deploying contracts with different compiler versions can lead to unexpected risks and undiscovered bugs. Please consider locking pragmas for the following files.
+
+*Instances (5)*:
+
+```solidity
+File: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+2: pragma solidity ^0.8.9; 
+
+```
+
+```solidity
+File: 2023-04-rubicon/contracts/BathBuddy.sol
+
+2: pragma solidity ^0.8.0;
+```
+[NC-9] MISSING TWO-STEP PROCEDURES FOR CHANGING OWNER
+
+Calling the following `RubiconMarket.setOwner` function changes the Owner to `owner_`. Because this function does not include a two-step procedure, it is possible that the owner is changed to a wrong address .
+
+*Instances (1)*:
+
+```solidity
+File: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+25:    function setOwner(address owner_) external auth {
+26:        owner = owner_;
+27:        emit LogSetOwner(owner);
+28:    }
+
+```
+[NC-10] Order of function 
+
+Ordering helps readers identify which functions they can call and to find the constructor and fallback definitions easier.
+
+Functions should be grouped according to their visibility and ordered:
+
+* constructor
+
+* receive function (if exists)
+
+* fallback function (if exists)
+
+* external
+
+* public
+
+* internal
+
+* private
+
+```
+File: 2023-04-rubicon/contracts/RubiconMarket.sol
+File: 2023-04-rubicon/contracts/BathHouseV2.sol
+File: 2023-04-rubicon/contracts/BathBuddy.sol
+File: 2023-04-rubicon/contracts/poolsUtility/Position.sol
+```
+ref 
+
+https://docs.soliditylang.org/en/v0.8.17/style-guide.html#order-of-functions
 
 ## Low Issues
 
