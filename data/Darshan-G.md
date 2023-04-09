@@ -138,3 +138,322 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/pool
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L6 
 
+
+
+## Use custom errors to save deployment and runtime costs in case of revert
+
+Instead of using strings for error messages, you can use custom errors to reduce both deployment and runtime gas costs. In addition, they are very convenient as you can easily pass dynamic information to them. 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L70 
+
+        require(_OK, "low-level call to the Rubicon failed");
+ 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L86 
+
+         require(_OK, "low-level call to the router failed");
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L115 
+
+        require(msg.value == _totalAmount, "FeeWrapper: not enough ETH sent"); 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L119 
+        	
+	require(OK, "ETH transfer failed");
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L76 
+        
+         require(pos.isActive, "borrowBalanceOfPos: POS ISN'T ACTIVE"); 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L100 
+
+
+    require(
+            openPosition(quote, asset, quotePayAmount, leverage),
+            "buyAllAmountWithLeverage: FAILED TO OPEN POSITION"
+        );
+    }
+
+    /// @notice open short position in Rubicon Market
+    function sellAllAmountWithLeverage(
+        address asset,
+        address quote,
+        uint256 assetPayAmount,
+        uint256 leverage
+    ) external onlyOwner {
+        _leverageCheck(leverage, false);
+        require(
+            openPosition(asset, quote, assetPayAmount, leverage),
+            "sellAllAmountWithLeverage: FAILED TO OPEN POSITION"
+        );
+    }
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L212 
+
+        require(pos.isActive, "closePosition: POS ISN'T ACTIVE");
+
+        // load values to memory
+        address asset = pos.asset;
+        address quote = pos.quote;
+        uint256 bathTokenAmount = pos.bathTokenAmount;
+
+        _repay(asset, quote, posId);
+        _redeem(asset, bathTokenAmount);
+
+        _removePosition(posId);
+    }
+
+    /// @notice add more collateral to certain position
+    function increaseMargin(uint256 posId, uint256 amount) external onlyOwner {
+        Position memory pos = positions[posId];
+        require(pos.isActive, "increaseMargin: POS ISN'T ACTIVE");
+
+        address asset = pos.asset;
+ 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L273 
+
+        require(
+            CErc20Interface(_cToken).borrow(_amount) == 0,
+            "_borrow: BORROW FAILED"
+        );
+    }
+
+    /// @notice repay debt + interest
+    function _repay(address _asset, address _quote, uint256 _posId) internal {
+        address _bathTokenQuote = bathHouseV2.getBathTokenFromAsset(_quote);
+        uint256 _amountToRepay = borrowBalanceOfPos(_posId);
+
+        // sell asset for quote
+        _rubiconSwap(_asset, _quote, _amountToRepay, false);
+        uint256 _quoteBalance = IERC20(_quote).balanceOf(address(this));
+
+        require(
+            _amountToRepay <= _quoteBalance,
+            "_repay: balance of quote lt. debt"
+        );
+        uint256 _borrowBalance = borrowBalance(_bathTokenQuote);
+        if (_amountToRepay > _borrowBalance) {
+            _amountToRepay = _borrowBalance;
+        }
+
+        IERC20(_quote).approve(_bathTokenQuote, _amountToRepay);
+        require(
+            CErc20Interface(_bathTokenQuote).repayBorrow(_amountToRepay) == 0,
+            "_repay: ERROR"
+        );
+    }
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L312
+
+        require(_err == 0, "_maxBorrow: ERROR");
+        require(_liq > 0, "_maxBorrow: LIQUIDITY == 0");
+        require(_shortfall == 0, "_maxBorrow: SHORTFALL != 0");
+
+        uint256 _price = oracle.getUnderlyingPrice(CToken(_bathToken));
+        _max = (_liq.mul(10 ** 18)).div(_price);
+        require(_max > 0, "_maxBorrow: can't borrow 0");
+    }
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L340
+
+   require(_errs[0] == 0);
+    }
+
+    function _exitMarket(address _bathToken) internal {
+        require(comptroller.exitMarket(_bathToken) == 0, "_exitMarket: ERROR");
+    }
+
+    //============================= COLLATERAL =============================
+
+    /// @notice supply collateral to cToken's market
+    function _supply(
+        address _token,
+        address _bathToken,
+        uint256 _amount
+    ) internal returns (uint256 _bathTokenAmount) {
+        uint256 _initBathTokenAmount = IERC20(_bathToken).balanceOf(
+            address(this)
+        );
+        IERC20(_token).safeApprove(_bathToken, _amount);
+        require(
+            CErc20Interface(_bathToken).mint(_amount) == 0,
+            "_supply: MINT FAILED"
+        );
+        uint256 _currentBathTokenAmount = IERC20(_bathToken).balanceOf(
+            address(this)
+        );
+ 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L385 
+
+    require(
+            CErc20Interface(_bathTokenAsset).redeem(_bathTokenAmount) == 0,
+            "_redeem: REDEEM FAILED"
+        );
+
+        // exit bathToken market only if there is no collateral and debt in it
+        if (
+            IERC20(_bathTokenAsset).balanceOf(address(this)) == 0 &&
+            borrowBalance(_bathTokenAsset) == 0
+        ) {
+            _exitMarket(_bathTokenAsset);
+        }
+    }
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L591
+
+       _long // long can't be with 1x leverage
+            ? require(
+                _leverage > _wad && _leverage <= _leverageMax,
+                "_leverageCheck{Long}: INVLAID LEVERAGE"
+            )
+            : require(
+                _leverage >= _wad && _leverage <= _leverageMax,
+                "_leverageCheck{Short}: INVLAID LEVERAGE"
+            );
+    }
+}
+ 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L76 
+
+        require(!friendshipStarted, "I already have a buddy!");
+        owner = _owner;
+        myBathTokenBuddy = newBud;
+        bathHouse = _bathHouse;
+
+        // Note, rewards duration must be set by admin
+
+        // Constructor pattern
+        friendshipStarted = true;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+
+    // TODO: do we need this?
+    // Enforce only soul-bound Bath Token has calling rights
+    modifier onlyBuddy() {
+        require(
+            msg.sender == myBathTokenBuddy &&
+                msg.sender != address(0) &&
+                friendshipStarted,
+            "You are not my buddy!"
+        );
+        _;
+    }
+
+    modifier onlyBathHouse() {
+        require(msg.sender == bathHouse, "You are not my beloved bath house!");
+        _;
+    } 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L122 
+
+        require(friendshipStarted, "I have not started a bathToken friendship");
+
+        if (IERC20(myBathTokenBuddy).totalSupply() == 0) {
+            return rewardsPerTokensStored[token];
+        }
+        return
+            rewardsPerTokensStored[token].add(
+                lastTimeRewardApplicable(token)
+                    .sub(lastUpdateTime[token])
+                    .mul(rewardRates[token])
+                    .mul(1e18)
+                    .div(IERC20(myBathTokenBuddy).totalSupply())
+            );
+    }
+
+    // Determines a user rewards
+    // Note, uses share logic from bathToken
+    function earned(
+        address account,
+        address token
+    ) public view override returns (uint256) {
+        require(friendshipStarted, "I have not started a bathToken friendship");
+ 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L217
+
+        require(
+            rewardRates[address(rewardsToken)] <=
+                balance.div(rewardsDuration[address(rewardsToken)]),
+            "Provided reward too high"
+        );
+
+        lastUpdateTime[address(rewardsToken)] = block.timestamp;
+        periodFinish[address(rewardsToken)] = block.timestamp.add(
+            rewardsDuration[address(rewardsToken)]
+        );
+        emit RewardAdded(reward);
+    }
+
+    // This must be set before notifying a new rewards program for a given token
+    // Must be used before? notifyRewardAmount to set the new period
+    function setRewardsDuration(
+        uint256 _rewardsDuration,
+        address token
+    ) external onlyOwner {
+        require(
+            block.timestamp > periodFinish[token],
+            "Previous rewards period must be complete before changing the duration for the new period"
+        );
+        rewardsDuration[token] = _rewardsDuration;
+        emit RewardsDurationUpdated(rewardsDuration[token]);
+    }
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L41 
+
+        require(bathBalance > 0, "migrate: ZERO AMOUNT"); 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L54
+
+        require(
+            CErc20Interface(bathTokenV2).mint(amountWithdrawn) == 0,
+            "migrate: MINT FAILED"
+        );
+        /// @dev v2 bathTokens shouldn't be sent to this contract from anywhere other than this function
+        IERC20(bathTokenV2).transfer(
+            msg.sender,
+            IERC20(bathTokenV2).balanceOf(address(this))
+        );
+        require(
+            IERC20(bathTokenV2).balanceOf(address(this)) == 0,
+            "migrate: BATH TOKENS V2 STUCK IN THE CONTRACT"
+        ); 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L27
+
+        require(msg.sender == admin, "onlyAdmin: !admin");
+        _;
+    }
+
+    // proxy-constructor
+    function initialize(address _comptroller, address _pAdmin) external {
+        require(!initialized, "BathHouseV2 already initialized!"); 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L68 
+
+        require(
+            tokenToBathToken[underlying] == address(0),
+            "createBathToken: BATHTOKEN WITH THIS ERC20 EXIST ALDREADY"
+        );
+        require(
+            underlying != address(0),
+            "createBathToken: UNDERLYING == ADDRESS 0"
+        );
+        require(
+            implementation != address(0),
+            "createBathToken: IMPLEMENTATION == ADDRESS 0"
+        ); 
+
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L144 
+
+        require(_underlying != address(0), "_bathify: ADDRESS ZERO"); 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol 
