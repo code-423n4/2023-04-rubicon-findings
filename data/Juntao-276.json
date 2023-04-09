@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Juntao",
+  "risk": "3",
+  "title": "Attacker can drain LP rewards by manipulating Reward Per Token",
+  "issueId": 276,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/276"
+}
