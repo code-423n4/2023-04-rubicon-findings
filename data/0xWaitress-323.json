@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "second lowest offer does not get updated to be the lowest offer when the worst gets cancelled",
+  "issueId": 323,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/323"
+}
