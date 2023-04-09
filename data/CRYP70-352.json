@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "CRYP70",
+  "risk": "2",
+  "title": "If a user is added to the USDC blacklist, cancel() will not work",
+  "issueId": 352,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/352"
+}
