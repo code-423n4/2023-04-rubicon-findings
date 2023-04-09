@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "fatherOfBlocks",
+  "risk": "2",
+  "title": "lack of validations when using rubicall()",
+  "issueId": 374,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/374"
+}
