@@ -24,3 +24,27 @@ https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/
 Recommendation:
 
 Simply call openPosition without returning bool, since there is no case that a false boolean `OK` would be returned.
+
+
+
+3. can_cancel in RubiconMarket has a useless isClosed() check which always gives false
+
+```solidity
+    /// @dev After close, anyone can cancel an offer.
+    modifier can_cancel(uint256 id) virtual override {
+        require(isActive(id));
+        require(
+            (msg.sender == getOwner(id)) ||
+                isClosed() ||
+                (msg.sender == getRecipient(id) && getOwner(id) == address(0))
+        );
+        _;
+    }
+
+    function isClosed() public pure returns (bool closed) {
+        return false;
+    }
+```
+
+Recommendation:
+remove isClose() in the function can_cancel.
