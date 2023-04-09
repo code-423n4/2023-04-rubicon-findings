@@ -69,3 +69,34 @@ contract BathBuddy is ReentrancyGuard, IBathBuddy, Pausable {
 ...
 }
 ```
+
+
+### Redundant addition of the token rewards for an account in the `earned` function of `BathBuddy` smart contract 
+
+Context: https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L146-L154
+
+The last operation of the above statement (`.add(tokenRewards[token][account]);`) is redundant in the context of the `BathBuddy` contract, because the value of is always 0.
+
+The value of the `tokenRewards` mapping is only modified in a single call variation, only when calling `getReward`.
+
+- When calling `getReward`, `updateReward(holderRecipient, address(rewardsToken))` modifier logic executes before the function body:
+[L251](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L251): `tokenRewards[token][account] = earned(account, token);`
+
+Here, the `tokenRewards` amount of the `address(rewardsToken)` and `holderRecipient` is set to the updated amount.
+
+- After this, the `getReward` logic is executed and, if the reward (`tokenRewards[address(rewardsToken)][holderRecipient]`) is greater than 0, then the reward mapping gets reset before sending the reward to the user.
+
+```solidity
+        uint256 reward = tokenRewards[address(rewardsToken)][holderRecipient];
+        if (reward > 0) {
+            // @audit-ok
+            tokenRewards[address(rewardsToken)][holderRecipient] = 0;
+            // @audit-ok safeTransfer used
+            rewardsToken.safeTransfer(holderRecipient, reward);
+            emit RewardPaid(holderRecipient, reward);
+        }
+```
+
+- On a next call of the `getReward` performed by the same user, later in time, the `tokenRewards[token][account]` will be 0 in the `earned` function.
+
+ 
