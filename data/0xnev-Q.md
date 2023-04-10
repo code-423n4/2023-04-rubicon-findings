@@ -47,7 +47,7 @@
 | [R-07] | Use scientific notation (e.g. 1e18) rather than exponentiation (e.g. 10**18) | 12 |
 | [R-08] | Use delete instead of zero assignment to clear storage variables | 3 |
 | [R-09] | Do not need to declare named return variable | 11 |
-| [R-10] | Repeated address type casting of contracts can be stored in local variable  | 16 |
+| [R-10] | Repeated address type casting of contracts can be stored in local variable  | 27 
 
 | Total Refactor Issues | 10 |
 |:--:|:--:|
@@ -58,7 +58,7 @@
 | [O-01] | Natspec comments should be completed | All |
 | [O-02] | Remove commented out code | 15 |
 | [O-03] | Unlocked Pragma| 6 |
-| [O-04] | Avoid shadowing inherited state variables | 2 |
+| [O-04] | Avoid shadowing inherited state variables | 3 |
 | [O-05] | Inconsistent spacing or extra // in comments | 138 |
 
 | Total Ordinary Issues | 5 |
@@ -169,7 +169,6 @@ function setMatching(bool _matchStatus) external auth returns (bool) {
 }
 ```
 ### [L-04] `FeeWrapper.rubicall()` may revert if target contract is not payable or do not implement `receive/fallback` function
-[FeeWrapper.sol#L82](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L82)
 ```solidity
 60:    function _rubicall(
 61:        CallParams memory _params
@@ -186,7 +185,7 @@ function setMatching(bool _matchStatus) external auth returns (bool) {
 72:        return _data;
 73:    }
 ```
-In `FeeWrapper.rubicall()`, if ether is sent along when calling the function, it will call `Feewrapper._rubicallPayable`. However, if target contract supplied is not payable or did not implement `receive/fallback` function, the function may revert. Hence it is possible to cast the target contract address to be payable to receive native ether so the function never reverts due to target contract not being able to receive ether, assuming there is already a way to withdraw ether sent to the target contract.
+In `FeeWrapper.rubicall()`, if ether is sent along when calling the function, it will call `Feewrapper._rubicallPayable`. However, if target contract supplied is not payable or did not implement `receive/fallback` function, the function may revert. Hence it is possible to cast the target contract address to be payable to receive native ether, assuming there is a way to withdraw ether sent to the target contract.
 
 Recommendation:
 ```solidity
@@ -682,13 +681,34 @@ Use `delete` as it has the same effect of assigning variables to its default val
 Consider returning an unnamed variable
 
 ### [R-10] Repeated address type casting of contracts can be stored in local variable
+[RubiconMarket.sol#L1289-L1290](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1289-L1290)
+[RubiconMarket.sol#L1327](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1327)
+```solidity
+27 results - 3 files
+
+/RubiconMarket.sol
+1273:    function _matcho(
+            ...
+1289:        while (_best[address(t_buy_gem)][address(t_pay_gem)] > 0) {
+1290:            best_maker_id = _best[address(t_buy_gem)][address(t_pay_gem)];
+            ...
+1327:            t_pay_amt >= _dust[address(t_pay_gem)]
+```
+[RubiconMarket.sol#L1388-L1389](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1388-L1389)
+[RubiconMarket.sol#L1400](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1400)
+```solidity
+1362:    function _sort(
+            ...
+1388:            prev_id = _best[address(pay_gem)][address(buy_gem)];
+1389:            _best[address(pay_gem)][address(buy_gem)] = id;
+            ...
+1400:        _span[address(pay_gem)][address(buy_gem)]++;
+```
+
 [BathHouseV2.sol#L107](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L107)
 [BathHouseV2.sol#L110](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L110)
 ```solidity
-16 results - 2 files
-
 /BathHouseV2.sol
-
 60:    function createBathToken
         ...
 107:        bathTokenToBuddy[bathToken] = address(buddy);
@@ -800,19 +820,13 @@ Solidity new features: [Solidity new features](https://github.com/ethereum/solid
 ### [O-04] Avoid shadowing inherited state variables
 [RubiconMarket.sol#L819](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L819)
 [RubiconMarket.sol#L847](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L847)
+[RubiconMarket.sol#L1335](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1335)
 ```solidity
-2 results - 1 file
+3 results - 1 file
 
 /RubiconMarket.sol
 802:    function offer(
-803:        uint256 pay_amt, //maker (ask) sell how much
-804:        ERC20 pay_gem, //maker (ask) sell which token
-805:        uint256 buy_amt, //maker (ask) buy how much
-806:        ERC20 buy_gem, //maker (ask) buy which token
-807:        uint256 pos, //position to insert offer, 0 should be used if unknown
-808:        address owner,
-809:        address recipient
-810:    ) external can_offer returns (uint256) {
+        ...
 811:        return
 812:            offer(
 813;                pay_amt,
@@ -827,20 +841,7 @@ Solidity new features: [Solidity new features](https://github.com/ethereum/solid
 822:    }
 
 824: function offer(
-825:    uint256 pay_amt, //maker (ask) sell how much
-826:    ERC20 pay_gem, //maker (ask) sell which token
-827:    uint256 buy_amt, //maker (ask) buy how much
-828:    ERC20 buy_gem, //maker (ask) buy which token
-829:    uint256 pos, //position to insert offer, 0 should be used if unknown
-830:    bool matching, //match "close enough" orders?
-831:    address owner, // owner of the offer
-832:    address recipient // recipient of the offer's fill
-833: ) public can_offer returns (uint256) {
-834:    require(!locked, "Reentrancy attempt");
-834:    require(_dust[address(pay_gem)] <= pay_amt);
-836:
-837:    /// @dev currently matching is perma-enabled
-838:    // if (matchingEnabled) {
+        ...
 839:    return
 840:        _matcho(
 841:            pay_amt,
@@ -852,6 +853,17 @@ Solidity new features: [Solidity new features](https://github.com/ethereum/solid
 847:            owner,
 848:            recipient
 849:        );
+
+1273:    function _matcho(
+            ...
+1330:            id = super.offer(
+1331:                t_pay_amt,
+1332:                t_pay_gem,
+1333:                t_buy_amt,
+1334:                t_buy_gem,
+1335:                owner,
+1336:                recipient
+1337:            );
 ```
 
 `owner` is shadowed. Avoid using variables with the same name, including inherited in the same contract. If used, it must be specified in the NatSpec comments.
