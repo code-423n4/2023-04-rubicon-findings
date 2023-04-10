@@ -1,7 +1,6 @@
 # 2023-04-rubicon-v2-QA
 QA Report for rubicon-v2
 
-
 ## Non Critical Issues
 
 
@@ -16,7 +15,8 @@ QA Report for rubicon-v2
 | [NC-7](#NC-7) | Functions not used internally could be marked external | 10 |
 | [NC-8](#NC-8) | FLOATING PRAGMAS | 2 |
 | [NC-9](#NC-9) | MISSING TWO-STEP PROCEDURES FOR CHANGING OWNER | 1 |
-| [NC-10](#NC-10) | Order of function  | 4 |
+| [NC-10](#NC-10) | Order of function  | * |
+| [NC-11](#NC-11) | Function state mutability can be restricted to view  | 1 |
 
 ### [NC-1] Missing checks for `address(0)` when assigning values to address state variables
 
@@ -173,9 +173,6 @@ File: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 465:         IERC20(_quote).approve(address(rubiconMarket), _maxFill);
 
 500:         IERC20(_asset).approve(
-501:            address(rubiconMarket),
-502:            IERC20(_asset).balanceOf(address(this))
-503:        );
 
 ```
 
@@ -264,18 +261,14 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 ```solidity
 File: 2023-04-rubicon/contracts/BathHouseV2.sol
 
-45:   function getBathTokenFromAsset(
-46:        address asset
-47:    ) public view returns (address) {
+45:     function getBathTokenFromAsset(
 
 ```
 
 ```solidity
 File: 2023-04-rubicon/contracts/RubiconMarket.sol
 
-288:         function getOffer(
-289:        uint256 id
-290:    ) public view returns (uint256, ERC20, uint256, ERC20) {
+288:     function getOffer(
 
 574:     function getFeeBPS() public view returns (uint256) {
 
@@ -284,26 +277,14 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 700:     function initialize(address _feeTo) public {
 
 733:     function make(
-734:        ERC20 pay_gem,
-735:        ERC20 buy_gem,
-736:        uint128 pay_amt,
-737:        uint128 buy_amt
-738:    ) public override returns (bytes32) {
 
-998:      function getOfferCount(
-999:        ERC20 sell_gem,
-1000:        ERC20 buy_gem
-1001:    ) public view returns (uint256) {
+998:     function getOfferCount(
 
 1010:     function getFirstUnsortedOffer() public view returns (uint256) {
 
 1016:     function getNextUnsortedOffer(uint256 id) public view returns (uint256) {
 
 1149:     function getPayAmountWithFee(
-1150:        ERC20 pay_gem,
-1151:        ERC20 buy_gem,
-1152:        uint256 buy_amt
-1153:    ) public view returns (uint256 fill_amt) {
 
 ```
 
@@ -369,6 +350,16 @@ File: 2023-04-rubicon/contracts/poolsUtility/Position.sol
 ref 
 
 https://docs.soliditylang.org/en/v0.8.17/style-guide.html#order-of-functions
+
+### [NC-11] Function state mutability can be restricted to view
+
+since `_borrowLimit` function doesn't change the state, you can mark it as `view` 
+
+```solidity
+File: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+526:     function _borrowLimit(
+```
 
 ## Low Issues
 
