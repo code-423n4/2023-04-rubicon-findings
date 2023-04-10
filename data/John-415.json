@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "John",
+  "risk": "2",
+  "title": "Don't need to subtract fees from _maxFill.",
+  "issueId": 415,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/415"
+}
