@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Voyvoda",
+  "risk": "3",
+  "title": "User can steal all rewards and drain the pool",
+  "issueId": 410,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/410"
+}
