@@ -14,9 +14,9 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.
 The function "bump(bytes32)" is useless and has no functionality. The comment directly specifies that ```bump``` is one of the "main public entrypoints" so consider adding some functionality or removing the function.
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L297
 
-[N-02]
-Unnecessary use of ```DSMath```
+[N-02] Unnecessary use of ```DSMath```
 There is no need to use DSMath/safe-math libraries for solidity versions >= 0.8 since underflows/overflows now revert. Unnecessary use of the library leads to extra gas costs/overhead when normal subtraction, addition, and multiplication is enough. 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L45
 
-
+[N-03] Variable and function names should have both descriptive comments and descriptive names that indicate their functionality and use cases
+It's important for code readability and understanding for auditors and developers who aren't fully familiar with the code base in order to quickly get up to speed. For instance, each of the different ```offer``` variations should have a comment that describes their individual purpose; especially if one version is calling ```_matcho``` where another calls ```offer```.
