@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "T1MOH",
+  "risk": "3",
+  "title": "Buying or selling in `Position.sol` provides less `buyAmount`  to buy, and more `payAmount` to sell  than intended",
+  "issueId": 455,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/455"
+}
