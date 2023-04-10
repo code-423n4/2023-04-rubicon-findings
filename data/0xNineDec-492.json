@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xNineDec",
+  "risk": "2",
+  "title": "Error prone setup and execution can potentially break the migration process",
+  "issueId": 492,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/492"
+}
