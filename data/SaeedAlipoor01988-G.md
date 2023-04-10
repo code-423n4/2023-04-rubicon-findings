@@ -43,7 +43,6 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L35
 
 ## use STORAGE keyword instead of memory when creating new struct instance
-
 https://ethereum.stackexchange.com/a/128397
 
 method 1 MEMORY :
@@ -60,3 +59,10 @@ method 1 STORAGE :
     load user.userAge (sload), store on stack
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L408
+
+## Add unchecked {} for subtractions where the operands cannot underflow because of a previous require() or if-statement
+
+require(a <= b); x = b - a => require(a <= b); unchecked { x = b - a }.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L166
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L170
