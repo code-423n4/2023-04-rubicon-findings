@@ -9,6 +9,12 @@
 | 3 | State variables only set in the constructor should be declared immutable | 4 |
 | 4 | BathBuddy.sol.rewardPerToken(): The results of totalSupply() should be cached instead of calling it twice | 1 |
 | 5 | Splitting require() statements that uses && saves gas | 4 |
+| 6 | Use nested if and, avoid multiple check combinations | 3 |
+| 7 | Using delete instead of  0 saves gas | 2 |
+| 8 | A modifier used only once and not being inherited should be inlined to save gas  | 2 |
+| 9 | x += y (x -= y) costs more gas than x = x + y (x = x - y) for state variables | 1 |
+| 10 | ++i/i++ should be unchecked{++i}/unchecked{i++} when it is not possible for them to overflow, as in the case when used in for & while loops  | 1 |
+
 
 ## Findings
 
@@ -114,7 +120,7 @@ File: /contracts/periphery/BathBuddy.sol
 
 See [this issue](https://github.com/code-423n4/2022-01-xdefi-findings/issues/128) which describes the fact that there is a larger deployment gas cost, but with enough runtime calls, the change ends up being cheaper
 
-*There are 8 instances of this issue:*
+*There are 4 instances of this issue:*
 
 ```solidity
 File: /contracts/periphery/BathBuddy.sol
@@ -150,3 +156,85 @@ File: /contracts/periphery/BathBuddy.sol
 ```
 
 - [https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L894](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L894)
+
+### [G-06] **Use nested if and, avoid multiple check combinations**
+
+Using nested is cheaper than using && multiple check combinations. There are more advantages, such as easier to read code and better coverage reports.
+
+*There are 3 instances of this issue:*
+
+```jsx
+File: /contracts/utilities/poolsUtility/Position.sol
+	391: if (
+	392:            IERC20(_bathTokenAsset).balanceOf(address(this)) == 0 &&
+	393:            borrowBalance(_bathTokenAsset) == 0
+	394:        ) {
+
+File: /contracts/RubiconMarket.sol
+	1197: if (
+	1198:            isActive(id) &&
+	1199:            offers[id].pay_amt < _dust[address(offers[id].pay_gem)]
+	1200:        ) {
+...
+	1324: if (
+	1325:            t_buy_amt > 0 &&
+	1326:            t_pay_amt > 0 &&
+	1327:            t_pay_amt >= _dust[address(t_pay_gem)]
+	1328:        ) {
+```
+
+### [G-07] ****Using delete instead of  0 saves gas****
+
+*There are 2 instances of this issue:*
+
+```jsx
+File: /contracts/RubiconMarket.sol
+	1449: _near[id] = 0;
+	1462: _near[id] = 0
+```
+
+- [RubiconMarket.sol#L1449](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1449)
+
+### **[G-08] A modifier used only once and not being inherited should be inlined to save gas**
+
+*There are 2 instances of this issue:*
+
+```solidity
+File: /contracts/periphery/BathBuddy.sol
+	104: modifier onlyBathHouse() {
+	105:        require(msg.sender == bathHouse, "You are not my beloved bath house!");
+	106:        _;
+	107:    }
+
+File: /contracts/BathHouseV2.sol
+	26: modifier onlyAdmin() {
+	27:        require(msg.sender == admin, "onlyAdmin: !admin");
+	28:        _;
+	29:    }
+	
+```
+
+- [BathBuddy.sol#L104](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L104)
+- [BathHouseV2.sol#L26](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L26)
+
+### [G-09] ****`x += y (x -= y)` costs more gas than `x = x + y (x = x - y)` for state variables**
+
+*There are 1 instances of this issue:*
+
+```solidity
+File: /contracts/utilities/poolsUtility/Position.sol
+	431: positions[_positionId].bathTokenAmount += _bathTokenAmount;
+```
+
+- [Position.sol#L431](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L431)
+
+### [G-10] `++i/i++` should be `unchecked{++i}/unchecked{i++}` when it is not possible for them to overflow, as in the case when used in for & while loops**
+
+*There are 1 instances of this issue:*
+
+```solidity
+File: /contracts/utilities/poolsUtility/Position.sol
+	407: lastPositionId++;
+```
+
+- [Position.sol#L407](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L407)
