@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ktg",
+  "risk": "3",
+  "title": "BathBuddy might not work with some cTokens with decimals < 18",
+  "issueId": 385,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/385"
+}
