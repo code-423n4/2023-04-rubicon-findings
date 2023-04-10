@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xNineDec",
+  "risk": "3",
+  "title": "Open orders using others' balances for fee-on-transfer tokens may last indefinitely and could prevent cancellation",
+  "issueId": 498,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/498"
+}
