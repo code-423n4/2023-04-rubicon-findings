@@ -64,6 +64,28 @@ function isAuthorized(address src) internal view returns (bool) {
 ```
 [RubiconMarket.sol#L25-L28](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L25-L28),[RubiconMarket.sol#L35-L41](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L35-L41)
 
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+  function setFeeBPS(uint256 _newFeeBPS) external auth returns (bool) {
+        feeBPS = _newFeeBPS;
+        return true;
+    }
+
+    function setMakerFee(uint256 _newMakerFee) external auth returns (bool) {
+        StorageSlot.getUint256Slot(MAKER_FEE_SLOT).value = _newMakerFee;
+        return true;
+    }
+
+    function setFeeTo(address newFeeTo) external auth returns (bool) {
+        require(newFeeTo != address(0));
+        feeTo = newFeeTo;
+        return true;
+    }
+
+```
+[RubiconMarket.sol#L1466-L1480](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1466-L1480)
+
 ##
 
 ## [L-3] Unsafe typecasting method is used to cast bytes32 to uint256 
@@ -221,14 +243,178 @@ require(
 
 ##
 
+## [L-8] Missing event and or timelock for critical parameter change
+
+Events help non-contract tools to track changes, and events prevent users from being surprised by changes
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+  function setFeeBPS(uint256 _newFeeBPS) external auth returns (bool) {
+        feeBPS = _newFeeBPS;
+        return true;
+    }
+
+    function setMakerFee(uint256 _newMakerFee) external auth returns (bool) {
+        StorageSlot.getUint256Slot(MAKER_FEE_SLOT).value = _newMakerFee;
+        return true;
+    }
+
+    function setFeeTo(address newFeeTo) external auth returns (bool) {
+        require(newFeeTo != address(0));
+        feeTo = newFeeTo;
+        return true;
+    }
+
+```
+[RubiconMarket.sol#L1466-L1480](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1466-L1480)
+
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L700-L716)
+
 ##
 
+## [L-9] Don’t use payable.call()
 
+This means the following cases can cause the transfer to fail:
 
+- The contract does not have a payable callback
+- The contract’s payable callback spends more than 2300 gas (which is only enough to emit something)
+- The contract is called through a proxy which itself uses up the 2300 gas Use OpenZeppelin’s Address.sendValue() instead
 
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/FeeWrapper.sol
 
+118: (bool OK, ) = payable(_feeTo).call{value: _feeAmount}("");
 
+```
+[FeeWrapper.sol#L118](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L118)
 
+##
+
+## [L-10] Inconsistent spacing in comments
+
+Some lines use // x and some use //x. The instances below point out the usages that don’t follow the majority, within each file
+
+[RubiconMarket.sol](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol) contract should use // x instead //x 
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+854:  //Transfers funds from caller to offer maker, and from market to caller.
+882:  return super.cancel(id); //delete the offer.
+935:  //deletes _rank [id]
+950:  //set the minimum sell amount for a token
+956:  ERC20 pay_gem, //token to assign minimum sell amount to
+957:  uint256 dust //maker (ask) minimum sell amount
+964:  //returns the minimum sell amount for an offer
+966:  ERC20 pay_gem //token for which minimum sell amount is queried
+971: //return the best offer for a token pair
+981: //return the next worse offer in the sorted list
+989: //return the next better offer in the sorted list
+997: //return the amount of better offers for a token pair
+1005://get the first unsorted offer that was inserted by a contract
+1014:  //get the next unsorted offer
+1038:  //while there is amount to sell
+1060: fill_amt = add(fill_amt, baux); //Add amount bought to acumulator
+1061: take(bytes32(offerId), uint128(baux)); //We take the portion of the offer that we need
+1078: //Meanwhile there is amount to buy
+1079: offerId = getBestOffer(buy_gem, pay_gem); //Get the best offer for the token pair
+1087:  break; //We consider that all amount is sold
+1090: //If amount to buy is higher or equal than current offer amount to sell
+1091: fill_amt = add(fill_amt, offers[offerId].buy_amt); //Add amount sold to acumulator
+1092: buy_amt = sub(buy_amt, offers[offerId].pay_amt); //Decrease amount to buy
+1093: take(bytes32(offerId), uint128(offers[offerId].pay_amt)); //We take the whole offer
+1095: //if lower
+1102: ); //Add amount sold to acumulator
+1103: take(bytes32(offerId), uint128(buy_amt)); //We take the portion of the offer that we need
+1104: buy_amt = 0; //All amount is bought
+1129: uint256 offerId = getBestOffer(buy_gem, pay_gem); //Get best offer for the token pair
+1131: fill_amt = add(fill_amt, offers[offerId].pay_amt); //Add amount to buy accumulator
+1132: pay_amt = sub(pay_amt, offers[offerId].buy_amt); //Decrease amount to pay
+1134: //If we still need more offers
+1135: offerId = getWorseOffer(offerId); //We look for the next best offer
+1136: require(offerId != 0); //Fails if there are not enough offers to complete
+1145: ); //Add proportional amount of last offer to buy accumulator
+```
+
+[RubiconMarket.sol#L854](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L854)
+
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1162-L1169)
+
+##
+
+## [L-11] A single point of failure
+
+Impact
+The onlyOwner or auth roles has a single point of failure and onlyOwner can use critical a few functions.
+
+Even if protocol admins/developers are not malicious there is still a chance for Owner keys to be stolen. In such a case, the attacker can cause serious damage to the project due to important functions. In such a case, users who have invested in project will suffer high financial losses.
+
+> onlyOwner and auth functions 
+
+```solidity
+FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
+
+25:   function setOwner(address owner_) external auth {
+1466: function setFeeBPS(uint256 _newFeeBPS) external auth returns (bool) {
+1471: function setMakerFee(uint256 _newMakerFee) external auth returns (bool) {
+1476: function setFeeTo(address newFeeTo) external auth returns (bool) {
+
+```
+[RubiconMarket.sol#L25](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L25),[RubiconMarket.sol#L1466](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1466)
+
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L955-L958)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+   function buyAllAmountWithLeverage(
+        address quote,
+        address asset,
+        uint256 quotePayAmount,
+        uint256 leverage
+    ) external onlyOwner {
+
+function sellAllAmountWithLeverage(
+        address asset,
+        address quote,
+        uint256 assetPayAmount,
+        uint256 leverage
+    ) external onlyOwner {
+
+210: function closePosition(uint256 posId) external onlyOwner {
+226: function increaseMargin(uint256 posId, uint256 amount) external onlyOwner {
+242: function withdraw(address token, uint256 amount) external onlyOwner {
+
+```
+[Position.sol#L93-L98](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L93-L98),[Position.sol#L107-L112](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L107-L112),[Position.sol#L210](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L210),[Position.sol#L226](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L226),[Position.sol#L242](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L242)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/periphery/BathBuddy.sol
+
+function getReward(
+        IERC20 rewardsToken,
+        address holderRecipient
+    )
+        external
+        override
+        nonReentrant
+        whenNotPaused
+        updateReward(holderRecipient, address(rewardsToken))
+        onlyBathHouse
+
+function notifyRewardAmount(
+        uint256 reward,
+        IERC20 rewardsToken
+    ) external onlyOwner updateReward(address(0), address(rewardsToken)) {
+
+function setRewardsDuration(
+        uint256 _rewardsDuration,
+        address token
+    ) external onlyOwner {
+
+```
+[BathBuddy.sol#L168-L177](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L168-L177)
 
 ##
 
@@ -260,6 +446,55 @@ import "./compound-v2-fork/Comptroller.sol";
 import "./compound-v2-fork/Unitroller.sol";
 import "./periphery/BathBuddy.sol";
 ```
+[BathHouseV2.sol#L4-L9](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L4-L9)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/StorageSlot.sol";
+
+```
+[RubiconMarket.sol#L11-L12](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L11-L12)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/V2Migrator.sol
+
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./compound-v2-fork/CTokenInterfaces.sol";
+
+```
+[V2Migrator.sol#L4-L6](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L4-L6)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/periphery/BathBuddy.sol
+
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+
+```
+[BathBuddy.sol#L4-L7](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L4-L7)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "../../compound-v2-fork/Comptroller.sol";
+import "../../compound-v2-fork/PriceOracle.sol";
+import "../../BathHouseV2.sol";
+import "../../RubiconMarket.sol";
+
+```
+[Position.sol#L4-L11](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L4-L11)
+
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L4-L5)
+
 ### Recommended Mitigation
 
 Name the imports to all contract scopes to improve code readability
@@ -300,6 +535,28 @@ function setOwner(address owner_) external auth {
 ```
 [RubiconMarket.sol#L25-L28](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L25-L28)
 
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+  function setFeeBPS(uint256 _newFeeBPS) external auth returns (bool) {
+        feeBPS = _newFeeBPS;
+        return true;
+    }
+
+    function setMakerFee(uint256 _newMakerFee) external auth returns (bool) {
+        StorageSlot.getUint256Slot(MAKER_FEE_SLOT).value = _newMakerFee;
+        return true;
+    }
+
+    function setFeeTo(address newFeeTo) external auth returns (bool) {
+        require(newFeeTo != address(0));
+        feeTo = newFeeTo;
+        return true;
+    }
+
+```
+[RubiconMarket.sol#L1466-L1480](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1466-L1480)
+
 ##
 
 ## [NC-5] No same value control 
@@ -314,6 +571,28 @@ function setOwner(address owner_) external auth {
 
 ```
 [RubiconMarket.sol#L25-L28](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L25-L28)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+  function setFeeBPS(uint256 _newFeeBPS) external auth returns (bool) {
+        feeBPS = _newFeeBPS;
+        return true;
+    }
+
+    function setMakerFee(uint256 _newMakerFee) external auth returns (bool) {
+        StorageSlot.getUint256Slot(MAKER_FEE_SLOT).value = _newMakerFee;
+        return true;
+    }
+
+    function setFeeTo(address newFeeTo) external auth returns (bool) {
+        require(newFeeTo != address(0));
+        feeTo = newFeeTo;
+        return true;
+    }
+
+```
+[RubiconMarket.sol#L1466-L1480](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1466-L1480)
 
 ##
 
@@ -334,6 +613,8 @@ function setOwner(address owner_) external auth {
 ```
 [RubiconMarket.sol#L25-L28](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L25-L28)
 
+
+
 ##
 
 ## [NC-7] Emit both old and new values in critical changes 
@@ -351,6 +632,14 @@ Consider adding NATSPEC on all public/external functions to improve documentatio
 [RubiconMarket.sol#L25-L27](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L25-L27)
 [RubiconMarket.sol#L288-L293](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L288-L293)
 [RubiconMarket.sol#L1028-L1034](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1028-L1034)
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L760-L766)
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L780-L787)
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L801-L810)
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L824-L833)
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L885-L892)
+()
+()
+()
 
 ##
 
@@ -380,6 +669,7 @@ FILE : FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 227:  uint256 internal feeBPS;
 230:  address internal feeTo;
 ```
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L125-L130)
 
 ##
 
@@ -572,8 +862,59 @@ Note that pragma statements can be allowed to float when a contract is intended 
 
 ##
 
-## [NC-17] 
+## [NC-17] Use solidity naming conventions for state variables 
 
+State variables name not starting with "_". The "_name" is reserved for internal/private functions and variables 
+
+(https://docs.soliditylang.org/en/v0.8.17/style-guide.html)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+691: mapping(uint256 => sortInfo) public _rank; //doubly linked lists of sorted offer ids
+692: mapping(address => mapping(address => uint256)) public _best; //id of the highest offer for a token pair
+693: mapping(address => mapping(address => uint256)) public _span; //number of offers stored for token pair in sorted orderbook
+694: mapping(address => uint256) public _dust; //minimum sell amount for a token to avoid dust offers
+695: mapping(uint256 => uint256) public _near; //next unsorted offer id
+696: uint256 public _head; //first unsorted offer id
+
+```
+[RubiconMarket.sol#L691-L696](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L691-L696)
+
+##
+
+## [NC-18] Interchangeable usage of uint and uint256
+
+Consider using only one approach throughout the codebase, e.g. only uint or only uint256
+
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L781-L785)
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L918-L921)
+()
+()
+
+##
+
+## [NC-19] TYPOS
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+/// @audit multuple => multiple
+886:  /// @notice Batch offer functionality - multuple offers in a single transaction
+
+/// @audit acumulator=> accumulator
+1051: fill_amt = add(fill_amt, offers[offerId].pay_amt); //Add amount bought to acumulator
+
+/// @audit acumulator=> accumulator
+1060: fill_amt = add(fill_amt, offers[offerId].pay_amt); //Add amount bought to acumulator
+
+/// @audit acumulator=> accumulator
+1091: fill_amt = add(fill_amt, offers[offerId].pay_amt); //Add amount bought to acumulator
+
+```
+## [NC-20] public functions not called by the contract should be declared external instead
+
+Contracts are [allowed](https://docs.soliditylang.org/en/latest/contracts.html#function-overriding) to override their parents’ functions and change the visibility from external to public.
 
 
 
