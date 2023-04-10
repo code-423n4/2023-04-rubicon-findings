@@ -16,7 +16,7 @@
 |[L-12] |Add a timelock to critical functions| 1|
 |[L-13] |` RewardPaid ` event is missing parameters| 1|
 |[L-14] |Keccak Constant values should used to immutable rather than constant|1|
-|[N-15] |Constants on the left are better| 27 |
+|[L-15] |Consider using OpenZeppelin's SafeCast library to prevent unexpected overflows when casting from uint256|29|
 |[N-16] |NatSpec comments should be increased in contracts| All Contracts |
 |[N-17] |`Function writing` that does not comply with the `Solidity Style Guide`| All Contracts |
 |[N-18] |Include return parameters in NatSpec comments | All Contracts |
@@ -35,8 +35,8 @@
 |[N-31] |Remove NatSpec comments during testing and design| 4 |
 |[N-32] |In 0.8>= pragma versions, the use of SafeMath is unnecessary|1 |
 |[N-33] |Use the `delete` keyword instead of assigning a value of `0`| 1 |
-
-Total 33 issues
+|[N-34] |Constants on the left are better| 27 |
+Total 34 issues
 
 
 
@@ -430,98 +430,55 @@ contracts/RubiconMarket.sol:
   232:     bytes32 internal constant MAKER_FEE_SLOT = keccak256("WOB_MAKER_FEE");
 ```
 
-### [N-15] Constants on the left are better
+### [L-15] Consider using OpenZeppelin's SafeCast library to prevent unexpected overflows when casting from uint256
 
-If you use the constant first you support structures that veil programming errors. And one should only produce code either to add functionality, fix an programming error or trying to support structures to avoid programming errors (like design patterns). 
-
-https://www.moserware.com/2008/01/constants-on-left-are-better-but-this.html
 
 ```solidity
-27 results - 5 files
+
+29 results - 2 files
 
 contracts/RubiconMarket.sol:
-    54      function mul(uint256 x, uint256 y) internal pure returns (uint256 z) {
-    55:         require(y == 0 || (z = x * y) / y == x, "ds-math-mul-overflow");
-    56      }
+   321:             require(uint128(spend) == spend, "spend is not an int");
+   322:             require(uint128(quantity) == quantity, "quantity is not an int");
+   405:             uint128(quantity),
+   406:             uint128(spend)
+   480:             uint128(_offer.pay_amt),
+   481:             uint128(_offer.buy_amt)
+   519:             require(uint128(pay_amt) == pay_amt);
+   559:             uint128(pay_amt),
+   560:             uint128(buy_amt)
+  1053:                 take(bytes32(offerId), uint128(offers[offerId].pay_amt)); //We take the whole offer
+  1061:                 take(bytes32(offerId), uint128(baux)); //We take the portion of the offer that we need
+  1093:                 take(bytes32(offerId), uint128(offers[offerId].pay_amt)); //We take the whole offer
+  1103:                 take(bytes32(offerId), uint128(buy_amt)); //We take the portion of the offer that we need
 
-   325          if (
-   326:             quantity == 0 ||
-   327:             spend == 0 ||
-   328              quantity > _offer.pay_amt ||
-
-   435  
-   436:         if (offers[id].pay_amt == 0) {
-   437              delete offers[id];
-
-  1079              offerId = getBestOffer(buy_gem, pay_gem); //Get the best offer for the token pair
-  1080:             require(offerId != 0, "offerId == 0");
-  1081  
-
-  1232  
-  1233:         if (pos == 0) {
-
-  1319:             if (t_pay_amt == 0 || t_buy_amt == 0) {
-
-  1371  
-  1372:         pos = pos == 0 ||
-  1373              offers[pos].pay_gem != pay_gem ||
-
-  1412          require(
-  1413:             _rank[id].delb == 0 && //assert id is in the sorted list
-  1414                  isOfferSorted(id)
-
-contracts/V2Migrator.sol:
-  54          require(
-  55:             CErc20Interface(bathTokenV2).mint(amountWithdrawn) == 0,
-  56              "migrate: MINT FAILED"
-
-  63          require(
-  64:             IERC20(bathTokenV2).balanceOf(address(this)) == 0,
-  65              "migrate: BATH TOKENS V2 STUCK IN THE CONTRACT"
-
-contracts/periphery/BathBuddy.sol:
-  123  
-  124:         if (IERC20(myBathTokenBuddy).totalSupply() == 0) {
-
-contracts/utilities/FeeWrapper.sol:
-  50      ) external payable returns (bytes memory) {
-  51:         if (msg.value == 0) {
-
-contracts/utilities/poolsUtility/Position.sol:
-  159:             if (vars.initAssetBalance == 0) {
-
-  269          require(
-  270:             CErc20Interface(_cToken).borrow(_amount) == 0,
-
-  294          require(
-  295:             CErc20Interface(_bathTokenQuote).repayBorrow(_amountToRepay) == 0,
-
-  308:         require(_err == 0, "_maxBorrow: ERROR");
-  309:         require(_liq > 0, "_maxBorrow: LIQUIDITY == 0");
-  310:         require(_shortfall == 0, "_maxBorrow: SHORTFALL != 0");
-  311  
-
-  335          uint256[] memory _errs = comptroller.enterMarkets(_bathTokens);
-  336:         require(_errs[0] == 0);
-  337      }
-
-  339      function _exitMarket(address _bathToken) internal {
-  340:         require(comptroller.exitMarket(_bathToken) == 0, "_exitMarket: ERROR");
-
-  355          require(
-  356:             CErc20Interface(_bathToken).mint(_amount) == 0,
-
-  381          require(
-  382:             CErc20Interface(_bathTokenAsset).redeem(_bathTokenAmount) == 0,
-
-  387          if (
-  388:             IERC20(_bathTokenAsset).balanceOf(address(this)) == 0 &&
-  389:             borrowBalance(_bathTokenAsset) == 0
-
-  537          while (_assetAmount <= _desiredAmount) {
-  538:             if (_limit == 0) {
+contracts/periphery/RubiconMarketV1.sol:
+  313:             uint128(offers[id].pay_amt),
+  314:             uint128(offers[id].buy_amt),
+  328:             require(uint128(spend) == spend, "spend is not an int");
+  329:             require(uint128(quantity) == quantity, "quantity is not an int");
+  367:             uint128(quantity),
+  368:             uint128(spend),
+  412:             uint128(_offer.pay_amt),
+  413:             uint128(_offer.buy_amt),
+  440:                 require(uint128(pay_amt) == pay_amt);
+  441:                 require(uint128(buy_amt) == buy_amt);
+  467:                 uint128(pay_amt),
+  468:                 uint128(buy_amt),
+  890:                 take(bytes32(offerId), uint128(offers[offerId].pay_amt)); //We take the whole offer
+  898:                 take(bytes32(offerId), uint128(baux)); //We take the portion of the offer that we need
+  929:                 take(bytes32(offerId), uint128(offers[offerId].pay_amt)); //We take the whole offer
+  939:                 take(bytes32(offerId), uint128(buy_amt)); //We take the portion of the offer that we need
 
 ```
+In the RubiconMarket and RubiconMarketV1  contracts, the `spend`, `quantity`, ` buy_amt ` , `pay_amt`, `offerId` variables are type uint256, than ,in the function, they are downcasted to uint128
+
+
+Recommended Mitigation Steps:
+Consider using OpenZeppelin's SafeCast library to prevent unexpected overflows when casting from uint256.
+
+
+
 
 
 ### [N-16] NatSpec comments should be increased in contracts
@@ -1076,4 +1033,95 @@ contracts/periphery/BathBuddy.sol:
 
 ```
 
+### [N-34] Constants on the left are better
 
+If you use the constant first you support structures that veil programming errors. And one should only produce code either to add functionality, fix an programming error or trying to support structures to avoid programming errors (like design patterns). 
+
+https://www.moserware.com/2008/01/constants-on-left-are-better-but-this.html
+
+```solidity
+27 results - 5 files
+
+contracts/RubiconMarket.sol:
+    54      function mul(uint256 x, uint256 y) internal pure returns (uint256 z) {
+    55:         require(y == 0 || (z = x * y) / y == x, "ds-math-mul-overflow");
+    56      }
+
+   325          if (
+   326:             quantity == 0 ||
+   327:             spend == 0 ||
+   328              quantity > _offer.pay_amt ||
+
+   435  
+   436:         if (offers[id].pay_amt == 0) {
+   437              delete offers[id];
+
+  1079              offerId = getBestOffer(buy_gem, pay_gem); //Get the best offer for the token pair
+  1080:             require(offerId != 0, "offerId == 0");
+  1081  
+
+  1232  
+  1233:         if (pos == 0) {
+
+  1319:             if (t_pay_amt == 0 || t_buy_amt == 0) {
+
+  1371  
+  1372:         pos = pos == 0 ||
+  1373              offers[pos].pay_gem != pay_gem ||
+
+  1412          require(
+  1413:             _rank[id].delb == 0 && //assert id is in the sorted list
+  1414                  isOfferSorted(id)
+
+contracts/V2Migrator.sol:
+  54          require(
+  55:             CErc20Interface(bathTokenV2).mint(amountWithdrawn) == 0,
+  56              "migrate: MINT FAILED"
+
+  63          require(
+  64:             IERC20(bathTokenV2).balanceOf(address(this)) == 0,
+  65              "migrate: BATH TOKENS V2 STUCK IN THE CONTRACT"
+
+contracts/periphery/BathBuddy.sol:
+  123  
+  124:         if (IERC20(myBathTokenBuddy).totalSupply() == 0) {
+
+contracts/utilities/FeeWrapper.sol:
+  50      ) external payable returns (bytes memory) {
+  51:         if (msg.value == 0) {
+
+contracts/utilities/poolsUtility/Position.sol:
+  159:             if (vars.initAssetBalance == 0) {
+
+  269          require(
+  270:             CErc20Interface(_cToken).borrow(_amount) == 0,
+
+  294          require(
+  295:             CErc20Interface(_bathTokenQuote).repayBorrow(_amountToRepay) == 0,
+
+  308:         require(_err == 0, "_maxBorrow: ERROR");
+  309:         require(_liq > 0, "_maxBorrow: LIQUIDITY == 0");
+  310:         require(_shortfall == 0, "_maxBorrow: SHORTFALL != 0");
+  311  
+
+  335          uint256[] memory _errs = comptroller.enterMarkets(_bathTokens);
+  336:         require(_errs[0] == 0);
+  337      }
+
+  339      function _exitMarket(address _bathToken) internal {
+  340:         require(comptroller.exitMarket(_bathToken) == 0, "_exitMarket: ERROR");
+
+  355          require(
+  356:             CErc20Interface(_bathToken).mint(_amount) == 0,
+
+  381          require(
+  382:             CErc20Interface(_bathTokenAsset).redeem(_bathTokenAmount) == 0,
+
+  387          if (
+  388:             IERC20(_bathTokenAsset).balanceOf(address(this)) == 0 &&
+  389:             borrowBalance(_bathTokenAsset) == 0
+
+  537          while (_assetAmount <= _desiredAmount) {
+  538:             if (_limit == 0) {
+
+```
