@@ -6,7 +6,7 @@
 | R  | Refactor | Code changes |
 | O | Ordinary | Commonly found issues |
 
-| Total Found Issues | 26 |
+| Total Found Issues | 27 |
 |:--:|:--:|
 
 ### Low Risk Template
@@ -15,8 +15,9 @@
 | [L-01] | Offer maker will give offer recipient the power to cancel offer and receive refund even when offer is not their own | 1 |
 | [L-02] | `RubiconMarket.isClosed()` always returns false and market cannot be closed as designed| 1 |
 | [L-03] | `RubiconMarket.matchingEnabled()` always returns true after initialization and cannot be changed| 1 |
+| [L-04] | `FeeWrapper.rubicall()` may revert if target contract is not payable or do not implement `receive/fallback` function| 1 |
 
-| Total Low Risk Issues | 3 |
+| Total Low Risk Issues | 4 |
 |:--:|:--:|
 
 ### Non-Critical Template
@@ -167,7 +168,43 @@ function setMatching(bool _matchStatus) external auth returns (bool) {
     emit MatchingDisabled();
 }
 ```
+### [L-04] `FeeWrapper.rubicall()` may revert if target contract is not payable or do not implement `receive/fallback` function
+[FeeWrapper.sol#L82](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L82)
+```solidity
+60:    function _rubicall(
+61:        CallParams memory _params
+62:    ) internal returns (bytes memory) {
+63:        // charge fee from feeParams
+64:        _chargeFee(_params.feeParams, _params.target);
+65:
+66:        (bool _OK, bytes memory _data) = _params.target.call(
+67:            bytes.concat(_params.selector, _params.args)
+68:        );
+69:
+70:        require(_OK, "low-level call to the Rubicon failed");
+71:
+72:        return _data;
+73:    }
+```
+In `FeeWrapper.rubicall()`, if ether is sent along when calling the function, it will call `Feewrapper._rubicallPayable`. However, if target contract supplied is not payable or did not implement `receive/fallback` function, the function may revert. Hence it is possible to cast the target contract address to be payable to receive native ether so the function never reverts due to target contract not being able to receive ether, assuming there is already a way to withdraw ether sent to the target contract.
 
+Recommendation:
+```solidity
+function _rubicallPayable(
+    CallParams memory _params
+) internal returns (bytes memory) {
+    // charge fee from feeParams
+    uint256 _msgValue = _chargeFeePayable(_params.feeParams);
+
+    (bool _OK, bytes memory _data) = payable(_params.target).call{value: _msgValue}(
+        bytes.concat(_params.selector, _params.args)
+    );
+
+    require(_OK, "low-level call to the router failed");
+
+    return _data;
+}
+```
 
 ### [N-01] For mordern and more readable code, update import usages
 
