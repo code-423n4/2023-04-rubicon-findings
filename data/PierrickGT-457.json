@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "PierrickGT",
+  "risk": "2",
+  "title": "RubiconMarket: buy() may not take any fee for tokens with low decimal precision",
+  "issueId": 457,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/457"
+}
