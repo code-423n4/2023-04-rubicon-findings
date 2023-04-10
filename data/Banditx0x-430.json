@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Banditx0x",
+  "risk": "3",
+  "title": "Rewards pool can be drained by claiming rewards entitled to owners of BathTokens, transferring to another address and reclaiming.",
+  "issueId": 430,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/430"
+}
