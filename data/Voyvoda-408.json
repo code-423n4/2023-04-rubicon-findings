@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Voyvoda",
+  "risk": "3",
+  "title": "_maxBorrow assumes ERC20 has 18 decimals",
+  "issueId": 408,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/408"
+}
