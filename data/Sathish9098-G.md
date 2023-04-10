@@ -136,8 +136,6 @@ FILE : 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 
 public/external function names and public member variable names can be optimized to save gas. See this [link](https://gist.github.com/IllIllI000/a5d8b486a8259f9f77891a919febd1a9) for an example of how it works. Below are the interfaces/abstract contracts that can be optimized so that the most frequently-called functions use the least amount of gas possible during method lookup. Method IDs that have two leading zero bytes can save 128 gas each during deployment, and renaming functions to have lower method IDs will save 22 gas per call, [per sorted position shifted](https://medium.com/joyso/solidity-how-does-function-name-affect-gas-consumption-in-smart-contract-47d270d8ac92)
 
-
-
 > public/external function names
 
 ```solidity
@@ -192,8 +190,6 @@ FILE : 2023-04-rubicon/contracts/BathHouseV2.sol
 
 Saves a storage slot for the mapping. Depending on the circumstances and sizes of types, can avoid a Gsset (20000 gas) per mapping combined. Reads and subsequent writes can also be cheaper when a function requires both values and they both fit in the same storage slot. Finally, if both fields are accessed in the same function, can save ~42 gas per access due to [not having to recalculate the key’s keccak256 hash](https://gist.github.com/IllIllI000/ec23a57daa30a8f8ca8b9681c8ccefb0) (Gkeccak256 - 30 gas) and that calculation’s associated stack operations.
 
-
-
 ```solidity
 FILE : 2023-04-rubicon/contracts/BathHouseV2.sol
 
@@ -237,11 +233,66 @@ If a function modifier such as onlyOwner is used, the function will revert if a 
 ```solidity
 FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
-25: function setOwner(address owner_) external auth {
+25:   function setOwner(address owner_) external auth {
+1466: function setFeeBPS(uint256 _newFeeBPS) external auth returns (bool) {
+1471: function setMakerFee(uint256 _newMakerFee) external auth returns (bool) {
+1476: function setFeeTo(address newFeeTo) external auth returns (bool) {
 
 ```
-[RubiconMarket.sol#L25](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L25)
+[RubiconMarket.sol#L25](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L25),[RubiconMarket.sol#L1466](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1466)
 
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L955-L958)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+   function buyAllAmountWithLeverage(
+        address quote,
+        address asset,
+        uint256 quotePayAmount,
+        uint256 leverage
+    ) external onlyOwner {
+
+function sellAllAmountWithLeverage(
+        address asset,
+        address quote,
+        uint256 assetPayAmount,
+        uint256 leverage
+    ) external onlyOwner {
+
+210: function closePosition(uint256 posId) external onlyOwner {
+226: function increaseMargin(uint256 posId, uint256 amount) external onlyOwner {
+242: function withdraw(address token, uint256 amount) external onlyOwner {
+
+```
+[Position.sol#L93-L98](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L93-L98),[Position.sol#L107-L112](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L107-L112),[Position.sol#L210](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L210),[Position.sol#L226](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L226),[Position.sol#L242](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L242)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/periphery/BathBuddy.sol
+
+function getReward(
+        IERC20 rewardsToken,
+        address holderRecipient
+    )
+        external
+        override
+        nonReentrant
+        whenNotPaused
+        updateReward(holderRecipient, address(rewardsToken))
+        onlyBathHouse
+
+function notifyRewardAmount(
+        uint256 reward,
+        IERC20 rewardsToken
+    ) external onlyOwner updateReward(address(0), address(rewardsToken)) {
+
+function setRewardsDuration(
+        uint256 _rewardsDuration,
+        address token
+    ) external onlyOwner {
+
+```
+[BathBuddy.sol#L168-L177](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L168-L177)
 ##
 
 ## [G-8] Do not calculate constants
@@ -280,6 +331,35 @@ function isAuthorized(address src) internal view returns (bool) {
 ```
 [RubiconMarket.sol#L30-L42](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L30-L42)
 
+```solidity
+FILE: 2023-04-rubicon/contracts/periphery/BathBuddy.sol
+
+modifier onlyBathHouse() {
+        require(msg.sender == bathHouse, "You are not my beloved bath house!");
+        _;
+    }
+
+```
+[BathBuddy.sol#L104-L107](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L104-L107)
+
+```solidity
+FILE : FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
+
+35: function isAuthorized(address src) internal view returns (bool) {
+46: function add(uint256 x, uint256 y) internal pure returns (uint256 z) {
+50: function sub(uint256 x, uint256 y) internal pure returns (uint256 z) {
+54: function mul(uint256 x, uint256 y) internal pure returns (uint256 z) {
+58: function min(uint256 x, uint256 y) internal pure returns (uint256 z) {
+62: function max(uint256 x, uint256 y) internal pure returns (uint256 z) {
+66: function imin(int256 x, int256 y) internal pure returns (int256 z) {
+70: function imax(int256 x, int256 y) internal pure returns (int256 z) {
+77: function wmul(uint256 x, uint256 y) internal pure returns (uint256 z) {
+81: function rmul(uint256 x, uint256 y) internal pure returns (uint256 z) {
+85: function wdiv(uint256 x, uint256 y) internal pure returns (uint256 z) {
+89: function rdiv(uint256 x, uint256 y) internal pure returns (uint256 z) {
+
+```
+
 ##
 
 ## [G-10] NOT USING THE NAMED RETURN VARIABLES WHEN A FUNCTION RETURNS, WASTES DEPLOYMENT GAS
@@ -298,6 +378,13 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 [RubiconMarket.sol#L491-L496](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L491-L496)
 
 [RubiconMarket.sol#L620-L622](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L620-L622)
+(https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L870-L873)
+()
+()
+()
+()
+()
+()
 
 ##
 
@@ -394,6 +481,9 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
 564: function take(bytes32 id, uint128 maxTakeAmount) external virtual {
 
+736: uint128 pay_amt,
+737: uint128 buy_amt
+
 ```
 [RubiconMarket.sol#L494-L495](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L494-L495),[RubiconMarket.sol#L564](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L564),
 
@@ -423,6 +513,21 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 ```
 [RubiconMarket.sol#L893-L898](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L893-L898),[RubiconMarket.sol#L940-L944](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L940-L944)
 
+```solidity
+FILE: rubicon/contracts/periphery/BathBuddy.sol
+
+require(
+            msg.sender == myBathTokenBuddy &&
+                msg.sender != address(0) &&
+                friendshipStarted,
+            "You are not my buddy!"
+        );
+
+
+
+```
+[BathBuddy.sol#L95-L100](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L95-L100)
+
 ##
 
 ## [G-16] Add unchecked {} for subtractions where the operands cannot underflow
@@ -436,6 +541,83 @@ The block.number is not going to less than 10
 ```
 [RubiconMarket.sol#L943](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L943)
 
+##
+
+## [G-17] Repeated same value assignments for buyEnabled, matchingEnabled varibales in initialize() function 
+
+The buyEnabled, matchingEnabled values already set true when declaring state variables. Inside initialize() function again the buyEnabled, matchingEnabled values set to true. This is waste of work and consumes large volume of gas. The values should be set true only if the buyEnabled, matchingEnabled variables value is false otherwise we can simply skip this assignments 
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+675: bool public buyEnabled = true; //buy enabled TODO: review this decision!
+676: bool public matchingEnabled = true; //true: enable matching,
+
+714: matchingEnabled = true;
+715: buyEnabled = true;
+
+```
+[RubiconMarket.sol#L675-L676](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L675-L676)
+
+## [G-18] For events use 3 indexed rule to save gas 
+
+Need to declare 3 indexed fields for event parameters. If the event parameter is less than 3 should declare all event parameters indexed 
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+97:  event LogItemUpdate(uint256 id);
+662: event LogMinSell(address pay_gem, uint256 min_amount);
+664: event LogUnsortedOffer(uint256 id);
+665: event LogSortedOffer(uint256 id);
+667: event LogDelete(address keeper, uint256 id);
+668: event LogMatch(uint256 id, uint256 amount);
+```
+[RubiconMarket.sol#L97](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L97)
+
+```solidity 
+FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+50: event PositionOpened(uint256 positionId, Position position);
+51: event PositionClosed(uint256 positionId);
+52: event MarginIncreased(uint256 positionId, uint256 amount);
+
+```
+[Position.sol#L50-L52](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L50-L52)
+
+```solidity
+FILE: rubicon/contracts/periphery/BathBuddy.sol
+
+event RewardAdded(uint256 reward);
+event Staked(address indexed user, uint256 amount);
+event Withdrawn(address indexed user, uint256 amount);
+event RewardPaid(address indexed user, uint256 reward);
+event RewardsDurationUpdated(uint256 newDuration);
+event Recovered(address token, uint256 amount);
+
+##
+[BathBuddy.sol#L261-L266](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L261-L266)
+
+## [G-19] Modifiers not called by contract should be removed to save deployment cost 
+
+```solidity
+FILE: rubicon/contracts/periphery/BathBuddy.sol
+
+modifier onlyBuddy() {
+        require(
+            msg.sender == myBathTokenBuddy &&
+                msg.sender != address(0) &&
+                friendshipStarted,
+            "You are not my buddy!"
+        );
+        _;
+    }
+
+##
+
+## [G-20] 
+
+```
+[BathBuddy.sol#L94-L102](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L94-L102)
 
 public functions not called by contract
 events should use 3 indexed rule 
