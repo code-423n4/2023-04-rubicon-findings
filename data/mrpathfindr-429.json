@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "mrpathfindr",
+  "risk": "2",
+  "title": "The modifier can_buy uses an immutable condition isClosed() which always returns false.",
+  "issueId": 429,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/429"
+}
