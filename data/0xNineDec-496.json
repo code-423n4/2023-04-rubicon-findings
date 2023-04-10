@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xNineDec",
+  "risk": "2",
+  "title": "Using fee-on-transfer tokens as feeTokens break the _chargeFee logic and further interactions",
+  "issueId": 496,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/496"
+}
