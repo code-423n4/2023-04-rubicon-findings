@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "vagrant",
+  "risk": "2",
+  "title": "BathHouseV2 initialize function can be frontrun which makes the attacker the admin",
+  "issueId": 402,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/402"
+}
