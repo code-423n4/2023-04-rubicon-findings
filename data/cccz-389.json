@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cccz",
+  "risk": "3",
+  "title": "When a user transfers bathToken, the user's rewards in bathBuddy are lost",
+  "issueId": 389,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/389"
+}
