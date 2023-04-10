@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "mrpathfindr",
+  "risk": "3",
+  "title": "Impractical modifier `can_offer` as isClosed() will always return false. ",
+  "issueId": 421,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/421"
+}
