@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "sces60107",
+  "risk": "2",
+  "title": "`FeeWrapper._chargeFee` could fail due to zero amount transfer",
+  "issueId": 456,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/456"
+}
