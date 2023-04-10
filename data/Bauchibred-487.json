@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Bauchibred",
+  "risk": "3",
+  "title": " The `V2Migrator.sol`'s contructor lacks a check to ensure equal length of arrays",
+  "issueId": 487,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/487"
+}
