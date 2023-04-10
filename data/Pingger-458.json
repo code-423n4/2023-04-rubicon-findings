@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Pingger",
+  "risk": "3",
+  "title": "H-05 Position.positions can be used in cross function reentrancies",
+  "issueId": 458,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/458"
+}
