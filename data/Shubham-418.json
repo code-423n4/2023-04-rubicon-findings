@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Shubham",
+  "risk": "2",
+  "title": "`RubiconMarket.sol#isClosed()` always returns false, making the market can not be stopped as designed",
+  "issueId": 418,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/418"
+}
