@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "BathBuddy.notifyRewardAmount doesn't allow to provide rate that is less than 1 token per second",
+  "issueId": 414,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/414"
+}
