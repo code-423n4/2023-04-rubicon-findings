@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "luciana",
+  "risk": "3",
+  "title": "Functions `setRewardsDuration` always revert and `lastTimeRewardApplicable` always return `block.timestamp` after `periodFinish` is set",
+  "issueId": 476,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/476"
+}
