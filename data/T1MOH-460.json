@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "T1MOH",
+  "risk": "3",
+  "title": "MakerFee is not included in fee calculation of swap in `Position.sol`",
+  "issueId": 460,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/460"
+}
