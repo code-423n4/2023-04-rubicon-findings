@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cccz",
+  "risk": "3",
+  "title": "The last borrowed asset will not be collateralized and the user may be liquidated due to insufficient collateral",
+  "issueId": 423,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/423"
+}
