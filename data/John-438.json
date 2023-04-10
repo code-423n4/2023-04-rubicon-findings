@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "John",
+  "risk": "3",
+  "title": "In the 'buy' function of RubiconMarket contract, the 'calcAmountAfterFee' function is malicious.",
+  "issueId": 438,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/438"
+}
