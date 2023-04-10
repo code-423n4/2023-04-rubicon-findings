@@ -25,3 +25,26 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 ## Tools Used
 
 Manual Analysis
+
+
+# 2: OPEN THE OPTIMIZER
+
+Optimization details
+
+## Context:
+
+Always use the Solidity Optimizer to optimize gas costs. It’s good practice to set the optimizer as high as possible until it no longer helps reduce gas costs in function calls. This is advisable since function calls are intended to be executed many times than contract deployment, which only happens once.
+
+## Proof of Concept
+
+All Contracts
+
+## Tools Used
+
+Manual Analysis
+
+### Recommended Mitigation Steps
+
+In light of this information, We suggest you open the optimizer for v2-library.
+
+
