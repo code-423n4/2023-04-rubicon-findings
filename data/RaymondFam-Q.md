@@ -113,3 +113,74 @@ In contract `RubiconMarket`, there are six instances where modifier [`synchroniz
 
 1034:        require(!locked);
 ```
+## Use a more recent version of solidity
+The protocol adopts version 0.8.9 & 0.8.17 on writing contracts. For better security, it is best practice to use the latest Solidity version, 0.8.19.
+
+Security fix list in the versions can be found in the link below:
+
+https://github.com/ethereum/solidity/blob/develop/Changelog.md
+
+## Inadequate NatSpec
+Solidity contracts can use a special form of comments, i.e., the Ethereum Natural Language Specification Format (NatSpec) to provide rich documentation for functions, return variables and more. Please visit the following link for further details:
+
+https://docs.soliditylang.org/en/v0.8.16/natspec-format.html
+
+Consider fully equipping all contracts with complete set of NatSpec to better facilitate users/developers interacting with the protocol's smart contracts.
+
+## Unspecific compiler version pragma
+For some source-units the compiler version pragma is very unspecific, i.e. ^0.8.9. While this often makes sense for libraries to allow them to be included with multiple different versions of an application, it may be a security risk for the actual application implementation itself. A known vulnerable compiler version may accidentally be selected or security tools might fall-back to an older compiler version ending up actually checking a different EVM compilation that is ultimately deployed on the blockchain.
+
+Avoid floating pragmas where possible. It is highly recommend pinning a concrete compiler version (latest without security issues) in at least the top-level “deployed” contracts to make it unambiguous which compiler version is being used. Rule of thumb: a flattened source-unit should have at least one non-floating concrete solidity compiler version pragma.
+
+## Modularity on import usages
+For cleaner Solidity code in conjunction with the rule of modularity and modular programming, use named imports with curly braces instead of adopting the global import approach.
+
+For example, the import instances below could be refactored conforming to the suggested standards as follows:
+
+[File: FeeWrapper.sol#L4-L5](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L4-L5)
+
+```diff
+- import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
++ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+- import "./RubiconRouter.sol";
++ import {RubiconRouter} from "./RubiconRouter.sol";
+```
+## Non-compliant contract layout with Solidity's Style Guide
+According to Solidity's Style Guide below:
+
+https://docs.soliditylang.org/en/v0.8.17/style-guide.html
+
+In order to help readers identify which functions they can call, and find the constructor and fallback definitions more easily, functions should be grouped according to their visibility and ordered in the following manner:
+
+constructor, receive function (if exists), fallback function (if exists), external, public, internal, private
+
+And, within a grouping, place the `view` and `pure` functions last.
+
+Additionally, inside each contract, library or interface, use the following order:
+
+type declarations, state variables, events, modifiers, functions
+
+Consider adhering to the above guidelines for all contract instances entailed.
+
+## Gas griefing/theft is possible on unsafe external call
+`return` data (bool success,) has to be stored due to EVM architecture, if in a usage like below, ‘out’ and ‘outsize’ values are given (0,0). Thus, this storage disappears and may come from external contracts a possible gas grieving/theft problem is avoided as denoted in the link below:
+
+https://twitter.com/pashovkrum/status/1607024043718316032?t=xs30iD6ORWtE2bTTYsCFIQ&s=19
+
+Here are the two instances entailed:
+
+[File: FeeWrapper.sol#L82-L84](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L82-L84)
+
+```solidity
+        (bool _OK, bytes memory _data) = _params.target.call{value: _msgValue}(
+            bytes.concat(_params.selector, _params.args)
+        );
+```
+[File: FeeWrapper.sol#L118-L121](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L118-L121)
+
+```solidity
+        (bool OK, ) = payable(_feeTo).call{value: _feeAmount}("");
+		require(OK, "ETH transfer failed");
+        _msgValue = msg.value - _feeAmount;
+    }
+```
