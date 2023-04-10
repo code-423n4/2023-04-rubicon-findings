@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "vagrant",
+  "risk": "2",
+  "title": "RubiconMarket initialize function can be frontrun by anyone which makes the caller the owner ",
+  "issueId": 401,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/401"
+}
