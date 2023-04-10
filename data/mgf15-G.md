@@ -19,8 +19,12 @@
 | [GAS-14](#GAS-14) | 10 ** 18,10 **  27 and 10 ** 9 can be changed to 1e18 , 1e27 , 1e9 and save some gas | 12 |
 | [GAS-15](#GAS-15) | Functions guaranteed to revert when called by normal users can be marked payable | 14 |
 | [GAS-16](#GAS-16) | Unuesd events  | 6 |
-| [GAS-17](#GAS-17) | Unuesd Functions | 3 |
+| [GAS-17](#GAS-17) | Unuesd Functions | 4 |
 | [GAS-18](#GAS-18) | With assembly, .call (bool success) transfer can be done gas-optimized | 1 |
+| [GAS-19](#GAS-19) | Unused function parameter  | 1 |
+| [GAS-20](#GAS-20) | Shifting cheaper than division | 4 |
+| [GAS-21](#GAS-21) | Using unchecked blocks to save gas | * |
+
 ### [GAS-1] Use assembly to check for `address(0)`
 *Saves 6 gas per instance*
 
@@ -672,7 +676,7 @@ File: 2023-04-rubicon/contracts/BathBuddy.sol
 
 [G-17] Unuesd Functions 
 
-*Instances (3)*:
+*Instances (4)*:
 ```solidity
 File: 2023-04-rubicon/contracts/RubiconMarket.sol
 
@@ -687,6 +691,8 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 77:    function wmul(uint256 x, uint256 y) internal pure returns (uint256 z) {
 78:        z = add(mul(x, y), WAD / 2) / WAD;
 79:    }
+
+297:   function bump(bytes32 id_) external can_buy(uint256(id_)) {
 ```
 
 [G-18] With assembly, .call (bool success) transfer can be done gas-optimized
@@ -695,7 +701,7 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 
 *Instances (1)*:
 ```diff
-File: 2023-04-rubicon/contracts/RubiconMarket.sol
+File: 2023-04-rubicon/contracts/FeeWrapper.sol
 
 117:        // transfer fee to the 3rd party protocol
 -        (bool OK, ) = payable(_feeTo).call{value: _feeAmount}("");
@@ -707,4 +713,65 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 119:		require(OK, "ETH transfer failed");
 120:        _msgValue = msg.value - _feeAmount;
 
+```
+
+### [G-19] Unused function parameter 
+
+Unused function parameters increase contract size and gas usage at deployment.
+
+*Instances (1)*:
+```solidity
+File: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+528:         address _asset,
+```
+
+### [G-20] Shifting cheaper than division
+
+A division by 2 can be calculated by shifting one to the right. While the DIV opcode uses 5 gas, the SHR opcode only uses 3 gas. Furthermore, Solidity’s division operation also includes a division-by-0 prevention which is bypassed using shifting.
+
+
+*Instances (4)*:
+```solidity
+File: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+
+78:        z = add(mul(x, y), WAD / 2) / WAD;
+
+82:        z = add(mul(x, y), RAY / 2) / RAY;
+
+86:        z = add(mul(x, WAD), y / 2) / y;
+
+90:        z = add(mul(x, RAY), y / 2) / y;
+```
+Recommended Mitigation Steps
+
+Replace / 2 with >>1.
+
+
+### [G-21] Using unchecked blocks to save gas
+
+Solidity version 0.8+ comes with implicit overflow and underflow checks on unsigned integers. When an overflow or an underflow isn’t possible (as an example, when a comparison is made before the arithmetic operation), some gas can be saved by using an unchecked block.
+
+For loops, such optimizations would save a lot of gas.
+
+```solidity
+File: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+        for (uint i = 0; i < ids.length; i++) {
+            cancel(ids[i]);
+        }
+
+```
+
+to 
+
+```diff
+
+        for (uint i = 0; i < ids.length; i++) {
+-            cancel(ids[i]);
++		    unchecked{
++	            cancel(ids[i]);
++	        }
+	    }
 ```
