@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "said",
+  "risk": "3",
+  "title": "amount of spend token should be subtraced by fees in buy function, otherwise calcAmountAfterFees are incorrect",
+  "issueId": 425,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/425"
+}
