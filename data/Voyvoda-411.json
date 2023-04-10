@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Voyvoda",
+  "risk": "2",
+  "title": "calculateFee subtracts the fee rather than adding it to the initial amount",
+  "issueId": 411,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/411"
+}
