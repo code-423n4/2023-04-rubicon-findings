@@ -6,7 +6,7 @@
 | R  | Refactor | Code changes |
 | O | Ordinary | Commonly found issues |
 
-| Total Found Issues | 27 |
+| Total Found Issues | 30 |
 |:--:|:--:|
 
 ### Low Risk Template
@@ -14,7 +14,7 @@
 |:--:|:-------|:--:|
 | [L-01] | Offer maker will give offer recipient the power to cancel offer and receive refund even when offer is not their own | 1 |
 | [L-02] | `RubiconMarket.isClosed()` always returns false and market cannot be closed as designed| 1 |
-| [L-03] | `RubiconMarket.matchingEnabled()` always returns true after initialization and cannot be changed| 1 |
+| [L-03] | `RubiconMarket.matchingEnabled()` always returns true after initialization and cannot be changed| 2 |
 | [L-04] | `FeeWrapper.rubicall()` may revert if target contract is not payable or do not implement `receive/fallback` function| 1 |
 
 | Total Low Risk Issues | 4 |
@@ -29,10 +29,11 @@
 | [N-04] | Add timelock to critical functions | 3 |
 | [N-05] | Define separate individual contracts and interfaces | 1 |
 | [N-06] | Critical address changes should use two step procedure | 3 |
-| [N-07] | Swap modifier order for `getReward` | 1 |
-| [N-08] | Remove unused modifier `BathBuddy.onlyBuddy()` | 1 |
+| [N-07] | Remove unused modifier `BathBuddy.onlyBuddy()` | 1 |
+| [N-08] | Remove unused storage state variables | 2 |
+| [N-09] | Do not need to use SafeMath for solidity version above `0.8.0` | 2 |
 
-| Total Non-Critical Issues | 8 |
+| Total Non-Critical Issues | 9 |
 |:--:|:--:|
 
 ### Refactor Issues Template
@@ -47,9 +48,11 @@
 | [R-07] | Use scientific notation (e.g. 1e18) rather than exponentiation (e.g. 10**18) | 12 |
 | [R-08] | Use delete instead of zero assignment to clear storage variables | 3 |
 | [R-09] | Do not need to declare named return variable | 11 |
-| [R-10] | Repeated address type casting of contracts can be stored in local variable  | 27 
+| [R-10] | Repeated address type casting of contracts can be stored in local variable  | 27 |
+| [R-11] | `set` functions do not require a return boolean value  | 11 |
+| [R-12] | Swap modifier order for `getReward` | 1 |
 
-| Total Refactor Issues | 10 |
+| Total Refactor Issues | 12 |
 |:--:|:--:|
 
 ### Ordinary Issues 
@@ -57,7 +60,7 @@
 |:--:|:-------|:--:|
 | [O-01] | Natspec comments should be completed | All |
 | [O-02] | Remove commented out code | 15 |
-| [O-03] | Unlocked Pragma| 6 |
+| [O-03] | Unlocked Pragma| 2 |
 | [O-04] | Avoid shadowing inherited state variables | 3 |
 | [O-05] | Inconsistent spacing or extra // in comments | 138 |
 
@@ -149,18 +152,23 @@ function isClosed() public pure returns (bool closed) {
 }
 ```
 
-### [L-03] `RubiconMarket.matchingEnabled()` always returns true after initialization and cannot be changed
-[RubiconMarket.sol#L714](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L714)
+### [L-03] `RubiconMarket.matchingEnabled()` and `RubiconMarket.buyEnabled()` always returns true after initialization and cannot be changed
+[RubiconMarket.sol#L675](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#675)
+[RubiconMarket.sol#L676](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#676)
 
 ```solidity
+2 results - 1 file
+
+/RubiconMarket.sol
 676: bool public matchingEnabled = true; 
+675: bool public buyEnabled = true; //buy enabled TODO: review this decision!
 ```
 
-Owner currently do not have any way to change the value of `matchingEnabled` and as such `matchingEnabled` is set as true. 
+Owner currently do not have any way to change the value of `matchingEnabled` and `buyEnabled` after initialization and as such these variables are always set as true. 
 
-This means that any function checking `matchingEnabled` to be true such as `RubiconMarket.buy` and `RubiconMarket.cancel` always passes and is currently redundant.
+This means that any function checking `matchingEnabled` to be true such as `RubiconMarket.buy` and `RubiconMarket.cancel` always passes and is currently redundant. Similarly the `RubiconMarket._buys` function checking `buyEnabled` always passes.
 
-Implement a function such as the one below to allower owner to temporarily stop matches.
+Implement a function such as the one below to allower owner to temporarily stop matches. Similar implementation can be done for `buyEnabled`.
 
 ```solidity
 function setMatching(bool _matchStatus) external auth returns (bool) {
@@ -351,35 +359,7 @@ Consider defining `DSMath` contract in separate contract or library and then hav
 
 Lack of two-step procedure for critical operations leaves them error-prone. Consider adding a two-step pattern on critical changes in the event where owner needs to be changed to avoid mistakenly transferring ownership of roles or critical functionalities to the wrong address.
 
-### [N-07] Swap modifier order for `getReward`
-[BathBuddy.sol#L176-L177](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L176-L177)
-```solidity
-1 result - 1 file
-
-/BathBuddy.sol
-168:    function getReward(
-169:        IERC20 rewardsToken,
-170:        address holderRecipient
-171:    )
-172:        external
-173:        override
-174:        nonReentrant
-175:        whenNotPaused
-176:        updateReward(holderRecipient, address(rewardsToken))
-177:        onlyBathHouse
-178:    {
-179:        uint256 reward = tokenRewards[address(rewardsToken)][holderRecipient];
-180:        if (reward > 0) {
-181:            tokenRewards[address(rewardsToken)][holderRecipient] = 0;
-182:            rewardsToken.safeTransfer(holderRecipient, reward);
-183:            emit RewardPaid(holderRecipient, reward);
-184:        }
-185:    }
-```
-
-Swapping the `onlyBathHouse` and `updateReward` modifier can prevent unecessary updating of rewards if caller is not the address `bathToken`.
-
-### [N-08] Remove unused modifier `BathBuddy.onlyBuddy()`
+### [N-07] Remove unused modifier `BathBuddy.onlyBuddy()`
 [BathBuddy.sol#L94-L102](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L94-L102)
 ```solidity
 1 result - 1 file
@@ -396,6 +376,33 @@ Swapping the `onlyBathHouse` and `updateReward` modifier can prevent unecessary 
 102:    }
 ```
 Removing unused modifier `BathBuddy.onlyBuddy`saves deployment gas 
+
+### [N-08] Remove unused storage state variables
+[RubiconMarket.sol#L682](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L682)
+[RubiconMarket.sol#L684](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L684)
+```solidity
+2 results - 2 files
+
+/RubiconMarket.sol
+682:    bool public AqueductDistributionLive;
+
+684:    address public AqueductAddress;
+```
+Remove unused storage state variables to save gas on deployment
+
+### [N-09] Do not need to use SafeMath for solidity version above `0.8.0`
+[BathBuddy.sol#L6](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L6)
+[Position.sol#L6](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L60)
+```solidity
+2 results - 2 files
+
+/BathBuddy.sol
+6: import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+
+/Position.sol
+6: import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+```
+Solidity versions greater than `0.8.0` introduces inbuilt internal overflow and underflow checks so SafeMath is not required
 
 ### [R-01] Use ternary operators to shorten if/else statements
 [RubiconMarket.sol#L1186-L1191](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1186-L1191)
@@ -759,6 +766,59 @@ Avoid multiple typecastings and only need to load value of memory variable.
 
 Consider caching address such as `address(rewardsToken)` in a local variable such as `address rewardsTokenAddress = address(rewardsToken)`
 
+### [R-11] `set` functions do not require a return boolean value
+[RubiconMarket.sol#L1466-L1469](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1466-L1469)
+[RubiconMarket.sol#L1471-L1474](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1471-L1474)
+[RubiconMarket.sol#L1476-L1480](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1476-L1480)
+```solidity
+3 results - 1 file
+
+/RubiconMarket.sol
+1466:    function setFeeBPS(uint256 _newFeeBPS) external auth returns (bool) {
+1467:        feeBPS = _newFeeBPS;
+1468:        return true;
+1469:    }
+
+1471:    function setMakerFee(uint256 _newMakerFee) external auth returns (bool) {
+1472:        StorageSlot.getUint256Slot(MAKER_FEE_SLOT).value = _newMakerFee;
+1473:        return true;
+1474:    }
+
+1476:    function setFeeTo(address newFeeTo) external auth returns (bool) {
+1477:        require(newFeeTo != address(0));
+1478:        feeTo = newFeeTo;
+1479:        return true;
+1480:    }
+```
+Consider removing the return bool value as it is uneeded an incurs unecessary gas.
+
+### [R-12] Swap modifier order for `getReward`
+[BathBuddy.sol#L176-L177](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L176-L177)
+```solidity
+1 result - 1 file
+
+/BathBuddy.sol
+168:    function getReward(
+169:        IERC20 rewardsToken,
+170:        address holderRecipient
+171:    )
+172:        external
+173:        override
+174:        nonReentrant
+175:        whenNotPaused
+176:        updateReward(holderRecipient, address(rewardsToken))
+177:        onlyBathHouse
+178:    {
+179:        uint256 reward = tokenRewards[address(rewardsToken)][holderRecipient];
+180:        if (reward > 0) {
+181:            tokenRewards[address(rewardsToken)][holderRecipient] = 0;
+182:            rewardsToken.safeTransfer(holderRecipient, reward);
+183:            emit RewardPaid(holderRecipient, reward);
+184:        }
+185:    }
+```
+
+Swapping the `onlyBathHouse` and `updateReward` modifier can prevent unecessary updating of rewards if caller is not the address `bathToken`.
 
 
 ### [O-01] Natspec comments should be completed
@@ -800,18 +860,10 @@ In complex projects such as Defi, the interpretation of all functions and their 
 [RubiconMarket.sol#L1343-L1359](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1343-L1359)
 
 ### [O-03] Unlocked Pragma
-6 Instances:
+2 Instances:
 [RubiconMarket.sol#L2](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L2)
 
-[BathHouseV2.sol#L4-L9](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L4-L9)
-
-[V2Migrator.sol#L4-L6](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L4-L6])
-
 [BathBuddy.sol#L4-L7](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L4-L7)
-
-[Position.sol#L4-L11](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L4-L11)
-
-[FeeWrapper.sol#L4-L5](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L4-L5)
 
 Locking pragma helps ensure that contracts do not accidentally get deployed using a different compiler version with which they have been tested the most. Hence, it is reccommended to lock pragmas to a specific Solidity version.
 Solidity compiler bugs: [Known solidity bugs](https://github.com/ethereum/solidity/blob/develop/docs/bugs_by_version.json)
