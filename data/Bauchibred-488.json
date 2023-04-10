@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Bauchibred",
+  "risk": "3",
+  "title": " `V2migrator.migrate()` can easily stop functioning for specific `bathTokenV1`",
+  "issueId": 488,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/488"
+}
