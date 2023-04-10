@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "RedTiger",
+  "risk": "2",
+  "title": "Accidental transfers of BathToken V2 Tokens to the Migration contract are transfered to other users",
+  "issueId": 450,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/450"
+}
