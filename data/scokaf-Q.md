@@ -206,3 +206,32 @@ Manual Analysis
 Replace .transfer with .call. Note that the result of .call needs to be checked.
 
 
+# 8: WORD & TYPING TYPOS
+
+Vulnerability details
+
+## Context:
+
+Word & typing typos
+
+In multiple instances, Natspec comments are created without adding a spacing between the // and the start of the comment. Example: “//We take the whole offer” can be changed to “// We take the whole offer”. More word & typing typos below
+
+## Proof of Concept
+
+> ***File: RubiconMarket.sol*** 
+
+acumulator can be changed to accumulator in the following comments.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1051 L1060, L1091, L1102
+
+> ***File: FeeWrapper.sol*** 
+
+interatcions can be changed to interactions in the following comment.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L7
+
+## Tools Used
+
+Manual Analysis
+
+
