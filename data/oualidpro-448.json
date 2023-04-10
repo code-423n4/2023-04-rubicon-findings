@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "oualidpro",
+  "risk": "3",
+  "title": "Block.timestamp manipulation lead to rewards increase or decrease",
+  "issueId": 448,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/448"
+}
