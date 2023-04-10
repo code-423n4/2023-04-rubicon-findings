@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "RaymondFam",
+  "risk": "2",
+  "title": "Inexpedient if block associated with the recalculated fee in _asset form in _marketSell()",
+  "issueId": 378,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/378"
+}
