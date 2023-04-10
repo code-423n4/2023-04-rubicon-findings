@@ -1179,9 +1179,7 @@ File: contracts/RubiconMarket.sol
 ```solidity
 File: contracts/V2Migrator.sol
 
-30:     constructor(address[] memory bathTokensV1, address[] memory bathTokensV2) {
-
-30:     constructor(address[] memory bathTokensV1, address[] memory bathTokensV2) {
+31:     for (uint256 i = 0; i < bathTokensV1.length; ++i) {
 
 ```
 
