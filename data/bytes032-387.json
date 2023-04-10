@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "bytes032",
+  "risk": "3",
+  "title": "Rewards can be exploited due to untracked token transfers",
+  "issueId": 387,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/387"
+}
