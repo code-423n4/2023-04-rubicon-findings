@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "said",
+  "risk": "2",
+  "title": "`calcAmountAfterFee()` wrongly used inside `RubiconMarket`'s `buy()` function",
+  "issueId": 422,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/422"
+}
