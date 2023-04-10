@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "anodaram",
+  "risk": "3",
+  "title": "Position._borrowLimit can have an infinite loop or too high gas transaction in case of collateralFactor is not bigger than 66.66% and leverage is 3",
+  "issueId": 505,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/505"
+}
