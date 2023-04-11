@@ -30,3 +30,10 @@ Fee maybe 0
 5.
 
 No need safeMath
+
+6.
+
+Asset and quote can be the same
+
+7.
+
