@@ -32,7 +32,7 @@ Can be removed.
 [Position.sol#L528](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/Position.sol#L528)
 
 #### **[QA-08]** Typos
-[RubiconMarket.sol#70](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#70)
+[RubiconMarket.sol#L70](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L70)
 
 [FeeWrapper.sol#L7](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L7)
 
@@ -44,28 +44,28 @@ Can be removed.
 ### **[QA-10]** Lack of return value checks of the `cancel` function.
 Sometimes the value is checked, sometimes not. It is recommended to standardize its use.
 
-[RubiconMarket.sol#871](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#871)
+[RubiconMarket.sol#L871](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L871)
 
 ### **[QA-11]** `matchingEnabled` value is always true. Redundant check.
 The `matchingEnabled` value is always `true` after initialize. So, checking `if (matchingEnabled){}` is redundant and an unnecessary waste of gas.
 
-[RubiconMarket.sol#863](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#863)
-[RubiconMarket.sol#876](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#876)
+[RubiconMarket.sol#L863](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L863)
+[RubiconMarket.sol#L876](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L876)
 
 ### **[QA-12]** Unnecessary checks when calling `offer`.
 External `offer` functions call the public `offer` function, which already performs that check. 
 
-Public function -> [RubiconMarket.sol#824](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#824)
+Public function -> [RubiconMarket.sol#L824](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L824)
 
-[RubiconMarket.sol#802](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#802)
+[RubiconMarket.sol#L802](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L802)
 
-[RubiconMarket.sol#780](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#780)
+[RubiconMarket.sol#L780](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L780)
 
-[RubiconMarket.sol#761](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#761)
+[RubiconMarket.sol#L761](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L761)
 
 ### **[QA-13]** Swap `require` statements order.
 It makes more sense to first check if the `underlying` _address != address(0)_ before checking if a BathToken exists for that token. Also, if it is zero, it would always pass the first check.
 
-[RubiconMarket.sol#68](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#68)
+[RubiconMarket.sol#L68](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L68)
 
-[RubiconMarket.sol#72](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#72)
+[RubiconMarket.sol#L72](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L72)
