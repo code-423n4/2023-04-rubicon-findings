@@ -99,7 +99,35 @@ In the contract there are a few modifiers that serve no purpose.As you can see t
 [`isClosed`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L620-L622)
 [`can_offer`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L597-L600)
 
-# [G-06] a=a+b is always cheaper that a+=b, same for a-=b (5 instances)
+# [G-06] Mappings can be combined into struct
+**SAVED ~39 040** on BathBuddy deployment
+In BathBuddy there is a big array of mapping that can be refactored into 1 mapping pointing into a struct.
+[BathBuddy.sol/L52-L56](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L52-L56)
+
+    mapping(address => uint256) public periodFinish; // Token specific
+    mapping(address => uint256) public rewardRates; // Token specific reward rates
+    mapping(address => uint256) public rewardsDuration; // Can be kept global but can also be token specific
+    mapping(address => uint256) public lastUpdateTime; //Token specific
+    mapping(address => uint256) public rewardsPerTokensStored; // Token specific
+    
+Example:
+
+    struct Rewards{
+        uint periodFinish;
+        uint rewardRates;
+        uint lastUpdateTime;
+        uint rewardsPerTokensStored;
+    }
+    mapping(address => Rewards) private rewards;
+    mapping(address => uint256) public rewardsDuration; // Can be kept global but can also be token specific
+### [G-06.1] In [`notifyRewardAmount()`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L52-L56) struct can be stored in storage
+**SAVED ~28 233** aditional gas if the developer utilize this method
+When the struct is stored in storage instaed of calling it every time with `rewards[address(rewardsToken)]` you save gas. We you storage as refrence here because in with the storage word you can still modify it.
+
+	Rewards storage rewards = rewards[address(rewardsToken)];
+
+
+# [G-07] a=a+b is always cheaper that a+=b, same for a-=b (5 instances)
 [RubiconMarket.sol/L583](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L583) 
 [RubiconMarket.sol/L586](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L586)
 [Position.sol/L184](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L184)
@@ -107,11 +135,11 @@ In the contract there are a few modifiers that serve no purpose.As you can see t
 [Position.sol/L560](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L560)
 
 
-# [G-07] Delete mappings instead of setting them to 0 (1 instance)
+# [G-08] Delete mappings instead of setting them to 0 (1 instance)
 It it much cheaper to delete the mapping if it is unwanted then to set it to 0
 [RubiconMarket.sol/L1438](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1438)
 
-# [G-08] There is no need to load variables into memory (1 instance)
+# [G-09] There is no need to load variables into memory (1 instance)
 
 [Position.sol/L78-L80](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L78-L80)
  
@@ -125,7 +153,7 @@ Change to:
 
          balance = _calculateDebt(bathHouseV2.getBathTokenFromAsset(pos.quote), pos.blockNum, pos.borrowedAmount);
 
-# [G-09] Using double if/require  instead of && saves gas (4 instances)
+# [G-10] Using double if/require  instead of && saves gas (4 instances)
 **Saves ~8** per && instance
 Using double require/if instead of && saves on gas.
 When having a require/if statement with 2 or more expressions needed,always place the expression that cost less gas first. 
@@ -135,7 +163,7 @@ When having a require/if statement with 2 or more expressions needed,always plac
 [RubiconMarket.sol/L1200](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1200)
 [RubiconMarket.sol/L1324-L1327](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1324-L1327)
 
-# [G-10] Duplicated require() checks should be moved to a modifier/function(5 instances)
+# [G-11] Duplicated require() checks should be moved to a modifier/function(5 instances)
 **Saved ~34 642** on BathHouseV2 deployment
 **Saved ~34 633** on BathBuddy deployment
 [BathBuddy.sol/L122](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L122)
@@ -149,7 +177,7 @@ When having a require/if statement with 2 or more expressions needed,always plac
 
     require(pos.isActive, "increaseMargin: POS ISN'T ACTIVE");
 
-# [G-11] Miscellaneous(3 instances)
+# [G-12] Miscellaneous(3 instances)
 **Saved ~7816** on RubiconMarket deployment 
 
 -Remove unused function [`Bump`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L297-L310)
