@@ -612,15 +612,20 @@ modifier onlyBuddy() {
         _;
     }
 
+```
+[BathBuddy.sol#L94-L102](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L94-L102)
+
 ##
 
 ## [G-20] 
 
-```
-[BathBuddy.sol#L94-L102](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L94-L102)
+
 
 public functions not called by contract
-events should use 3 indexed rule 
+avoid contract existence check
+internal functions only called once can be inlined to save gas 
+Don’t compare boolean expressions to boolean literals
+Ternary unnecessary
 
 GAS-1	Use assembly to check for address(0)	14
 GAS-2	Using bools for storage incurs overhead	7
