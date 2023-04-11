@@ -12,3 +12,9 @@ The attacker can initialize the contract before the legitimate deployer, hoping 
 
 Recommend using the constructor to initialize non-proxied contracts. For initializing proxy contracts, recommend deploying contracts using a factory contract that immediately calls initialize after deployment, or make sure to call it immediately after deployment and verify the transaction succeeded.
 
+2.
+
+_name = string.concat("bath", ERC20(_underlying).symbol());
+_symbol = string.concat(_name, "v2"); // @audit symbol is weird after concateanation
+
+Maybe reverse
