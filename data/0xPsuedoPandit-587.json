@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xPsuedoPandit",
+  "risk": "3",
+  "title": "Reentrancy possible in 6 functions of RubiconMarket core contract",
+  "issueId": 587,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/587"
+}
