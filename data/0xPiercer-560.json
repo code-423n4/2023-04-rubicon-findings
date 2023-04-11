@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xPiercer",
+  "risk": "2",
+  "title": "Owner of an offer can be zero address",
+  "issueId": 560,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/560"
+}
