@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "mjmoonwalker",
+  "risk": "3",
+  "title": "Denial of service against BuyAllAmount in RubiConMarket under certain conditions",
+  "issueId": 631,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/631"
+}
