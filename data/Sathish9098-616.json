@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Sathish9098",
+  "risk": "2",
+  "title": "Transaction Reversion Risk: Batch Offer Function Failure",
+  "issueId": 616,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/616"
+}
