@@ -98,3 +98,30 @@ function batchOffer(BatchOfferInfo[] calldata offers) {
 }
 ```
 Same suggestion for function `batchRequote`
+
+
+--- \n
+
+6. Position.isActive is an unnecessary field since it is set to false in any case
+
+Ther only way position is created is through _savePosition, which always create a position with isActive = true. And there is no way to set this field to false in the entire codebase.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L39
+
+```solidity
+    function _savePosition(
+        address _asset,
+        address _quote,
+        uint256 _borrowedAmount,
+        uint256 _currentBathTokenAmount
+    ) internal {
+        lastPositionId++;
+        Position memory pos = Position(
+            _asset,
+            _quote,
+            _borrowedAmount,
+            _currentBathTokenAmount,
+            block.number,
+            true
+        );
+```
