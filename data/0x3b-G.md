@@ -22,6 +22,7 @@ Here is the same since `_feeAmount` will always be lower that `msg.value` **SAVE
 
 
 # [G-02] Remove unnecessary require() (1 instance)
+**SAVED ~17 625** on BathHouseV2 deployment
 In [BathHouseV2.sol/L144](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/BathHouseV2.sol#L144) the `require(_underlying != address(0)` is unnecessary since in the previous function `createBathToken`  `_underlying` is already checked if it is `address(0)`.
 
 
@@ -125,7 +126,7 @@ Change to:
          balance = _calculateDebt(bathHouseV2.getBathTokenFromAsset(pos.quote), pos.blockNum, pos.borrowedAmount);
 
 # [G-09] Using double if/require  instead of && saves gas (4 instances)
-**Saves ~8 ** per && instance
+**Saves ~8** per && instance
 Using double require/if instead of && saves on gas.
 When having a require/if statement with 2 or more expressions needed,always place the expression that cost less gas first. 
 
@@ -135,7 +136,8 @@ When having a require/if statement with 2 or more expressions needed,always plac
 [RubiconMarket.sol/L1324-L1327](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1324-L1327)
 
 # [G-10] Duplicated require() checks should be moved to a modifier/function(5 instances)
-
+**Saved ~34 642** on BathHouseV2 deployment
+**Saved ~34 633** on BathBuddy deployment
 [BathBuddy.sol/L122](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L122)
 [BathBuddy.sol/L143](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L143)
 
@@ -148,7 +150,7 @@ When having a require/if statement with 2 or more expressions needed,always plac
     require(pos.isActive, "increaseMargin: POS ISN'T ACTIVE");
 
 # [G-11] Miscellaneous(3 instances)
-**Saved ~7816** on RubiconMarket deployment
+**Saved ~7816** on RubiconMarket deployment 
 
 -Remove unused function [`Bump`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L297-L310)
 
