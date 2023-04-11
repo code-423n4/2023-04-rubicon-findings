@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ktg",
+  "risk": "2",
+  "title": "Reward tokens could be stuck on BathBuddy contract and there is no function to transfer them out",
+  "issueId": 536,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/536"
+}
