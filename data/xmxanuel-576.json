@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "xmxanuel",
+  "risk": "2",
+  "title": "Not using storage slots for all variable in the RubiconMarket can break the storage layout in an upgrade",
+  "issueId": 576,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/576"
+}
