@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "xmxanuel",
+  "risk": "2",
+  "title": "Incorrect denominator for basis points in feeBPS variable",
+  "issueId": 579,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/579"
+}
