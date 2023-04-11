@@ -1,5 +1,6 @@
 # [G-01] Use unchecked when require() prevents it from overflowing (2 instances)
-Since `tokenAmounts[i]` is sways bigger that `fees[i]`, we can safely add `unchecked{}` to lower the amount of gas **SAVED - 216**  
+**SAVED ~216** per function call
+Since `tokenAmounts[i]` is sways bigger that `fees[i]`, we can safely add `unchecked{}` to lower the amount of gas 
 [utilities/FeeWrapper.sol/L42](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/FeeWrapper.sol#L42)
 
 
@@ -55,7 +56,7 @@ Change to:
     }
 
 # [G-04] Use function instead of modifiers (12 instances)
-Saving on RubiconMarket of about ~175 221 gas
+**SAVED ~175 221** on RubiconMarket deployment
 
 [BathBuddy.sol/L87](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L87)
 [BathBuddy.sol/L94](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L94)
@@ -83,8 +84,21 @@ Change to:
          require(msg.sender == owner);
     }
 
+# [G-5] Remove unnecessary modifiers (3 instances)
+**SAVED ~14 217** on RubiconMarket deployment
+In the contract there are a few modifiers that serve no purpose.As you can see the modifier `can_buy` only checks if the offer is active, it it can be removed and on it's place we can put `isActive`, same fore the rest of these.
 
-# [G-05] a=a+b is always cheaper that a+=b, same for a-=b (5 instances)
+
+    modifier can_buy(uint256 id) virtual {
+        require(isActive(id));
+        _;
+    }
+
+[`can_buy`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L245-L248)
+[`isClosed`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L620-L622)
+[`can_offer`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L597-L600)
+
+# [G-06] a=a+b is always cheaper that a+=b, same for a-=b (5 instances)
 [RubiconMarket.sol/L583](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L583) 
 [RubiconMarket.sol/L586](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L586)
 [Position.sol/L184](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L184)
@@ -92,11 +106,11 @@ Change to:
 [Position.sol/L560](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L560)
 
 
-# [G-06] Delete mappings instead of setting them to 0 (1 instance)
+# [G-07] Delete mappings instead of setting them to 0 (1 instance)
 It it much cheaper to delete the mapping if it is unwanted then to set it to 0
 [RubiconMarket.sol/L1438](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1438)
 
-# [G-07] There is no need to load variables into memory (1 instance)
+# [G-08] There is no need to load variables into memory (1 instance)
 
 [Position.sol/L78-L80](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L78-L80)
  
@@ -110,8 +124,8 @@ Change to:
 
          balance = _calculateDebt(bathHouseV2.getBathTokenFromAsset(pos.quote), pos.blockNum, pos.borrowedAmount);
 
-# [G-08] Using double if/require  instead of && saves gas (4 instances)
-Saves ~8 gas per && instance
+# [G-09] Using double if/require  instead of && saves gas (4 instances)
+**Saves ~8 ** per && instance
 Using double require/if instead of && saves on gas.
 When having a require/if statement with 2 or more expressions needed,always place the expression that cost less gas first. 
 
@@ -120,7 +134,7 @@ When having a require/if statement with 2 or more expressions needed,always plac
 [RubiconMarket.sol/L1200](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1200)
 [RubiconMarket.sol/L1324-L1327](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1324-L1327)
 
-# [G-09] Duplicated require() checks should be moved to a modifier/function
+# [G-10] Duplicated require() checks should be moved to a modifier/function(5 instances)
 
 [BathBuddy.sol/L122](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L122)
 [BathBuddy.sol/L143](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L143)
@@ -133,8 +147,8 @@ When having a require/if statement with 2 or more expressions needed,always plac
 
     require(pos.isActive, "increaseMargin: POS ISN'T ACTIVE");
 
-# [G-10] Miscellaneous(3 instances)
-Saved gas: ~7816 on deployment 
+# [G-11] Miscellaneous(3 instances)
+**Saved ~7816** on RubiconMarket deployment
 
 -Remove unused function [`Bump`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L297-L310)
 
@@ -144,4 +158,3 @@ Saved gas: ~7816 on deployment
 [RubiconMarket.sol/L624](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L624-L626)
 
 **Tools used: Foundry and remix**
-
