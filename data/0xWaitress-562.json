@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "access function for offer info should revert if the id is larger then last_offer_id",
+  "issueId": 562,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/562"
+}
