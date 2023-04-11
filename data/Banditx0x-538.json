@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Banditx0x",
+  "risk": "3",
+  "title": "Tokens can be stolen from FeeWrapper by setting approval to malicious contract",
+  "issueId": 538,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/538"
+}
