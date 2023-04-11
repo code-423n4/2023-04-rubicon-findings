@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "tallo",
+  "risk": "2",
+  "title": "V2Migrator should allow a whitelisted address to add additional bathTokenV1 and bathTokenV2 pairs",
+  "issueId": 632,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/632"
+}
