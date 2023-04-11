@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "Lack of slippage protection in Position.sol",
+  "issueId": 629,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/629"
+}
