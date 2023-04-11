@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "koxuan",
+  "risk": "2",
+  "title": "some ERC20 tokens do not support 0 transfer",
+  "issueId": 533,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/533"
+}
