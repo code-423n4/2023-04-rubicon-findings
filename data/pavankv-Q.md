@@ -39,5 +39,10 @@ require(pay_amt > 0);
 require(uint128(pay_amt) == pay_amt);
 require(uint128(buy_amt) == buy_amt);
 
-## 5 . 
+## 5 . No Zero check after getting offerId :-
+It's better to check zero after getting offerId .
+
+code snippet:-
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1129
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1162
       
