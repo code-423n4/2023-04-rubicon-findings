@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "caventa",
+  "risk": "3",
+  "title": "Position could be removed if there is collateral / debt in the position",
+  "issueId": 583,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/583"
+}
