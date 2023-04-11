@@ -45,4 +45,11 @@ It's better to check zero after getting offerId .
 code snippet:-
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1129
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1162
+
+## 6 . Not neccassary of isActive() check :-
+
+_buys() called only in [buy()](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/RubiconMarket.sol#L864) but in this function it already have can_buy() modifier it calls isActive() function . So in _buys() there is not require to call [isActive()](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/RubiconMarket.sol#L1198) again .
+
+code snippet:-
+https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/RubiconMarket.sol#L1198
       
