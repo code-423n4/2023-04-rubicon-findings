@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Bauer",
+  "risk": "3",
+  "title": "If bathToken token has already entered the market, then owner cannot open a long/short position with this bathToken",
+  "issueId": 567,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/567"
+}
