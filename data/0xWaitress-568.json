@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xWaitress",
+  "risk": "3",
+  "title": "Dos/frontrun attack for creating many offers with dust + 1 wei in a narrow price ranges; making execution gas unfeasible to trade ",
+  "issueId": 568,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/568"
+}
