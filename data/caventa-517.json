@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "caventa",
+  "risk": "2",
+  "title": "Need to ensure collaterFactor = 0. If an asset has a 0% collateral factor, it can’t be used as collateral (or seized in liquidation), though it can still be borrowed.",
+  "issueId": 517,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/517"
+}
