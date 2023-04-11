@@ -38,3 +38,7 @@ Asset and quote can be the same
 7.
 
 spawnBuddy function can be frontrunned
+
+8.
+
+msg.sender != address(0) && // @audit msg.sender is impossible to be address(0)
