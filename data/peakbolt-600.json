@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "peakbolt",
+  "risk": "3",
+  "title": "Incorrect and duplicate fee deduction could cause users to lose part of profit due to a smaller long/short exposure",
+  "issueId": 600,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/600"
+}
