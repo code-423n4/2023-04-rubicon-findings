@@ -20,3 +20,14 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.
 
 [N-03] Variable and function names should have both descriptive comments and descriptive names that indicate their functionality and use cases
 It's important for code readability and understanding for auditors and developers who aren't fully familiar with the code base in order to quickly get up to speed. For instance, each of the different ```offer``` variations should have a comment that describes their individual purpose; especially if one version is calling ```_matcho``` where another calls ```offer```.
+
+[N-04] Many of the re-entrancy checks do nothing
+For instance, on offer there is a check that locked is not true. This actually doesn't do anything because locked is only set inside the modifier ```synchronized()```.
+```
+require(!locked, "Reentrancy attempt");
+```
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L834
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L859
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L938
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1034
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1075
