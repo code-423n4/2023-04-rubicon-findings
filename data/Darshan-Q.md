@@ -79,3 +79,18 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/pool
 There's no check that the old address isn't the same as the new address, and there's no check that the Migration has already happened 
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L38
+
+
+## Upgradeable SafeERC20 not used 
+
+The use of upgradeable SafeERC20 is recommended in order to maintain the upgradability of the contract and ensure that any potential vulnerabilities in the SafeERC20 contract can be fixed without requiring a complete redeployment of the contract.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L4
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L4 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L4
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L4 
+
+
