@@ -10,12 +10,31 @@ The function ```stop``` inside expiring market sets the variable ```stopped``` t
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L628
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L594
 
+[L-03] ```buy``` return value is not check inside _matcho
+```buy``` has a return value of ```bool``` and can fail for any of the following reasons.
+```
+        if (
+            quantity == 0 ||
+            spend == 0 ||
+            quantity > _offer.pay_amt ||
+            spend > _offer.buy_amt
+        ) {
+            return false;
+        }
+```
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1313
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L325-L332
+
+
+
 [N-01]. Useless function ```bump```
 The function "bump(bytes32)" is useless and has no functionality. The comment directly specifies that ```bump``` is one of the "main public entrypoints" so consider adding some functionality or removing the function.
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L297
 
 [N-02] Unnecessary use of ```DSMath```
 There is no need to use DSMath/safe-math libraries for solidity versions >= 0.8 since underflows/overflows now revert. Unnecessary use of the library leads to extra gas costs/overhead when normal subtraction, addition, and multiplication is enough. 
+
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L45
 
 [N-03] Variable and function names should have both descriptive comments and descriptive names that indicate their functionality and use cases
