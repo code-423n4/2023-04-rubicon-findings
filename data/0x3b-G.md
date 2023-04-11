@@ -85,7 +85,7 @@ Change to:
          require(msg.sender == owner);
     }
 
-# [G-5] Remove unnecessary modifiers (3 instances)
+# [G-05] Remove unnecessary modifiers (3 instances)
 **SAVED ~14 217** on RubiconMarket deployment
 In the contract there are a few modifiers that serve no purpose.As you can see the modifier `can_buy` only checks if the offer is active, it it can be removed and on it's place we can put `isActive`, same fore the rest of these.
 
@@ -99,7 +99,7 @@ In the contract there are a few modifiers that serve no purpose.As you can see t
 [`isClosed`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L620-L622)
 [`can_offer`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L597-L600)
 
-# [G-06] Mappings can be combined into struct
+# [G-06] Mappings can be combined into struct (1 instance)
 **SAVED ~39 040** on BathBuddy deployment
 In BathBuddy there is a big array of mapping that can be refactored into 1 mapping pointing into a struct.
 [BathBuddy.sol/L52-L56](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L52-L56)
@@ -120,7 +120,7 @@ Example:
     }
     mapping(address => Rewards) private rewards;
     mapping(address => uint256) public rewardsDuration; // Can be kept global but can also be token specific
-### [G-06.1] In [`notifyRewardAmount()`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L52-L56) struct can be stored in storage
+## [G-06.1] In [`notifyRewardAmount()`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L52-L56) struct can be stored in storage
 **SAVED ~28 233** aditional gas if the developer utilize this method
 When the struct is stored in storage instaed of calling it every time with `rewards[address(rewardsToken)]` you save gas. We you storage as refrence here because in with the storage word you can still modify it.
 
@@ -163,9 +163,9 @@ When having a require/if statement with 2 or more expressions needed,always plac
 [RubiconMarket.sol/L1200](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1200)
 [RubiconMarket.sol/L1324-L1327](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1324-L1327)
 
-# [G-11] Duplicated require() checks should be moved to a modifier/function(5 instances)
-**Saved ~34 642** on BathHouseV2 deployment
+# [G-11] Duplicated require() checks should be moved to a modifier/function (5 instances)
 **Saved ~34 633** on BathBuddy deployment
+**Saved ~37 037** on Position deployment
 [BathBuddy.sol/L122](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L122)
 [BathBuddy.sol/L143](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L143)
 
@@ -188,3 +188,18 @@ When having a require/if statement with 2 or more expressions needed,always plac
 [RubiconMarket.sol/L624](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L624-L626)
 
 **Tools used: Foundry and remix**
+|                                                                            | Instances | Saved on deploy |
+|----------------------------------------------------------------------------|-----------|:---------------:|
+| [G-01] Use unchecked when require() prevents it  from overflowing          | 2         |                 |
+| [G-02] Remove unnecessary require()                                        | 1         | 17 625          |
+| [G-03] Change place in Position struct                                     | 1         |                 |
+| [G-04] Use function instead of modifiers                                   | 12        | 175 221         |
+| [G-05] Remove unnecessary modifiers                                        | 3         | 14 217          |
+| [G-06] Mappings can be combined into struct                                | 1         | 39 040          |
+| [G-07] a=a+b is always cheaper that a+=b,  same for a-=b                   | 5         |                 |
+| [G-08] Delete mappings instead of setting them to 0                        | 1         |                 |
+| [G-09] There is no need to load variables into memory                      | 1         |                 |
+| [G-10] Using double if/require  instead of &&                              | 4         |                 |
+| [G-11] Duplicated require() checks should be moved  to a modifier/function | 5         | 71 670          |
+| [G-12] Miscellaneous                                                       | 11        | 7 816           |
+|                                                                            | Total     | 325 589         |
