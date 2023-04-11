@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cccz",
+  "risk": "3",
+  "title": "When opening a position, the collateral of the previous position is used for borrowing, which makes the user more easily liquidated",
+  "issueId": 545,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/545"
+}
