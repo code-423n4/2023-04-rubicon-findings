@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "siddhpurakaran",
+  "risk": "2",
+  "title": "Major functions of protocol (like _find, _findpos,_matcho,_hide) can start reverting when the function will have to loop through a very high number of iterations.",
+  "issueId": 543,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/543"
+}
