@@ -18,3 +18,12 @@ _name = string.concat("bath", ERC20(_underlying).symbol());
 _symbol = string.concat(_name, "v2"); // @audit symbol is weird after concateanation
 
 Maybe reverse
+
+3.
+
+Feetype maybe 0
+
+4. 
+
+Fee maybe 0
+
