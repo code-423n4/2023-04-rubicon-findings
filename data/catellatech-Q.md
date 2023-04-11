@@ -10,7 +10,7 @@
 | R  | Refactor | Changing the code |
 | S | Suggestions | Suggestion Details |
 
-| Total Found Issues | 39 |
+| Total Found Issues | 42 |
 |:--:|:--:|
 
 ### Low Risk
@@ -27,8 +27,10 @@
 | [L-09] | THE CONTRACT IMPORTS A LIBRARY THAT IT DOES NOT USE BUT SHOULD | 1 |
 | [L-10] | USE 'increaseAllowance' INSTEAD OF THE FUNCTION 'approve' | 1 |
 | [L-11] | DID NOT APPROVE TO ZERO FIRST | 1 |
+| [L-12] | INCONSISTENT SOLIDITY PRAGMA |  |
+| [L-13] | PREVENT DIV BY 0 |  |
 
-| Total Low Issues | 11 | Total Instances | 30 |
+| Total Low Issues | 13 | Total Instances | 30 |
 |:--:|:--:|:--:|--:|
 
 ### Non-Critical
@@ -58,8 +60,9 @@
 | [N-22] | USING WHILE FOR UNBOUNDED LOOPS ISN'T RECOMMENDED | 11 |
 | [N-23] | EVENTS IS MISSING INDEXED FIELDS | 2 |
 | [N-24] | TOKENS ACCIDENTALLY SENT TO THE CONTRACT CANNOT BE RECOVERED | 2 |
+| [N-25] | CONTRACT DOES NOT FOLLOW THE SOLIDITY STYLE GUIDE'S SUGGESTED LAYOUT ORDERING | 1 |
 
-| Total Non-Critical Issues | 24 | Total Instances | 101 |
+| Total Non-Critical Issues | 25 | Total Instances | 102 |
 |:--:|:--:|:--:|--:|
 
 ### Refactor Issues 
@@ -183,6 +186,7 @@ contracts/RubiconMarket.sol
 contracts/utilities/poolsUtility/Position.sol
 226:  function increaseMargin
 ```
+
 ## [L-05] IN THE EVENTS, INCLUDE THE OLD AND NEW VALUES OF THE UPDATED PARAMETERS TO TRACK THE CHANGES MADE
 The following functions RubiconMarket.setOwner, RubiconMarket.setMinSell, and Position.increaseMargin make critical changes and should include the `old and new values` of the updated parameters so that users can be aware of the changes made.
 
@@ -305,6 +309,33 @@ A number of features within the vaults will not work if the approve function rev
 ### MITIGATION
 It is recommended to set the `allowance to zero before increasing` the allowance and use `safeIncreaseAllowance`.
 
+## [L-12] INCONSISTENT SOLIDITY PRAGMA
+The source files have different solidity compiler ranges referenced. This leads to potential security flaws between deployed contracts depending on the compiler version chosen for any particular file. It also greatly increases the cost of maintenance as different compiler versions have different semantics and behavior.
+
+### PROOF OF CONCEPT
+```solidity
+contracts/RubiconMarket.sol
+2: pragma solidity ^0.8.9;
+
+contracts/BathHouseV2.sol
+2: pragma solidity 0.8.17; // @audit this an another three contract have this pragma version 
+
+contracts/periphery/BathBuddy.sol
+2: pragma solidity ^0.8.0;
+```
+### MITIGATION
+We recommend to fix a definite compiler range that is consistent between contracts and upgrade any affected contracts to conform to the specified compiler.
+
+## [L-13] PREVENT DIV BY 0
+On several locations in the code precautions are not being taken for not dividing by 0, this will revert the code. These functions can be calledd with 0 value in the input, this value is not checked for being bigger than 0, that means in some scenarios this can potentially trigger a division by zero.
+
+### PROOF OF CONCEPT
+```solidity
+contracts/utilities/FeeWrapper.sol
+41: fees[i] = (tokenAmounts[i] * feeValue) / feeType;
+```
+### MITIGATION
+Recommend making sure division by 0 won’t occur by checking the variables beforehand and handling this edge case.
 
 
 ## [N-01] USE OF FLOATING PRAGMA 
@@ -624,8 +655,10 @@ While auditing, it was noticed that the recommended Solidity standards for Natsp
 ### PROOF OF CONCEPT
 ```solidity
 contracts/RubiconMarket.sol
-
+// @audit so many instances with these issues
 250: // /// @notice Modifier that checks the user to make sure they own the offer and its valid before they attempt to cancel it
+666: /// event LogInsert(address keeper, uint256 id);
+718: // // After close, anyone can cancel an offer
 ```
 ### MITIGATION
 Implement the [NatSpec Format](https://docs.soliditylang.org/en/v0.8.19/natspec-format.html) of Solidity.
@@ -986,6 +1019,17 @@ function rescueERC20(address account, address externalToken, uint256 amount) pub
     return true;
 }
 ```
+
+## [N-25] CONTRACT DOES NOT FOLLOW THE SOLIDITY STYLE GUIDE'S SUGGESTED LAYOUT ORDERING
+The [style guide](https://docs.soliditylang.org/en/v0.8.16/style-guide.html#order-of-layout) says that, within a contract, the ordering should be: 
+- 1. Type declarations 
+- 2. State variables,
+- 3. Events 
+- 4. Modifiers 
+- 5. Functions 
+but the contract(s) below do not follow this ordering.
+
+- [BathBuddy.sol](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol)
 
 ## [R-01] FUNCTION NAMING SUGGESTIONS
 Proper use of _ as a function name prefix and a common pattern is to prefix internal and private function names with _. This pattern is correctly applied in all contracts, however there are some inconsistencies in just these contracts.
