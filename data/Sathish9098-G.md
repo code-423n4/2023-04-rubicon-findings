@@ -328,6 +328,12 @@ function isAuthorized(address src) internal view returns (bool) {
         }
     }
 
+35:   function isAuthorized(address src) internal view returns (bool) {
+1183: function _buys(uint256 id, uint256 amount) internal returns (bool) {
+1225: function _findpos(uint256 id, uint256 pos) internal view returns (uint256) {
+1273: function _matcho(
+1362: function _sort(
+
 ```
 [RubiconMarket.sol#L30-L42](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L30-L42)
 
@@ -359,7 +365,35 @@ FILE : FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 89: function rdiv(uint256 x, uint256 y) internal pure returns (uint256 z) {
 
 ```
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 
+251:  function _borrowLoop(
+272:  function _borrow(address _cToken, uint256 _amount) internal {
+280:  function _repay(address _asset, address _quote, uint256 _posId) internal {
+322:  function _calculateDebt(
+336:  function _enterMarkets(address _bathToken) internal {
+343:  function _exitMarket(address _bathToken) internal {
+382:  function _redeem(address _asset, uint256 _bathTokenAmount) internal {
+401:  function _savePosition(
+421:  function _removePosition(uint256 _positionId) internal {
+426:  function _updateMargin(
+454:  function _marketBuy(
+475:  function _marketSell(
+526:  function _borrowLimit(
+```
+[Position.sol#L251](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L251)
+
+```solidity
+FILE:2023-04-rubicon/contracts/utilities/FeeWrapper.sol
+
+48:  function rubicall(
+76:  function _rubicallPayable(
+93:  function _chargeFee(FeeParams memory _feeParams, address _target) internal {
+108: function _chargeFeePayable(
+
+```
+[FeeWrapper.sol#L48](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L48)
 ##
 
 ## [G-10] NOT USING THE NAMED RETURN VARIABLES WHEN A FUNCTION RETURNS, WASTES DEPLOYMENT GAS
@@ -462,8 +496,33 @@ Using nested is cheaper than using && multiple check combinations. There are mor
 FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
 349: if (_offer.owner == address(0) && getRecipient(id) != address(0)) {
+
+1197: if (
+            isActive(id) &&
+            offers[id].pay_amt < _dust[address(offers[id].pay_gem)]
+        ) {
+
+1324: if (
+            t_buy_amt > 0 &&
+            t_pay_amt > 0 &&
+            t_pay_amt >= _dust[address(t_pay_gem)]
+        ) {
+
 ```
 [RubiconMarket.sol#L349](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L349)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+176:  if (i.add(1) == vars.limit && vars.lastBorrow != 0) {
+
+391:  if (
+            IERC20(_bathTokenAsset).balanceOf(address(this)) == 0 &&
+            borrowBalance(_bathTokenAsset) == 0
+        ) {
+
+```
+[Position.sol#L176](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L176)
 
 ##
 
@@ -484,6 +543,8 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 736: uint128 pay_amt,
 737: uint128 buy_amt
 
+752:  function take(bytes32 id, uint128 maxTakeAmount) public override {
+
 ```
 [RubiconMarket.sol#L494-L495](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L494-L495),[RubiconMarket.sol#L564](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L564),
 
@@ -496,18 +557,24 @@ See [this issue](https://github.com/code-423n4/2022-01-xdefi-findings/issues/128
 ```solidity
 FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
+ 
 893:   require(
-894:            payAmts.length == payGems.length &&
-895:                payAmts.length == buyAmts.length &&
-896:                payAmts.length == buyGems.length,
-897:            "Array lengths do not match"
-898:        );
+           payAmts.length == payGems.length &&
+               payAmts.length == buyAmts.length &&
+               payAmts.length == buyGems.length,
+            "Array lengths do not match"
+        );
 
 
- 940: require(
+940: require(
             !isActive(id) &&
                 _rank[id].delb != 0 &&
                 _rank[id].delb < block.number - 10
+        );
+
+1412: require(
+            _rank[id].delb == 0 && //assert id is in the sorted list
+                isOfferSorted(id)
         );
 
 ```
@@ -523,10 +590,23 @@ require(
             "You are not my buddy!"
         );
 
-
-
 ```
 [BathBuddy.sol#L95-L100](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L95-L100)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+591: ? require(
+                _leverage > _wad && _leverage <= _leverageMax,
+                "_leverageCheck{Long}: INVLAID LEVERAGE"
+            )
+595: : require(
+                _leverage >= _wad && _leverage <= _leverageMax,
+                "_leverageCheck{Short}: INVLAID LEVERAGE"
+            );
+
+```
+[Position.sol#L591-L594](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L591-L594)
 
 ##
 
@@ -617,15 +697,178 @@ modifier onlyBuddy() {
 
 ##
 
-## [G-20] 
+## [G-20] public functions not called by contract can be declared as external to save gas
+
+```solidity
+FILE: 2023-04-rubicon/contracts/BathHouseV2.sol
+
+45: function getBathTokenFromAsset(
+        address asset
+    ) public view returns (address) {
+
+```
+[BathHouseV2.sol#L45-L47](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L45-L47)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+574:  function getFeeBPS() public view returns (uint256) {
+1010: function getFirstUnsortedOffer() public view returns (uint256) {
+1016: function getNextUnsortedOffer(uint256 id) public view returns (uint256) {
+1020: function isOfferSorted(uint256 id) public view returns (bool) {
+
+1165: function getPayAmountWithFee(
+        ERC20 pay_gem,
+        ERC20 buy_gem,
+        uint256 buy_amt
+    ) public view returns (uint256 fill_amt) {
+
+```
+[RubiconMarket.sol#L574](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L574)
+
+##
+
+## [G-21] Avoid contract existence checks by using low level calls
+
+Prior to 0.8.10 the compiler inserted extra code, including EXTCODESIZE (100 gas), to check for contract existence for external function calls. In more recent solidity versions, the compiler will not insert these checks if the external call has a return value. Similar behavior can be achieved in earlier versions by using low-level calls, since low level calls never check for contract existence
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+538: require(pay_gem.transferFrom(msg.sender, address(this), pay_amt));
+
+```
+[RubiconMarket.sol#L538](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L538)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/V2Migrator.sol
+
+40:  uint256 bathBalance = bathTokenV1.balanceOf(msg.sender);
+47:  uint256 amountWithdrawn = bathTokenV1.withdraw(bathBalance);
+50:  IERC20 underlying = bathTokenV1.underlyingToken();
+53:  underlying.approve(bathTokenV2, amountWithdrawn);
+59:   IERC20(bathTokenV2).transfer(
+            msg.sender,
+            IERC20(bathTokenV2).balanceOf(address(this))
+        );
+64:  IERC20(bathTokenV2).balanceOf(address(this)) == 0,
+            "migrate: BATH TOKENS V2 STUCK IN THE CONTRACT
+```
+[V2Migrator.sol#L40](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L40)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/periphery/BathBuddy.sol
+
+124:  if (IERC20(myBathTokenBuddy).totalSupply() == 0) {
+133:  .div(IERC20(myBathTokenBuddy).totalSupply())
+146:  IERC20(myBathTokenBuddy) // Care with this?
+182:  rewardsToken.safeTransfer(holderRecipient, reward);
+
+```
+[BathBuddy.sol#L124](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L124)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+66:  balance = CTokenInterface(bathToken).borrowBalanceCurrent(
+            address(this)
+        );
+79:  address bathTokenQuote = bathHouseV2.getBathTokenFromAsset(pos.quote);
+131: address bathTokenAsset = bathHouseV2.getBathTokenFromAsset(asset);
+132: address bathTokenQuote = bathHouseV2.getBathTokenFromAsset(quote);
+140: vars.initAssetBalance = IERC20(asset).balanceOf(address(this));
+143: IERC20(asset).safeTransferFrom(msg.sender, address(this), initMargin);
+160: uint256 assetBalance = IERC20(asset).balanceOf(address(this));
+233: IERC20(asset).safeTransferFrom(msg.sender, address(this), amount);
+235: address bathTokenAsset = bathHouseV2.getBathTokenFromAsset(asset);
+243: IERC20(token).safeTransfer(msg.sender, amount);
+281: address _bathTokenQuote = bathHouseV2.getBathTokenFromAsset(_quote);
+286: uint256 _quoteBalance = IERC20(_quote).balanceOf(address(this));
+297: IERC20(_quote).approve(_bathTokenQuote, _amountToRepay);
+298: require(
+            CErc20Interface(_bathTokenQuote).repayBorrow(_amountToRepay) == 0,
+            "_repay: ERROR"
+        );
+309: (uint256 _err, uint256 _liq, uint256 _shortfall) = comptroller
+            .getAccountLiquidity(address(this));
+316: uint256 _price = oracle.getUnderlyingPrice(CToken(_bathToken));
+339: uint256[] memory _errs = comptroller.enterMarkets(_bathTokens);
+344: require(comptroller.exitMarket(_bathToken) == 0, "_exitMarket: ERROR");
+355: uint256 _initBathTokenAmount = IERC20(_bathToken).balanceOf(
+            address(this)
+        );
+358: IERC20(_token).safeApprove(_bathToken, _amount);
+363: uint256 _currentBathTokenAmount = IERC20(_bathToken).balanceOf(
+383: address _bathTokenAsset = bathHouseV2.getBathTokenFromAsset(_asset);
+392: IERC20(_bathTokenAsset).balanceOf(address(this)) == 0 &&
+459: uint256 _fee = _maxFill.mul(rubiconMarket.getFeeBPS()).div(10000);
+460: uint256 _buyAmount = rubiconMarket.getBuyAmount(
+465: IERC20(_quote).approve(address(rubiconMarket), _maxFill);
+467: rubiconMarket.buyAllAmoun
+480: uint256 _feeBPS = rubiconMarket.getFeeBPS();
+483: uint256 _payAmount = rubiconMarket.getPayAmount(
+487: uint256 _assetBalance = IERC20(_asset).balanceOf(address(this));
+493: IERC20(_asset).transferFrom(
+500: IERC20(_asset).approve(
+505: rubiconMarket.sellAllAmount(
+537: uint256 _minted = IERC20(_bathToken).balanceOf(address(this));
+
+```
+[Position.sol#L66-L68](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L66-L68)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/FeeWrapper.sol
+
+100: IERC20(_feeToken).transferFrom(msg.sender, address(this), _totalAmount);
+102: IERC20(_feeToken).transfer(_feeTo, _feeAmount);
+105: IERC20(_feeToken).approve(_target, (_totalAmount - _feeAmount));
+
+```
+[FeeWrapper.sol#L100](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L100)
+
+##
+
+## [G-22] No need to evaluate all expressions to know if one of them is true
+
+When we have a code expressionA || expressionB if expressionA is true then expressionB will not be evaluated and gas saved;
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+54:  require(y == 0 || (z = x * y) / y == x, "ds-math-mul-overflow");
+253: require(
+            (msg.sender == getOwner(id)) ||
+                (msg.sender == getRecipient(id) && getOwner(id) == address(0))
+        );
+
+325: if (
+            quantity == 0 ||
+            spend == 0 ||
+            quantity > _offer.pay_amt ||
+            spend > _offer.buy_amt
+        ) {
+
+613: require(
+            (msg.sender == getOwner(id)) ||
+                isClosed() ||
+                (msg.sender == getRecipient(id) && getOwner(id) == address(0))
+        );
+
+721: require(
+            isClosed() ||
+                msg.sender == getOwner(id) ||
+                id == dustId ||
+                (msg.sender == getRecipient(id) && getOwner(id) == address(0)),
+            "Offer can not be cancelled because user is not owner, and market is open, and offer sells required amount of tokens."
+        );
+
+```
+[RubiconMarket.sol#L55](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L55)
 
 
 
-public functions not called by contract
-avoid contract existence check
-internal functions only called once can be inlined to save gas 
-Don’t compare boolean expressions to boolean literals
-Ternary unnecessary
+Multiple accesses of a mapping/array should use a local variable cache
+
 
 GAS-1	Use assembly to check for address(0)	14
 GAS-2	Using bools for storage incurs overhead	7
