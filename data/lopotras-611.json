@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "lopotras",
+  "risk": "3",
+  "title": "Not tracking user interactions can lead to attacker draining all rewards from BathBuddy",
+  "issueId": 611,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/611"
+}
