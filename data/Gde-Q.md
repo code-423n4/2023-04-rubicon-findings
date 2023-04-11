@@ -5,7 +5,7 @@
 
 | |Issue|Instances|
 |-|:-|:-:|
-| [L-1](#L-1) | Array length mismatch | 1 |
+| [L-1](#L-1) | Array length mismatch | 3 |
 | [L-2](#L-2) | Unspecific compiler version pragma | 1 |
 ### <a name="L-1"></a>[L-1] Array length mismatch
 When you encounter a function that accepts arrays as arguments, always check if there's a possibility of index out-of-bounds error.  
@@ -15,7 +15,45 @@ To prevent this vulnerability, it's important to verify that the lengths of the 
 require(array1.length == array2.length, "arrays length is not equal");
 ```
 
-*Instances (1)*:
+*Instances (3)*:
+```solidity
+File: contracts/BathHouseV2.sol
+
+115:     function claimRewards(
+             address[] memory buddies,
+             address[] memory rewardsTokens
+         ) external {
+             // claim rewards from comptroller
+             comptroller.claimComp(msg.sender);
+             // get rewards from bathBuddy
+             for (uint256 i = 0; i < buddies.length; ++i) {
+                 IBathBuddy(buddies[i]).getReward(
+                     IERC20(rewardsTokens[i]),
+
+```
+[Link to code](https://github.com/code-423n4/2023-04-rubicon/tree/main/contracts/BathHouseV2.sol)
+
+```solidity
+File: contracts/RubiconMarket.sol
+
+917:     function batchRequote(
+             uint[] calldata ids,
+             uint[] calldata payAmts,
+             address[] calldata payGems,
+             uint[] calldata buyAmts,
+             address[] calldata buyGems
+         ) external {
+             for (uint i = 0; i < ids.length; i++) {
+                 cancel(ids[i]);
+                 this.offer(
+                     payAmts[i],
+                     ERC20(payGems[i]),
+                     buyAmts[i],
+                     ERC20(buyGems[i])
+
+```
+[Link to code](https://github.com/code-423n4/2023-04-rubicon/tree/main/contracts/RubiconMarket.sol)
+
 ```solidity
 File: contracts/V2Migrator.sol
 
@@ -25,7 +63,7 @@ File: contracts/V2Migrator.sol
                 v1ToV2Pools[bathTokensV1[i]] = bathTokensV2[i];
 
 ```
-[Link to code](https://github.com/code-423n4/2023-04-rubiconcontracts/V2Migrator.sol)
+[Link to code](https://github.com/code-423n4/2023-04-rubicon/tree/main/contracts/V2Migrator.sol)
 
 ### <a name="L-2"></a>[L-2] Unspecific compiler version pragma
 Locking the pragma helps ensure that contracts do not accidentally get deployed using, for example, the latest compiler which may have higher risks of undiscovered bugs.  Contracts may also be deployed by others and the pragma indicates the compiler version intended by the original authors.  
@@ -39,7 +77,7 @@ File: contracts/RubiconMarket.sol
 2: pragma solidity ^0.8.9;
 
 ```
-[Link to code](https://github.com/code-423n4/2023-04-rubiconcontracts/RubiconMarket.sol)
+[Link to code](https://github.com/code-423n4/2023-04-rubicon/tree/main/contracts/RubiconMarket.sol)
 
 
 
@@ -94,7 +132,7 @@ File: contracts/utilities/poolsUtility/Position.sol
 528:         address _asset,
 
 ```
-[Link to code](https://github.com/code-423n4/2023-04-rubiconcontracts/utilities/poolsUtility/Position.sol)
+[Link to code](https://github.com/code-423n4/2023-04-rubicon/tree/main/contracts/utilities/poolsUtility/Position.sol)
 
 ### <a name="NC-2"></a>[NC-2] Unused Local Variable
 Consider removing unused local variables.
@@ -106,7 +144,7 @@ File: contracts/RubiconMarket.sol
 298:         uint256 id = uint256(id_);
 
 ```
-[Link to code](https://github.com/code-423n4/2023-04-rubiconcontracts/RubiconMarket.sol)
+[Link to code](https://github.com/code-423n4/2023-04-rubicon/tree/main/contracts/RubiconMarket.sol)
 
 ### <a name="NC-3"></a>[NC-3] Setter/Update functions should emit an event
 Consider having events associated with setter/update functions to track important changes.
@@ -122,7 +160,7 @@ File: contracts/RubiconMarket.sol
 1476:     function setFeeTo(address newFeeTo) external auth returns (bool) {
 
 ```
-[Link to code](https://github.com/code-423n4/2023-04-rubiconcontracts/RubiconMarket.sol)
+[Link to code](https://github.com/code-423n4/2023-04-rubicon/tree/main/contracts/RubiconMarket.sol)
   
 
 ### <a name="NC-4"></a>[NC-4] Function state mutability can be restricted to view
