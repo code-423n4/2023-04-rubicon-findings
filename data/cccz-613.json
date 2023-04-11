@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cccz",
+  "risk": "3",
+  "title": "makerFee is not considered in _marketBuy and _marketSell, which prevents users from closing positions",
+  "issueId": 613,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/613"
+}
