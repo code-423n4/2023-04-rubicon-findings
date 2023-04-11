@@ -37,3 +37,4 @@ Asset and quote can be the same
 
 7.
 
+spawnBuddy function can be frontrunned
