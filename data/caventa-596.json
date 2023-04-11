@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "caventa",
+  "risk": "2",
+  "title": "Fee should not be based on maxFill or minFill ",
+  "issueId": 596,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/596"
+}
