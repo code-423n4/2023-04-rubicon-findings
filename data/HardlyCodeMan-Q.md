@@ -3,7 +3,7 @@
 ### Unspecific Compiler Version Pragma - pragma ^
 A known vulnerable compiler version may accidentally be selected or security tools might fall-back to an older compiler version ending up checking a different EVM compilation that is ultimately deployed on the blockchain.
 
-Solidity 0.8.17 is spicified in other in scopee contracts, so a simple change to bring the two files in question into alignment.
+Solidity 0.8.17 is spicified in other in scoped contracts which is not bleeding edge yet suffieciently tested. Avoid Solidity 0.8.13 and 0.8.14 because they contain some encoding and assembly errors. Really it is a  simple change to bring the two files in question into alignment with the rest of the project at 0.8.17.
 
 - [RubiconMarket.sol](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L2)```pragma solidity ^0.8.9;```
 - [BathBuddy.sol](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L2)```pragma solidity ^0.8.0;```
