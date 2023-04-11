@@ -24,7 +24,7 @@ File: contracts/RubiconMarket.sol
                       isOfferSorted(id)
 
 ```
-[Link to code](https://github.com/code-423n4/2023-04-rubiconcontracts/RubiconMarket.sol)
+[Link to code](https://github.com/code-423n4/2023-04-rubicon/tree/main/contracts/RubiconMarket.sol)
 
 ```solidity
 File: contracts/utilities/poolsUtility/Position.sol
@@ -34,4 +34,4 @@ File: contracts/utilities/poolsUtility/Position.sol
                      "_leverageCheck{Long}: INVLAID LEVERAGE"
 
 ```
-[Link to code](https://github.com/code-423n4/2023-04-rubiconcontracts/utilities/poolsUtility/Position.sol)
+[Link to code](https://github.com/code-423n4/2023-04-rubicon/tree/main/contracts/utilities/poolsUtility/Position.sol)
