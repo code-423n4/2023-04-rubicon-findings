@@ -27,4 +27,12 @@ QA4. checking zero address for these two inputs are important
 [https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L32-L39](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L32-L39)
 
 
+QA5. The slightly wrong condition for the while-loop makes the ``_borrowLimit()`` function return ``(1, 0)`` when ``_assetAmount <= _desiredAmount``. ``_borrowLimit()`` should have returned ``(0, 0)`` in this case. 
 
+[https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L541](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L541)
+
+Mitigation. change the while condition to 
+```diff
+-      while (_assetAmount <= _desiredAmount) {
++       while (_assetAmount < _desiredAmount) {
+```
