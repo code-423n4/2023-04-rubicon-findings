@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "DijkstraDev",
+  "risk": "2",
+  "title": "**[M-01]** `buyEnabled` and `matchingEnabled` values are always `true` after initialize.",
+  "issueId": 523,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/523"
+}
