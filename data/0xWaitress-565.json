@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "_matcho does not check the return status of buy; but false would be returned if quantity is 0",
+  "issueId": 565,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/565"
+}
