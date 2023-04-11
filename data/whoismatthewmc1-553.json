@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "whoismatthewmc1",
+  "risk": "2",
+  "title": "User can front-run `batchRequote()`, `cancel()`, and `batchCancel()` to take advantage of more favourable offer terms before they are removed",
+  "issueId": 553,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/553"
+}
