@@ -1,0 +1,3 @@
+Unnecessary require: https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L144
+
+This require check is not necessary since the function `_bathify` is internal and only called during the creation of bathToken within `createBathToken`. However the `underlying` asset address passed on `createBathToken` invocation which is later forwarded to `_bathify` is already checked against the 0x00 here: https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L72, rendering the second check useless and gas consuming.
