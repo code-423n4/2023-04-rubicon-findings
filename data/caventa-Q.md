@@ -42,3 +42,9 @@ spawnBuddy function can be frontrunned
 8.
 
 msg.sender != address(0) && // @audit msg.sender is impossible to be address(0)
+
+9.
+
+2 contracts may have same name symbol decimal
+
+Should add token address as unique identifier
