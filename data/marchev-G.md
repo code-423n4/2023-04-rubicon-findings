@@ -1,7 +1,6 @@
 # Gas Report
 
 ### Summary
-
 |     | Issue | Instances | Total Gas Saved |
 | --- | --- | --- | --- |
 | [G-01] | `ds-math` usage is unnecessary | 2   | 4840 |
@@ -19,7 +18,6 @@ The reported issues constitute **135 instances** and **11 098 gas** saved.
 The `RubiconMarket.sol` contract uses the `ds-math` library which aims to prevent integer under/overflows. But this is unnecessary since the contract uses Solidity 0.8.9 which automatically takes care of integer under-/overflows.
 
 **Extra gas cost:**
-
 | Operation | Additional gas usage | Instances | Total extra gas used |
 | --- | --- | --- | --- |
 | `add` | 70  | 13  | 910 |
@@ -28,9 +26,7 @@ The `RubiconMarket.sol` contract uses the `ds-math` library which aims to preven
 | **Total:** |     |     | **4840** |
 
 *There are 2 instances of this issue:*
-
 - `constracts/RubiconMarket.sol`
-  
 - `contracts/utilities/poolsUtility/Position.sol`
   
 
@@ -42,10 +38,9 @@ Use a solidity version of at least 0.8.10 to have external calls skip contract e
 
 - `contracts/RubiconMarket.sol`
   
-  - ```solidity
-    pragma  solidity ^0.8.9;
-    ```
-    
+```solidity
+pragma solidity ^0.8.9;
+```
 
 ### [G-03] For loop post condition increment can be made unchecked
 
@@ -62,7 +57,6 @@ for (uint256 i = 0; i < length;) {
 
 For Solidity versions `>= 0.8.2` an inline function could be used for improved readability:
 
-````solidity
 ```solidity
 for (uint256 i = 0; i < length; i = unchecked_increment(i)) {
     // for loop logic goes here
@@ -73,9 +67,7 @@ function unchecked_increment(uint256 i) pure returns (uint256) {
         return i + 1;
     }
 }
-
 ```
-````
 
 **Extra gas cost:** ~68 per each iteration.
 
@@ -129,18 +121,13 @@ if (someCondition) {
 The `DSMath` library in `contracts/RubiconMarket.sol` contains 4 functions which contain division by two:
 
 - `wmul(uint256 x, uint256 y)`
-  
 - `rmul(uint256 x, uint256 y)`
-  
 - `wdiv(uint256 x, uint256 y)`
-  
 - `rdiv(uint256 x, uint256 y)`
   
-
 Those functions are called in secveral places throughout the codebase.
 
 *There are 15 instances of this issue:*
-
 | File | Instances | Links |
 | --- | --- | --- |
 | `contracts/RubiconMarket.sol` | 10  | [1045](https://github.com/code-423n4/2023-04-rubicon/bob/main/contracts/RubiconMarket.so#1045), [1056](https://github.com/code-423n4/2023-04-rubicon/bob/main/contracts/RubiconMarket.so#1056), [1058](https://github.com/code-423n4/2023-04-rubicon/bob/main/contracts/RubiconMarket.so#1058), [1085](https://github.com/code-423n4/2023-04-rubicon/bob/main/contracts/RubiconMarket.so#1085), [1098](https://github.com/code-423n4/2023-04-rubicon/bob/main/contracts/RubiconMarket.so#1098), [1100](https://github.com/code-423n4/2023-04-rubicon/bob/main/contracts/RubiconMarket.so#1100), [1141](https://github.com/code-423n4/2023-04-rubicon/bob/main/contracts/RubiconMarket.so#1141), [1143](https://github.com/code-423n4/2023-04-rubicon/bob/main/contracts/RubiconMarket.so#1143), [1174](https://github.com/code-423n4/2023-04-rubicon/bob/main/contracts/RubiconMarket.so#1174), [1176](https://github.com/code-423n4/2023-04-rubicon/bob/main/contracts/RubiconMarket.so#1176) |
