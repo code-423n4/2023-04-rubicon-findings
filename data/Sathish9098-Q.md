@@ -168,9 +168,13 @@ These functions can be called with 0 value in the input, this value is not check
 FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
 319: uint256 spend = mul(quantity, _offer.buy_amt) / _offer.pay_amt;
+1317: t_pay_amt = mul(t_buy_amt, t_pay_amt) / t_buy_amt_old;
 
 ```
 [RubiconMarket.sol#L319](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L319)
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L41
+
 
 ##
 
@@ -415,6 +419,24 @@ function setRewardsDuration(
 
 ```
 [BathBuddy.sol#L168-L177](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L168-L177)
+
+##
+
+## [L-12] Loss of precision due to rounding
+
+Add scalars so roundings are negligible.
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+338:  uint256 fee = mul(spend, feeBPS) / 100_000;
+346:  uint256 mFee = mul(spend, makerFee()) / 100_000;
+583:  _amount -= mul(amount, feeBPS) / 100_000;
+586:  _amount -= mul(amount, makerFee()) / 100_000;
+1317: t_pay_amt = mul(t_buy_amt, t_pay_amt) / t_buy_amt_old;
+
+```
+[RubiconMarket.sol#L338](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L338)
 
 ##
 
@@ -916,6 +938,64 @@ FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
 
 Contracts are [allowed](https://docs.soliditylang.org/en/latest/contracts.html#function-overriding) to override their parents’ functions and change the visibility from external to public.
 
+```solidity
+FILE: 2023-04-rubicon/contracts/BathHouseV2.sol
+
+45: function getBathTokenFromAsset(
+        address asset
+    ) public view returns (address) {
+
+```
+[BathHouseV2.sol#L45-L47](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L45-L47)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+574:  function getFeeBPS() public view returns (uint256) {
+1010: function getFirstUnsortedOffer() public view returns (uint256) {
+1016: function getNextUnsortedOffer(uint256 id) public view returns (uint256) {
+1020: function isOfferSorted(uint256 id) public view returns (bool) {
+
+1165: function getPayAmountWithFee(
+        ERC20 pay_gem,
+        ERC20 buy_gem,
+        uint256 buy_amt
+    ) public view returns (uint256 fill_amt) {
+
+
+```
+[RubiconMarket.sol#L574](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L574)
+
+##
+
+## [Nc-21] Use scientific notations rather than exponential notations
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1175-L1177
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1142-L1144
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1099-L1101
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1057-L1059
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L331
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L317
+
+##
+
+## [NC-22] Use underscores for number literals
+
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+459: uint256 _fee = _maxFill.mul(rubiconMarket.getFeeBPS()).div(10000);
+481: uint256 _fee = _minFill.mul(_feeBPS).div(10000);
+490:  _fee = _payAmount.mul(_feeBPS).div(10000);
+
+```
+### Recommended Mitigation
+
+```solidity
+459: uint256 _fee = _maxFill.mul(rubiconMarket.getFeeBPS()).div(10_000);
+
+
+```
 
 
 
@@ -932,7 +1012,11 @@ Contracts are [allowed](https://docs.soliditylang.org/en/latest/contracts.html#f
 
 
 
-PUBLIC FUNCTIONS NOT CALLED BY THE CONTRACT SHOULD BE DECLARED EXTERNAL INSTEAD
+
+
+
+
+Lack of pricirison 
 
 
 NC-1	Missing checks for address(0) when assigning values to address state variables	5
