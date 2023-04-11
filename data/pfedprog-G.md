@@ -135,3 +135,36 @@ modifier synchronized() {
     locked = false;
 }
 ```
+
+## [GAS-10] Do-while loops are cheaper than for loops
+
+Reference: https://twitter.com/arzdev/status/1634918610929082376
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BatchHouseV2.sol#L115-L128
+
+```
+function claimRewards(
+    address[] memory buddies,
+    address[] memory rewardsTokens
+) external {
+    // claim rewards from comptroller
+    comptroller.claimComp(msg.sender);
+    // get rewards from bathBuddy
+    for (uint256 i = 0; i < buddies.length; ++i) {
+        IBathBuddy(buddies[i]).getReward(
+            IERC20(rewardsTokens[i]),
+            msg.sender
+        );
+    }
+}
+```
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L887-L907
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L910-L914
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L917-L933
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L30-L35
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/FeeWrapper.sol#L28-L45
