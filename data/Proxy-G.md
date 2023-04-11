@@ -1,18 +1,18 @@
 ### Gas Optimizations List
 
-| Number | Optimization Details                                                                | Instances |
-| :----: | :---------------------------------------------------------------------------------- | :-------: |
-| [G-01] | Use multiple require() statments insted of require(expression && expression && ...) |     2     |
-| [G-02] | Optimal Comparison                                                                  |     4     |
-| [G-03] | Don't use SafeMath when using solidity >= 0.8.0                                     |    19     |
-| [G-04] | Use `calldata` instead of `memory` for function arguments that do not get mutated.  |     4     |
-| [G-05] | Pack structs                                                                        |     1     |
-| [G-06] | Use Short Revert Strings                                                            |     1     |
-| [G-07] | Mark functions as payable (with discretion)                                         |     9     |
-| [G-08] | Use custom errors instead of string error messages                                  |    11     |
-| [G-09] | Mark storage variables as `constant` if they never change or delete if never used.  |     2     |
-| [G-10] | Use assembly for math (add, sub, mul, div)                                          |     1     |
-| [G-11] | `unchecked{++i}` instead of `++i` / `i++` or use assembly when applicable           |    10     |
+| Number | Optimization Details                                                                              | Instances |
+| :----: | :------------------------------------------------------------------------------------------------ | :-------: |
+| [G-01] | Use multiple require() statments insted of require(expression && expression && ...)               |     2     |
+| [G-02] | Optimal Comparison                                                                                |     4     |
+| [G-03] | Don't use SafeMath when using solidity >= 0.8.0                                                   |    19     |
+| [G-04] | Use `calldata` instead of `memory` for function arguments that do not get mutated.                |     4     |
+| [G-05] | Pack structs                                                                                      |     1     |
+| [G-06] | Use Short Revert Strings                                                                          |     1     |
+| [G-07] | Mark functions as payable (with discretion)                                                       |     9     |
+| [G-08] | Use custom errors instead of string error messages                                                |    11     |
+| [G-09] | Mark storage variables as `constant` or `immutable` if they never change or delete if never used. |     6     |
+| [G-10] | Use assembly for math (add, sub, mul, div)                                                        |     1     |
+| [G-11] | `unchecked{++i}` instead of `++i` / `i++` or use assembly when applicable                         |    10     |
 
 Total 11 issues
 
@@ -24,6 +24,8 @@ Lines
 
 - [Position.sol:591](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L591-L594)
 - [Position.sol:595](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L595-L598)
+
+Code Snippet
 
 ```js
 function _leverageCheck(uint256 _leverage, bool _long) internal pure {
@@ -54,6 +56,8 @@ Lines
 - [Position.sol:592](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L592)
 - [Position.sol:596](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L596)
 
+Code Snippet (for one instance)
+
 ```js
 require(_amountToRepay <= _quoteBalance, "_repay: balance of quote lt. debt");
 ```
@@ -83,6 +87,8 @@ Lines
 - [Position.sol:570](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L570)
 - [Position.sol:588](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L588)
 
+Code Snippet (for one instance)
+
 ```js
 // check to prevent underflow!
 if (vars.initAssetBalance == 0) {
@@ -105,6 +111,8 @@ Lines
 - [FeeWrapper.sol:93](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/FeeWrapper.sol#L93)
 - [FeeWrapper.sol:109](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/FeeWrapper.sol#L109)
 
+Code Snippet
+
 ```js
 function calculateFee(uint256[] memory tokenAmounts, uint256 feeType, uint256 feeValue)...
 ```
@@ -116,6 +124,8 @@ When creating structs, make sure that the variables are listed in ascending orde
 Lines
 
 - [Position.sol:33](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L33-L40)
+
+Code Snippet
 
 ```js
 struct Position {
@@ -135,6 +145,8 @@ Keeping revert strings under 32-bytes prevents the string from being stored in m
 Lines
 
 - [BathBuddy.sol:238](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/periphery/BathBuddy.sol#L236-L239)
+
+Code Snippet (for one instance)
 
 ```js
 modifier onlyBathHouse() {
@@ -158,6 +170,8 @@ Lines
 - [Position.sol:226](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L226)
 - [Position.sol:242](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L242)
 - [V2Migrator.sol:38](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/V2Migrator.sol#L38)
+
+Code Snippet (for one instance)
 
 ```js
 function borrowBalance(address bathToken) public returns (uint256 balance) {
@@ -183,26 +197,28 @@ Lines
 - [V2Migrator.sol:56](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/V2Migrator.sol#L56)
 - [V2Migrator.sol:65](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/V2Migrator.sol#L65)
 
+Code Snippet (for one instance)
+
 ```js
 require(pos.isActive, "borrowBalanceOfPos: POS ISN'T ACTIVE");
 ```
 
-### [G-9] Mark storage variables as `constant` if they never change or delete if never used.
+### [G-9] Mark storage variables as `constant` or `immutable` if they never change or delete if never used.
 
-State variables can be declared as constant or immutable. In both cases, the variables cannot be modified after the contract has been constructed. For constant variables, the value has to be fixed at compile-time, while for immutable, it can still be assigned at construction time.
+State variables can be declared as `constant` or `immutable`. In both cases, the variables cannot be modified after the contract has been constructed. For `constant` variables, the value has to be fixed at compile-time, while for `immutable`, it can still be assigned at construction time.
 
 The compiler does not reserve a storage slot for these variables, and every occurrence is inlined by the respective value.
 
-Compared to regular state variables, the gas costs of constant and immutable variables are much lower. For a constant variable, the expression assigned to it is copied to all the places where it is accessed and also re-evaluated each time. This allows for local optimizations. Immutable variables are evaluated once at construction time and their value is copied to all the places in the code where they are accessed. For these values, 32 bytes are reserved, even if they would fit in fewer bytes. Due to this, constant values can sometimes be cheaper than immutable values.
+Compared to regular state variables, the gas costs of `constant` and `immutable` variables are much lower. For a `constant` variable, the expression assigned to it is copied to all the places where it is accessed and also re-evaluated each time. This allows for local optimizations. Immutable variables are evaluated once at construction time and their value is copied to all the places in the code where they are accessed. For these values, 32 bytes are reserved, even if they would fit in fewer bytes. Due to this, `constant` values can sometimes be cheaper than `immutable` values.
 
-Lines
+Lines to make constant or delete
 
 - [RubiconMarket.sol:682](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/RubiconMarket.sol#L682)
 - [RubiconMarket.sol:684](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/RubiconMarket.sol#L684)
 
-```js
-bool public AqueductDistributionLive;
-```
+Lines to make immutable
+
+- [Position.sol#L44-L47](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L44-L47)
 
 ### [G-10] Use assembly for math (add, sub, mul, div)
 
@@ -211,6 +227,8 @@ Use assembly for math instead of Solidity. You can check for overflow/underflow 
 Lines
 
 - [Position.sol:327](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/utilities/poolsUtility/Position.sol#L327)
+
+Code Snippet
 
 ```js
 uint256 _blockDelta = block.number - _startBlock;
@@ -232,6 +250,8 @@ Lines
 - [RubiconMarket.sol:899](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/RubiconMarket.sol#L899)
 - [RubiconMarket.sol:911](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/RubiconMarket.sol#L911)
 - [RubiconMarket.sol:924](https://github.com/RubiconDeFi/rubi-protocol-v2/blob/master/contracts/RubiconMarket.sol#L924)
+
+Code Snippet (for one instance)
 
 ```js
 for (uint256 i = 0; i < vars.limit; ++i) {
