@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Bauer",
+  "risk": "2",
+  "title": "Unsafe casting of user amount from uint256 to uint128",
+  "issueId": 521,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/521"
+}
