@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "Position._marketSell function will not work with usdt as it approves whole balance of contract to rubicon market",
+  "issueId": 569,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/569"
+}
