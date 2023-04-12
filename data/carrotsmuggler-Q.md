@@ -6,7 +6,7 @@ The reason this is necessary is because the code makes an assumption [here](http
 ```solidity
 _max = (_liq.mul(10 ** 18)).div(_price);
 ```
-This function calculates the maximum amount that can be borrowed. For a token like USDC, `_liq` is in 6 decimals. It is then raised by 18 decimals and divided by price. If the price reported is not in 18 decimals, it will lead to a decimal error and return very high values of max borrow which would revert since the contract actually cannot borrow that much when actually executing the transaction.
+This function calculates the maximum amount that can be borrowed. _liq is returned in 18 decimals. It is then raised by 18 decimals and divided by price. If the price reported is not in 18 decimals, it will lead to a decimal error and return very high values of max borrow which would revert since the contract actually cannot borrow that much when actually executing the transaction.
 
 Thus care must be taken to make sure all oracles return 18 decimals.
 
