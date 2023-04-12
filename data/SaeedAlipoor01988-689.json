@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "SaeedAlipoor01988",
+  "risk": "2",
+  "title": "becasue of rounding error in the BathBuddy.sol#L191.notifyRewardAmount(), some tokes will be locked and not distributed",
+  "issueId": 689,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/689"
+}
