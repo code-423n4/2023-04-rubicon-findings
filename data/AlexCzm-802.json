@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "AlexCzm",
+  "risk": "3",
+  "title": "Protocol fee is calculated using a wrong conversion factor ",
+  "issueId": 802,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/802"
+}
