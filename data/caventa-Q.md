@@ -79,13 +79,57 @@ Fee maybe 0
 
 4.
 
-In the 
+SafeMath library is not required in the solidity code which has version > 0.8.0 because the fixation of uint overflow and underflow problem is automatically applied.
+
+Hence, 
+
+add keyword should be replaced by +
+sub keyword should be replaced by -
+mod keyword should be replaced by *
+div keyword should be replaced by /
+
+For eg, 
+
+rewardsPerTokensStored[token].add(
+lastTimeRewardApplicable(token)
+.sub(lastUpdateTime[token])
+.mul(rewardRates[token])
+.mul(1e18)
+.div(IERC20(myBathTokenBuddy).totalSupply())
+);
+
+can be rewrite as
+
+rewardsPerTokensStored[token] + (
+lastTimeRewardApplicable(token)
+- lastUpdateTime[token]
+* rewardRates[token]
+* 1e18
+/ IERC20(myBathTokenBuddy).totalSupply())
+);
+
+5.
+
+If the soidity contract has function parameter asset and quote, we should check both address should be different. Like in the following function of Position.sol
+
+```
+function buyAllAmountWithLeverage(
+        address quote,
+        address asset,
+        uint256 quotePayAmount,
+        uint256 leverage
+    ) external onlyOwner {
+        +++ require(quote != asset);
+        //@audit what happened if quote and asset are the same
+        _leverageCheck(leverage, true);
+        require(
+            openPosition(quote, asset, quotePayAmount, leverage),
+            "buyAllAmountWithLeverage: FAILED TO OPEN POSITION"
+        );
+    }
+```
 
 6.
-
-Asset and quote can be the same
-
-7.
 
 spawnBuddy function can be frontrunned
 
