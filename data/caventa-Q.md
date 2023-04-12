@@ -156,3 +156,12 @@ function buyAllAmountWithLeverage(
         );
     }
 ```
+
+5.
+
+Reentrancy is possible in _rubicallPayable and _rubicall functions which could send all fees to someone without performing any real operation
+
+See 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L60-L73
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L76-L89
