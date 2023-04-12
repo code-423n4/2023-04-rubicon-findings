@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "CryptoCraze",
+  "risk": "3",
+  "title": "An attacker can steal all tokens of users that use `FeeWrapper`",
+  "issueId": 767,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/767"
+}
