@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "siddhpurakaran",
+  "risk": "2",
+  "title": "Migrator contract constructor can permanently set invalid values to state variable v1ToV2Pools.",
+  "issueId": 724,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/724"
+}
