@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "Position contract allows to interact with positions that are liquidated",
+  "issueId": 670,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/670"
+}
