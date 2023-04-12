@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "fs0c",
+  "risk": "3",
+  "title": "FeeWrapper can used to drain funds from other users wallet who approve funds to it.",
+  "issueId": 737,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/737"
+}
