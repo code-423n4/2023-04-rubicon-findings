@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "SaeedAlipoor01988",
+  "risk": "2",
+  "title": "rewardPerTokenStored at BathBuddy.sol#L248 can be inflated and rewards can be stolen",
+  "issueId": 692,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/692"
+}
