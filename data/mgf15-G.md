@@ -830,7 +830,7 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 626:    }
 ```
 
-[G-18] With assembly, .call (bool success) transfer can be done gas-optimized
+### [G-18] With assembly, .call (bool success) transfer can be done gas-optimized
 
 `return` data `(bool OK,)` has to be stored due to EVM architecture, but in a usage like below, ‘out’ and ‘outsize’ values are given (0,0), this storage disappears and gas optimization is provided.
 
