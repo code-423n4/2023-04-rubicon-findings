@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "thekmj",
+  "risk": "3",
+  "title": "`RubiconMarket`: Lack of slippage control in `buyAllAmount` and `sellAllAmount` opens up room for a MEV attack on market orders",
+  "issueId": 728,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/728"
+}
