@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "parlayan_yildizlar_takimi",
+  "risk": "3",
+  "title": "Reentrancy",
+  "issueId": 782,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/782"
+}
