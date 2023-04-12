@@ -1,0 +1,2 @@
+### [L-1] Maker and taker fee can be greater than 10_000
+The maker and taker fees can be set to any value. This is problematic when the values sum up to greater than 10_000. When `calcAmountAfterFee()` is called, it will revert due to overflow.
