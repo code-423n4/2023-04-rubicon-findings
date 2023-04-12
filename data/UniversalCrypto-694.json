@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "UniversalCrypto",
+  "risk": "2",
+  "title": "`placeMarketMakingTrades` wont work when using tokens that dont support max/infinite approval",
+  "issueId": 694,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/694"
+}
