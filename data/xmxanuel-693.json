@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "xmxanuel",
+  "risk": "3",
+  "title": "ERC20 token can get stucked in the FeeWrapper contract after interacting with the Router and can be stolen by anyone afterwards",
+  "issueId": 693,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/693"
+}
