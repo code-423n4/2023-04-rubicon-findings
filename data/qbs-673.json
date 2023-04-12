@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "qbs",
+  "risk": "2",
+  "title": "Missing external/public wrapper for BatchBuddy.getReward pausing functionality",
+  "issueId": 673,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/673"
+}
