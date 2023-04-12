@@ -6,9 +6,10 @@
 | [L-02] | function `getOwner` dosen't show the all possible owners after the migration | 1 |
 | [L-03] |lack of check of address(0) in claim reward functions | 1 |
 | [L-04] | consider adding `withdraw` function in feewrapper.sol | 1 | 
-| [L-05] | bad indexing of the variables / arrays | 1 | 
+| [L-05] | bad indexing of the variables / arrays | 1 |
+| [L-06] | lack of check of address(0) in `setRewardsDuration` function might lead to overflow | 1 | 
 
-| Total Low Risk Issues | 5 | 
+| Total Low Risk Issues | 6 | 
 |:--:|:--:|
 
 ### [L-01] lack of check of array.length of `buddies` and `rewarstokens`
@@ -105,3 +106,28 @@ function _savePosition(
 ```
 
 consider increasing the variable (++) at the end of the function
+
+
+
+### [L-06] lack of check of address(0) in `setRewardsDuration` function might lead to overflow
+though its an only owner function if they accidentally set it to zero, the function `notifyRewardAmount` is always reverted due to overflow/division by zero
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L232
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L196 
+
+consider adding the check _rewardsDuration!=0
+```solidity
+ function setRewardsDuration(
+        uint256 _rewardsDuration,
+        address token
+    ) external onlyOwner {
+        require(
+            block.timestamp > periodFinish[token],
+            "Previous rewards period must be complete before changing the duration for the new period"
+        );
+        require(_rewardsDuration!=0, "BRRRRRRRRRRRRRRRRRRRR");     //@audit-info
+        rewardsDuration[token] = _rewardsDuration;
+        emit RewardsDurationUpdated(rewardsDuration[token]);   
+    }
+```
