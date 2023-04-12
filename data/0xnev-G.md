@@ -16,10 +16,11 @@
 | [G-13] | Refactor `SimpleMarket.buy()` function   | 1 | - |
 | [G-14] | `set` functions do not require a return boolean value   | 3 | ~ 57345 |
 | [G-15] | State variables only set in constructor can be declared immutable  | 3 | 80000 |
+| [G-16] | Multiple address mappings can be combined into a single mapping of an address to a struct, where appropriate  | 12 | 240000 |
 
-| Total Found Issues | 15 |
+| Total Found Issues | 16 |
 |:--:|:--:|
-| Total Gas Savings | Estimated >= 257125 |
+| Total Gas Savings | Estimated >= 517222 |
 
 
 Note: Most values for gas savings are estimations using remix so take with discretion
@@ -499,3 +500,36 @@ Consider removing the return bool value as it is uneeded an incurs unecessary ga
 ```
 
 Avoids a Gsset (20000 gas) in the constructor, and replaces each Gwarmacces (100 gas) with a PUSH32 (3 gas).
+
+### [G-16] Multiple address mappings can be combined into a single mapping of an address to a struct, where appropriate
+[RubiconMarket.sol#L692-L694](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L692-L694)
+```solidity
+12 results - 3 files
+
+/RubiconMarket.sol
+692:    mapping(address => mapping(address => uint256)) public _best; //id of the highest offer for a token pair
+693:    mapping(address => mapping(address => uint256)) public _span; //number of offers stored for token pair in sorted orderbook
+694:    mapping(address => uint256) public _dust; //minimum sell amount for a token to avoid dust offers
+```
+[BathHouseV2.sol#L20-L21](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L20-L21)
+```solidity
+/BathHouseV2.sol
+20:    mapping(address => address) private tokenToBathToken;
+21:    mapping(address => address) private bathTokenToBuddy;
+```
+[BathBuddy.sol#L52-L56](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L51-L56)
+[BathBuddy.sol#L59-L61](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L59-L61)
+```solidity
+/BathBuddy.sol
+52:    mapping(address => uint256) public periodFinish; // Token specific
+53:    mapping(address => uint256) public rewardRates; // Token specific reward rates
+54:    mapping(address => uint256) public rewardsDuration; // Can be kept global but can also be token specific
+55:    mapping(address => uint256) public lastUpdateTime; //Token specific
+56:    mapping(address => uint256) public rewardsPerTokensStored; // Token specific
+
+59:    mapping(address => mapping(address => uint256))
+60:        public userRewardsPerTokenPaid; // ATTEMPTED TOKEN AGNOSTIC
+61:    mapping(address => mapping(address => uint256)) public tokenRewards; // ATTEMPTED TOKEN AGNOSTIC
+```
+
+Saves a storage slot for the mapping. Depending on the circumstances and sizes of types, can avoid a Gsset (20000 gas) per mapping combined. Reads and subsequent writes can also be cheaper when a function requires both values and they both fit in the same storage slot. Finally, if both fields are accessed in the same function, can save ~42 gas per access due to not having to recalculate the key’s keccak256 hash (Gkeccak256 - 30 gas) and that calculation’s associated stack operations.
