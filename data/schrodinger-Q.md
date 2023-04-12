@@ -6,7 +6,7 @@
 | [L-02] | function `getOwner` dosen't show the all possible owners after the migration | 1 |
 | [L-03] |lack of check of address(0) in claim reward functions | 1 |
 | [L-04] | consider adding `withdraw` function in feewrapper.sol | 1 | 
-| [L-04] | bad indexing of the variables / arrays | 1 | 
+| [L-05] | bad indexing of the variables / arrays | 1 | 
 
 | Total Low Risk Issues | 5 | 
 |:--:|:--:|
