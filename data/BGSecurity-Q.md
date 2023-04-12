@@ -1,6 +1,6 @@
 ## Introduction
 
-Rubicon QA report was done by martin and georgi, with a main focus on the low severity and non-critical security aspects of the implementaion and logic of the project.
+Rubicon QA report was done by martin and anonresercher, with a main focus on the low severity and non-critical security aspects of the implementaion and logic of the project.
 
 ## Findings Summary
 
