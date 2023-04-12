@@ -279,7 +279,7 @@ FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
 
 ## [L-9] Don’t use payable.call()
 
-This means the following cases can cause the transfer to fail:
+payable.call() is a low-level method that can be used to send ether to a contract, but it has some limitations and risks as you've pointed out. One of the primary risks of using payable.call() is that it doesn't guarantee that the contract's payable function will be called successfully. This can lead to funds being lost or stuck in the contract
 
 - The contract does not have a payable callback
 - The contract’s payable callback spends more than 2300 gas (which is only enough to emit something)
@@ -437,6 +437,66 @@ FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
 
 ```
 [RubiconMarket.sol#L338](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L338)
+
+##
+
+## [L-13] Low-level calls that are unnecessary for the system should be avoided
+
+Low-level calls that are unnecessary for the system should be avoided whenever possible because low-level calls behave differently from a contract-type call. For example;
+
+address.call(abi.encodeWithSelector("fancy(bytes32)", mybytes))`` does not verify that a target is actually a contract, while ContractInterface(address).fancy(mybytes) does.
+
+Additionally, when calling out to functions declared view/pure, the solidity compiler would actually perform a staticcall providing additional security guarantees while a low-level call does not. Similarly, return values have to be decoded manually when performing low-level calls.
+
+Note: if a low-level call needs to be performed, consider relying on Contract.function.selector instead of encoding using a hardcoded ABI string
+
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/FeeWrapper.sol
+
+118: (bool OK, ) = payable(_feeTo).call{value: _feeAmount}("");
+
+```
+[FeeWrapper.sol#L118](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L118)
+
+##
+
+## [L-14] Project Upgrade and Stop Scenario should be
+
+At the start of the project, the system may need to be stopped or upgraded, I suggest you have a script beforehand and add it to the documentation. This can also be called an ” EMERGENCY STOP (CIRCUIT BREAKER) PATTERN 
+
+https://github.com/maxwoe/solidity_patterns/blob/master/security/EmergencyStop.sol
+
+##
+
+## [L-15] Update codes to avoid Compile Errors
+
+```solidity
+
+warning[2018]: Warning: Function state mutability can be restricted to view
+   --> contracts/RubiconMarket.sol:297:5:
+    |
+297 |     function bump(bytes32 id_) external can_buy(uint256(id_)) {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+
+warning[2018]: Warning: Function state mutability can be restricted to pure
+  --> contracts/utilities/FeeWrapper.sol:28:5:
+   |
+28 |     function calculateFee(
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+
+warning[2018]: Warning: Function state mutability can be restricted to view
+   --> contracts/utilities/poolsUtility/Position.sol:526:5:
+    |
+526 |     function _borrowLimit(
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+```
+
+
 
 ##
 
@@ -659,9 +719,6 @@ Consider adding NATSPEC on all public/external functions to improve documentatio
 (https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L801-L810)
 (https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L824-L833)
 (https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L885-L892)
-()
-()
-()
 
 ##
 
@@ -722,57 +779,24 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
 ##
 
-## [NC-11] Considered good practice to include a descriptive error message
-
-A good error message should be clear and concise, providing enough information to help the user or developer understand what went wrong and how to fix it. It should also be specific to the error that occurred, rather than a generic or vague message that doesn't provide any useful information
+## [NC-11] Use a more recent version of solidity
 
 ```solidity
 FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
-246: require(isActive(id));
-252: require(isActive(id));
-253: require(
-            (msg.sender == getOwner(id)) ||
-                (msg.sender == getRecipient(id) && getOwner(id) == address(0))
-        );
-265: require(!locked);
-
-460: ? require(_offer.pay_gem.transfer(_offer.recipient, _offer.pay_amt)): 
-461: require(_offer.pay_gem.transfer(_offer.owner, _offer.pay_amt));
-
-488: require(cancel(uint256(id)));
-
-538: require(pay_gem.transferFrom(msg.sender, address(this), pay_amt));
-
-565: require(buy(uint256(id), maxTakeAmount));
-
-581: require(amount > 0);
-
-598: require(!isClosed());
-
-604: require(isActive(id));
-605: require(!isClosed());
-
-612: require(
-            (msg.sender == getOwner(id)) ||
-                isClosed() ||
-                (msg.sender == getRecipient(id) && getOwner(id) == address(0))
-        );
-
-625:  return uint64(block.timestamp);
-
-753: require(buy(uint256(id), maxTakeAmount));
-
-757: require(cancel(uint256(id)));
-
-938: require(!locked);
-
-940: require(
-            !isActive(id) &&
-                _rank[id].delb != 0 &&
-                _rank[id].delb < block.number - 10
-        );
+2: pragma solidity ^0.8.9;
 ```
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/FeeWrapper.sol
+
+2: pragma solidity 0.8.17;
+```
+```solidity
+FILE: 2023-04-rubicon/contracts/periphery/BathBuddy.sol
+
+2: pragma solidity ^0.8.0;
+```
+
 ##
 
 ## [NC-12] NATSPEC COMMENTS SHOULD BE INCREASED IN CONTRACTS
@@ -799,12 +823,6 @@ Consider changing the variable to be an unnamed one
 (https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L578-L580)
 (https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L620-L622)
 (https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1028-L1034)
-()
-()
-()
-()
-()
-()
 
 ##
 
@@ -911,8 +929,7 @@ Consider using only one approach throughout the codebase, e.g. only uint or only
 
 (https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L781-L785)
 (https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L918-L921)
-()
-()
+
 
 ##
 
@@ -968,7 +985,7 @@ FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
 
 ##
 
-## [Nc-21] Use scientific notations rather than exponential notations
+## [NC-21] Use scientific notations rather than exponential notations
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1175-L1177
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1142-L1144
@@ -989,16 +1006,187 @@ FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 490:  _fee = _payAmount.mul(_feeBPS).div(10000);
 
 ```
+```solidity
+FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
+
+346:  uint256 mFee = mul(spend, makerFee()) / 100_000;
+338:  uint256 fee = mul(spend, feeBPS) / 100_000;
+
+583:  _amount -= mul(amount, feeBPS) / 100_000;
+583: _amount -= mul(amount, makerFee()) / 100_000;
+
+```
+[RubiconMarket.sol#L583](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L583)
+
+
 ### Recommended Mitigation
 
 ```solidity
 459: uint256 _fee = _maxFill.mul(rubiconMarket.getFeeBPS()).div(10_000);
 
+```
+
+##
+
+## [NC-23] Unused variables 
+
+```solidity
+
+warning[5667]: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> contracts/utilities/poolsUtility/Position.sol:528:9:
+    |
+528 |         address _asset,
+    |         ^^^^^^^^^^^^^^
+
+warning[2072]: Warning: Unused local variable.
+   --> contracts/RubiconMarket.sol:298:9:
+    |
+298 |         uint256 id = uint256(id_);
+    |         ^^^^^^^^^^
+
 
 ```
 
+##
 
+## [NC-24] Keccak Constant values should used to immutable rather than constant
 
+There is a difference between constant variables and immutable variables, and they should each be used in their appropriate contexts.
+
+While it doesn’t save any gas because the compiler knows that developers often make this mistake, it’s still best to use the right tool for the task at hand
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+232: bytes32 internal constant MAKER_FEE_SLOT = keccak256("WOB_MAKER_FEE");
+
+```
+[RubiconMarket.sol#L232](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L232)
+
+##
+
+## [Nc-25] Tokens accidentally sent to the contract cannot be recovered
+
+### Context
+contracts/staking/NeoTokyoStaker.sol:
+
+It can’t be recovered if the tokens accidentally arrive at the contract address, which has happened to many popular projects, so I recommend adding a recovery code to your critical contracts.
+
+### Recommended Mitigation Steps
+Add this code:
+
+ /**
+  * @notice Sends ERC20 tokens trapped in contract to external address
+  * @dev Onlyowner is allowed to make this function call
+  * @param account is the receiving address
+  * @param externalToken is the token being sent
+  * @param amount is the quantity being sent
+  * @return boolean value indicating whether the operation succeeded.
+  *
+ */
+  function rescueERC20(address account, address externalToken, uint256 amount) public onlyOwner returns (bool) {
+    IERC20(externalToken).transfer(account, amount);
+    return true;
+  }
+}
+
+##
+
+## [NC-26] Use SMTChecker
+
+The highest tier of smart contract behavior assurance is formal mathematical verification. All assertions that are made are guaranteed to be true across all inputs → The quality of your asserts is the quality of your verification.
+
+https://twitter.com/0xOwenThurm/status/1614359896350425088?t=dbG9gHFigBX85Rv29lOjIQ&s=19
+
+##
+
+## [NC-27] Constants on the left are better
+
+If you use the constant first you support structures that veil programming errors. And one should only produce code either to add functionality, fix an programming error or trying to support structures to avoid programming errors (like design patterns).
+
+https://www.moserware.com/2008/01/constants-on-left-are-better-but-this.html
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1040
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1080
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1233
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1244
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1252
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1319
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1372
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1392
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1426
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L392-L393
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L340
+
+##
+
+## [NC-28] Use constants instead of using numbers directly  
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L490
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L481
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L459
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L346
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L338
+
+##
+
+## [NC-29] According to the syntax rules, use => mapping ( instead of => mapping( using spaces as keyword
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+691: mapping(uint256 => sortInfo) public _rank; 
+692: mapping(address => mapping(address => uint256)) public _best; 
+693: mapping(address => mapping(address => uint256)) public _span;  sorted orderbook
+694: mapping(address => uint256) public _dust; 
+695: mapping(uint256 => uint256) public _near; 
+```
+### Recommended Mitigation
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+691: mapping (uint256 => sortInfo) public _rank; 
+```
+
+##
+
+## [NC-30] Assembly Codes Specific – Should Have Comments
+
+Since this is a low level language that is more difficult to parse by readers, include extensive documentation, comments on the rationale behind its use, clearly explaining what each assembly instruction does.
+
+This will make it easier for users to trust the code, for reviewers to validate the code, and for developers to build on or update the code.
+
+Note that using Assembly removes several important security features of Solidity, which can make the code more insecure and more error-prone.
+
+```Solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+648:  assembly {
+```
+[RubiconMarket.sol#L648](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L648)
+
+```solidity
+FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+367:  assembly {
+
+```
+##
+
+## [NC-31] Large multiples of ten should use scientific notation (e.g. 1e5) rather than decimal literals (e.g. 100000), for readability
+
+```solidity
+FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
+
+346:  uint256 mFee = mul(spend, makerFee()) / 100_000;
+338:  uint256 fee = mul(spend, feeBPS) / 100_000;
+
+583:  _amount -= mul(amount, feeBPS) / 100_000;
+583: _amount -= mul(amount, makerFee()) / 100_000;
+
+```
+[RubiconMarket.sol#L583](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L583)
 
 
 
