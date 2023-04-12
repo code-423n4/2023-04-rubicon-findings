@@ -26,4 +26,8 @@ QA4. checking zero address for these two inputs are important
 
 [https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L32-L39](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L32-L39)
 
+QA5. The ``buy()`` function fails to check if an NFT is stolen or not. This is important since when an NFT is sold, people might not have known it is stolen, and then after that, it is report that an NFT A is stolen, which has been sold to the contract. It is important to not to allow people to buy stolen NFT as well.
 
+[https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L211-L289](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L211-L289)
+
+Mitigation: check if an NFT is stolen as well during buying. 
