@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "CryptoCraze",
+  "risk": "3",
+  "title": "Offer with a blacklisted recipient can block all other offers",
+  "issueId": 768,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/768"
+}
