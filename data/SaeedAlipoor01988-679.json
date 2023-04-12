@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "SaeedAlipoor01988",
+  "risk": "2",
+  "title": "precision loss in getReward BathBuddy.sol#L139.earned function",
+  "issueId": 679,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/679"
+}
