@@ -6,8 +6,9 @@
 | [L-02] | function `getOwner` dosen't show the all possible owners after the migration | 1 |
 | [L-03] |lack of check of address(0) in claim reward functions | 1 |
 | [L-04] | consider adding `withdraw` function in feewrapper.sol | 1 | 
+| [L-04] | bad indexing of the variables / arrays | 1 | 
 
-| Total Low Risk Issues | 4 |
+| Total Low Risk Issues | 5 | 
 |:--:|:--:|
 
 ### [L-01] lack of check of array.length of `buddies` and `rewarstokens`
@@ -75,3 +76,32 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L82
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L118
+
+
+### [L-05] bad indexing of the variables 
+variable indexing starts from index 1 instead of 0
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L407
+```solidity
+function _savePosition(
+        address _asset,
+        address _quote,
+        uint256 _borrowedAmount,
+        uint256 _currentBathTokenAmount
+    ) internal {
+        lastPositionId++;
+        Position memory pos = Position(  //@audit-issue position0 is unused?
+            _asset,
+            _quote,
+            _borrowedAmount,
+            _currentBathTokenAmount,
+            block.number,
+            true
+        );
+        positions[lastPositionId] = pos;
+
+        emit PositionOpened(lastPositionId, pos);
+    }
+```
+
+consider increasing the variable (++) at the end of the function
