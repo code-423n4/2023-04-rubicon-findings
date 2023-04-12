@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "mrpathfindr",
+  "risk": "2",
+  "title": "The function buys() contains an internal function that will always return false. Leading to unexpected results ",
+  "issueId": 725,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/725"
+}
