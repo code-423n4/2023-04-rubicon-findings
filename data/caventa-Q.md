@@ -1,6 +1,6 @@
 1.
 
-initialize functions and spawnBuddy function can be front-run. The initialize function that initializes important contract state can be called by anyone.
+initialize functions and spawnBuddy function can be front-run. The functions that initialize important contract state can be called by anyone.
 
 Occurences:
 
@@ -59,7 +59,7 @@ BathBuddy.spawnBuddy
     }
 ```
 
-The attacker can call the function before the legitimate deployer, hoping that the victim continues to use the same contract. In the best case for the victim, they notice it and have to redeploy their contract costing gas.
+The attacker can call the functions before the legitimate deployer, hoping that the victim continues to use the same contract. In the best case for the victim, they notice it and have to redeploy their contract costing gas.
 
 Recommend using the constructor to initialize non-proxied contracts. For initializing proxy contracts, recommend deploying contracts using a factory contract that immediately calls function after deployment, or make sure to call it immediately after deployment and verify the transaction succeeded.
 
@@ -68,7 +68,8 @@ Recommend using the constructor to initialize non-proxied contracts. For initial
 See FeeWrapper.sol,
 
 Feetype maybe 0 which will always cause the function always revert at this line of code
-```fees[i] = (tokenAmounts[i] * feeValue) / feeType;```
+```fees[i] = (tokenAmounts[i] * feeValue) / feeType;```. 
+To fix this, add a require function to ensure the value will be never to be zero (See below).
 
 ```
     function calculateFee(
@@ -91,15 +92,10 @@ Feetype maybe 0 which will always cause the function always revert at this line 
     }
 ```
 
-To fix this, add a require function. (See above).
+3.
 
-3. 
-
-Fee maybe 0
-
-4.
-
-SafeMath library is not required in the solidity code which has version > 0.8.0 because the fixation of uint overflow and underflow problem is automatically applied.
+SafeMath library is not required in version 0.8.
+Overflow and underflow problems which could happen in uint arithmetic operations is automatically checked in version 0.8.
 
 Hence, 
 
@@ -107,6 +103,12 @@ add keyword should be replaced by +
 sub keyword should be replaced by -
 mod keyword should be replaced by *
 div keyword should be replaced by /
+
+and 
+
+SafeMath should not be imported
+
+in BathBuddy.sol and Position.sol
 
 For eg, 
 
@@ -118,7 +120,7 @@ lastTimeRewardApplicable(token)
 .div(IERC20(myBathTokenBuddy).totalSupply())
 );
 
-can be rewrite as
+can be rewritten as
 
 rewardsPerTokensStored[token] + (
 lastTimeRewardApplicable(token)
@@ -128,9 +130,15 @@ lastTimeRewardApplicable(token)
 / IERC20(myBathTokenBuddy).totalSupply())
 );
 
-5.
+4.
 
-If the soidity contract has function parameter asset and quote, we should check both address should be different. Like in the following function of Position.sol
+In position.sol, 
+
+buyAllAmountWithLeverage and sellAllAmountWithLeverage are the public functions which have asset and quote parameters.
+
+The addresses for asset and quote could be the same and this should be prevented.
+
+Like in buyAllAmountWithLeverage function, add another code line to prevent quote == asset.
 
 ```
 function buyAllAmountWithLeverage(
