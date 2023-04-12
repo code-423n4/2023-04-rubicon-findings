@@ -45,24 +45,41 @@ Recommend using the constructor to initialize non-proxied contracts. For initial
 
 2.
 
-```solidity
-_name = string.concat("bath", ERC20(_underlying).symbol());
-_symbol = string.concat(_name, "v2"); // @audit symbol is weird after concateanation
+See FeeWrapper.sol,
+
+Feetype maybe 0 which will always cause the function always revert at this line of code
+```fees[i] = (tokenAmounts[i] * feeValue) / feeType;```
+
+```
+    function calculateFee(
+        uint256[] memory tokenAmounts,
+        uint256 feeType,
+        uint256 feeValue
+    )
+        external
+        view
+        returns (uint256[] memory amountsWithFee, uint256[] memory fees)
+    {
+        +++ require(feeType >0, 'Fee Type should not be 0');
+        amountsWithFee = new uint256[](tokenAmounts.length);
+        fees = new uint256[](tokenAmounts.length);
+
+        for (uint256 i = 0; i < tokenAmounts.length; ++i) {
+            fees[i] = (tokenAmounts[i] * feeValue) / feeType;
+            amountsWithFee[i] = tokenAmounts[i] - fees[i];
+        }
+    }
 ```
 
-Maybe reverse
+To fix this, add a require function. (See above).
 
-3.
-
-Feetype maybe 0
-
-4. 
+3. 
 
 Fee maybe 0
 
-5.
+4.
 
-No need safeMath
+In the 
 
 6.
 
