@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "xmxanuel",
+  "risk": "2",
+  "title": "BathHouseV2 contract uses a hot deployment key as admin which can't be changed later",
+  "issueId": 742,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/742"
+}
