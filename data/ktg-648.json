@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ktg",
+  "risk": "3",
+  "title": "Rounding of rewardRates is not handled properly",
+  "issueId": 648,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/648"
+}
