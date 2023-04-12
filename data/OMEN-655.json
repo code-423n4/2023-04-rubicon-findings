@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "OMEN",
+  "risk": "3",
+  "title": "function buyAllAmountWithLeverage() and sellAllAmountWithLeverage() wont work cuz of lack of safe approve to zero first",
+  "issueId": 655,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/655"
+}
