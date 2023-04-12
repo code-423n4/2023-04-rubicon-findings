@@ -189,13 +189,5 @@ If _params.target is set to own _rubicallPayable function, both line 1 and line 
 To fix this potential reentrancy problem,
 
 add ReentrancyGuard to parent function (which is rubicall)
-See https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard 
+See https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard
 
-6. 
-
-Fee could be greater than the exact amount passed into the function
-
-See
-
-https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L60-L73
-https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L76-L89
