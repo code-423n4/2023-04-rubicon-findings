@@ -1,14 +1,6 @@
-## 2023-04-rubicon Quality Assurance Report
+## 2023-04-rubicon Low and Quality Assurance Report
 
-### Unspecific Compiler Version Pragma - pragma ^
-A known vulnerable compiler version may accidentally be selected or security tools might fall-back to an older compiler version ending up checking a different EVM compilation that is ultimately deployed on the blockchain.
-
-Solidity 0.8.17 is spicified in other in scoped contracts which is not bleeding edge yet suffieciently tested. Avoid Solidity 0.8.13 and 0.8.14 because they contain some encoding and assembly errors. Really it is a  simple change to bring the two files in question into alignment with the rest of the project at 0.8.17.
-
-- [RubiconMarket.sol](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L2)```pragma solidity ^0.8.9;```
-- [BathBuddy.sol](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L2)```pragma solidity ^0.8.0;```
-
-### Modified DSAuth leaves isAuthorized() useless
+### Modified DSAuth Leaves isAuthorized() Pointless
 Use of a modified vesion of the [DSAuth](https://github.com/dapphub/ds-auth) source has been added to the project in [RubiconMarket.sol](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L15-L42). A key part of the autorization is function [isAuthorized()](https://github.com/dapphub/ds-auth/blob/a51e7caa1f03eeffed66d67f3b38605e0f1f881d/src/auth.sol#L58). 
 Because the main authorization check logic has been heavily modified in [RubiconMarket.sol](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L35-L41) to the point where ```isAuthorized()``` is rendered esentially useless, with the logic being able to be moved to the modifier [auth()](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L30-L33) to both save gas and have the same authorization effect.
 
@@ -82,4 +74,12 @@ index 219e915..b497060 100644
 -        }
 -    }
  }
- ```
+```
+
+### Unspecific Compiler Version Pragma - pragma ^
+A known vulnerable compiler version may accidentally be selected or security tools might fall-back to an older compiler version ending up checking a different EVM compilation that is ultimately deployed on the blockchain.
+
+Solidity 0.8.17 is spicified in other in scoped contracts which is not bleeding edge yet suffieciently tested. Avoid Solidity 0.8.13 and 0.8.14 because they contain some encoding and assembly errors. Really it is a  simple change to bring the two files in question into alignment with the rest of the project at 0.8.17.
+
+- [RubiconMarket.sol](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L2)```pragma solidity ^0.8.9;```
+- [BathBuddy.sol](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L2)```pragma solidity ^0.8.0;```
