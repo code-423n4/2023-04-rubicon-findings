@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ElKu",
+  "risk": "3",
+  "title": "shadowed state variable owner in RubiconMarket contract",
+  "issueId": 733,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/733"
+}
