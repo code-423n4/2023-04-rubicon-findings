@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Inspex",
+  "risk": "2",
+  "title": " Improper `this.offer()` Function Call Causes the Batch Functions to be Unusable",
+  "issueId": 688,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/688"
+}
