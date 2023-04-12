@@ -709,3 +709,82 @@ Change the code as below:
 +        emit RewardsDurationUpdated(_rewardsDuration, token); // @audit non-critical (token, _rewardsDuration)
     }
 ```
+
+
+## NC-18 Set the `symbol` of BathToken V1 and V2 compatible
+
+In `BathTokenV1` contract, the `symbol` and `name` is defined as follow: 
+
+[https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathTokenV1.sol#L258-L266](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathTokenV1.sol#L258-L266)
+
+```solidity
+File: BathTokenV1.sol
+257:         require(!initialized);
+258:         string memory _symbol = string(
+259:             abi.encodePacked(("bath"), token.symbol())
+260:         );
+261:         symbol = _symbol;
+```
+
+But in `BathHouseV2` contract, the `symbol` and `name` is defined as follow: 
+
+[https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L143-L149](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L143-L149)
+
+```solidity
+File: BathHouseV2.sol
+137:     function _bathify(
+138:         address _underlying
+139:     )
+140:         internal
+141:         view
+142:         returns (string memory _name, string memory _symbol, uint8 _decimals)
+143:     {
+144:         require(_underlying != address(0), "_bathify: ADDRESS ZERO");
+145: 
+146:         _name = string.concat("bath", ERC20(_underlying).symbol());
+147:         _symbol = string.concat(_name, "v2"); 
+						// @audit token symbol is not consistent with bath token v1. v1 is "bath" + underlying token symbol. v2 is "bath" + underlying token symbol + "v2". name should be with the `v2` suffix as what is done in the BathTokenV1 contract.
+148:         _decimals = ERC20(_underlying).decimals();
+149:     }
+```
+
+Symbols should be consistent and compatible with each other no matter it is Bath Token V1 or V2. They should be "bath" + underlying token symbol without the `v2` suffix as determined by V1 version. 
+
+In this way, in the `V2Migrator`’s constructor, we can use the code as follows to validate the arguments as I mentioned in my Med submission. 
+
+[https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L29-L35](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L29-L35)
+
+```solidity
+File: V2Migrator.sol
+27: 
+28:     /// @dev underlying tokens should be the same for corresponding pools
+29:     /// i.e. USDC -> USDC, WETH -> WETH, etc.
+30:     constructor(address[] memory bathTokensV1, address[] memory bathTokensV2) {
+31:         for (uint256 i = 0; i < bathTokensV1.length; ++i) {
+32:             // set v1 to v2 bathTokens // @audit add a validation check statement to ensure that the length of the two arrays are the same. And add a `require(IERC20(bathTokensV1[i]).symbol() == IERC20(bathTokenV2[i]).symbol());` -> this can make sure that the underlying tokens are the same and nothing will go as unexpected. -> symbol should be consistent with v1 and v2 it should be "bath" + underlying token symbol without the `v2` suffix. If the addresses is in disorder, then there is a risk that the bathToken is migrated to the wrong v2 bathToken, cause total mess of the system.
+33:             v1ToV2Pools[bathTokensV1[i]] = bathTokensV2[i];
+34:         }
+35:     }
+```
+
+### Recommendation
+
+Change the code as follow to make the symbol and name consistent and compatible with each other.  
+
+```diff
+	function _bathify(
+        address _underlying
+    )
+        internal
+        view
+        returns (string memory _name, string memory _symbol, uint8 _decimals)
+    {
+        require(_underlying != address(0), "_bathify: ADDRESS ZERO");
+
+-        _name = string.concat("bath", ERC20(_underlying).symbol());
+-        _symbol = string.concat(_name, "v2"); // @audit non-critical token symbol is not consistent with bath token v1. v1 is "bath" + underlying token symbol. v2 is "bath" + underlying token symbol + "v2". name should be with the `v2` suffix as what is done in the BathTokenV1 contract.
++       _symbol = string.concat("bath", ERC20(_underlying).symbol());
++				_name = string(abi.encodePacked(_symbol, (" v2")));
+        _decimals = ERC20(_underlying).decimals();
+    }
+```
