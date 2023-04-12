@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Ace-30",
+  "risk": "3",
+  "title": "BathBuddy.updateReward() must be called **before** changing the totalSupply (minting new bathTokens)",
+  "issueId": 680,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/680"
+}
