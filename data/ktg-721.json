@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ktg",
+  "risk": "2",
+  "title": "No way to claim reward of across all pools like commented in BathHouseV2.claimRewards function",
+  "issueId": 721,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/721"
+}
