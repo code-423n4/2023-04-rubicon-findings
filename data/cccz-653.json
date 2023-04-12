@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cccz",
+  "risk": "2",
+  "title": "When _assetBalance < _payAmount in _marketSell, no additional fee should be added to the number of assets provided by the user.",
+  "issueId": 653,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/653"
+}
