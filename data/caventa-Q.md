@@ -159,12 +159,37 @@ function buyAllAmountWithLeverage(
 
 5.
 
-Reentrancy is possible in _rubicallPayable and _rubicall functions which could send all fees to someone without performing any real operation
+Reentrancy is possible in _rubicallPayable and _rubicall functions which could send all fees without performing call to a router function.
 
 See 
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L60-L73
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L76-L89
+
+In the _rubicall function,
+
+_chargeFee(_params.feeParams, _params.target); // line 1
+
+(bool _OK, bytes memory _data) = _params.target.call( // line 2
+  bytes.concat(_params.selector, _params.args)
+);
+
+If _params.target is set to own _rubicall function, both line 1 and line 2 will be executed recursively and drain all fee
+
+In the _rubicallPayable function,
+
+uint256 _msgValue = _chargeFeePayable(_params.feeParams); // line 1
+
+(bool _OK, bytes memory _data) = _params.target.call{value: _msgValue}( // line 2
+  bytes.concat(_params.selector, _params.args)
+);
+
+If _params.target is set to own _rubicallPayable function, both line 1 and line 2 will be executed recursively and drain all msg.value as fee
+
+To fix this potential reentrancy problem,
+
+add ReentrancyGuard to parent function (which is rubicall)
+See https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard 
 
 6. 
 
