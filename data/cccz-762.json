@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cccz",
+  "risk": "2",
+  "title": "getPayAmountWithFee is calculated incorrectly, it should add the fee instead of subtracting it",
+  "issueId": 762,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/762"
+}
