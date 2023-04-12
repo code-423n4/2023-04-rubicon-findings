@@ -413,12 +413,6 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
 [RubiconMarket.sol#L620-L622](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L620-L622)
 (https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L870-L873)
-()
-()
-()
-()
-()
-()
 
 ##
 
@@ -865,9 +859,40 @@ FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
 ```
 [RubiconMarket.sol#L55](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L55)
 
+##
 
+## [G-23] Multiple accesses of a mapping/array should use a local variable cache
 
-Multiple accesses of a mapping/array should use a local variable cache
+The instances below point to the second+ access of a value inside a mapping/array, within a function. Caching a mapping’s value in a local storage or calldata variable when the value is accessed multiple times, saves ~42 gas per access due to not having to recalculate the key’s keccak256 hash (Gkeccak256 - 30 gas) and that calculation’s associated stack operations. Caching an array’s struct avoids recalculating the array offsets into memory/calldata.
+
+```solidity
+FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
+
+_rank[id].delb value should be cached 
+
+942: _rank[id].delb != 0 &&
+943: _rank[id].delb < block.number - 10
+
+```
+[](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L942-L943)
+
+##
+
+## [G-24] Cache the repeated functions instead of recalling 
+
+```solidity
+FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
+
+makerFee() function should be cached 
+
+345: if (makerFee() > 0) {
+346: uint256 mFee = mul(spend, makerFee()) / 100_000;
+
+585: if (makerFee() > 0) {
+586: _amount -= mul(amount, makerFee()) / 100_000;
+
+```
+[RubiconMarket.sol#L345-L346](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L345-L346)
 
 
 GAS-1	Use assembly to check for address(0)	14
