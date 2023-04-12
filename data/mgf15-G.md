@@ -193,7 +193,55 @@ File: 2023-04-rubicon/contracts/utilities/FeeWrapper.sol
 49:         CallParams memory params
 
 ```
+```diff
+diff --git a/contracts/V2Migrator.sol b/contracts/V2Migrator.sol
+index e226785..b6d088e 100644
+--- a/contracts/V2Migrator.sol
++++ b/contracts/V2Migrator.sol
+@@ -27,7 +27,7 @@ contract V2Migrator {
+ 
+     /// @dev underlying tokens should be the same for corresponding pools
+     /// i.e. USDC -> USDC, WETH -> WETH, etc.
+-    constructor(address[] memory bathTokensV1, address[] memory bathTokensV2) {
++    constructor(address[] calldata bathTokensV1, address[] calldata bathTokensV2) {
+         for (uint256 i = 0; i < bathTokensV1.length; ++i) {
+             // set v1 to v2 bathTokens
+             v1ToV2Pools[bathTokensV1[i]] = bathTokensV2[i];
+diff --git a/contracts/utilities/FeeWrapper.sol b/contracts/utilities/FeeWrapper.sol
+index 88d6cfe..92efdb8 100644
+--- a/contracts/utilities/FeeWrapper.sol
++++ b/contracts/utilities/FeeWrapper.sol
+@@ -26,7 +26,7 @@ contract FeeWrapper {
+     //============================= VIEW =============================
+     /// @notice should be used to make proper FeeParams struct
+     function calculateFee(
+-        uint256[] memory tokenAmounts,
++        uint256[] calldata tokenAmounts,
+         uint256 feeType,
+         uint256 feeValue
+     )
+@@ -46,7 +46,7 @@ contract FeeWrapper {
+     //============================= MAIN =============================
+     /// @notice execute low-level call to the Rubicon Protocol
+     function rubicall(
+-        CallParams memory params
++        CallParams calldata params
+     ) external payable returns (bytes memory) {
+         if (msg.value == 0) {
+             return _rubicall(params);
+@@ -113,8 +113,8 @@ contract BathHouseV2 {
+     /// @notice claim available rewards
+     /// across all the pools
+     function claimRewards(
+-        address[] memory buddies,
+-        address[] memory rewardsTokens
++        address[] calldata buddies,
++        address[] calldata rewardsTokens
+     ) external {
+         // claim rewards from comptroller
+         comptroller.claimComp(msg.sender);
 
+```
 ### [GAS-6] Use Custom Errors
 [Source](https://blog.soliditylang.org/2021/04/21/custom-errors/)
 Instead of using error strings, to reduce deployment and runtime cost, you should use Custom Errors. This would save both deployment and runtime cost.
@@ -562,9 +610,92 @@ File: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 
 331:         ).div(10 ** 18);
 ```
+```diff
+diff --git a/contracts/RubiconMarket.sol b/contracts/RubiconMarket.sol
+index 219e915..30ab261 100644
+--- a/contracts/RubiconMarket.sol
++++ b/contracts/RubiconMarket.sol
+@@ -71,23 +71,23 @@ contract DSMath {
+         return x >= y ? x : y;
+     }
+ 
+-    uint256 constant WAD = 10 ** 18;
+-    uint256 constant RAY = 10 ** 27;
++    uint256 constant WAD = 1e18;
++    uint256 constant RAY = 1e27;
 
+@@ -1054,9 +1054,9 @@ contract RubiconMarket is MatchingEvents, ExpiringMarket, DSNote {
+             } else {
+                 // if lower
+                 uint256 baux = rmul(
+-                    mul(pay_amt, 10 ** 9),
++                    mul(pay_amt, 1e9),
+                     rdiv(offers[offerId].pay_amt, offers[offerId].buy_amt)
+-                ) / 10 ** 9;
++                ) / 1e9;
+                 fill_amt = add(fill_amt, baux); //Add amount bought to acumulator
+                 take(bytes32(offerId), uint128(baux)); //We take the portion of the offer that we need
+                 pay_amt = 0; //All amount is sold
+@@ -1096,9 +1096,9 @@ contract RubiconMarket is MatchingEvents, ExpiringMarket, DSNote {
+                 fill_amt = add(
+                     fill_amt,
+                     rmul(
+-                        mul(buy_amt, 10 ** 9),
++                        mul(buy_amt, 1e9),
+                         rdiv(offers[offerId].buy_amt, offers[offerId].pay_amt)
+-                    ) / 10 ** 9
++                    ) / 1e9
+                 ); //Add amount sold to acumulator
+                 take(bytes32(offerId), uint128(buy_amt)); //We take the portion of the offer that we need
+                 buy_amt = 0; //All amount is bought
+@@ -1139,9 +1139,9 @@ contract RubiconMarket is MatchingEvents, ExpiringMarket, DSNote {
+         fill_amt = add(
+             fill_amt,
+             rmul(
+-                mul(pay_amt, 10 ** 9),
++                mul(pay_amt, 1e9),
+                 rdiv(offers[offerId].pay_amt, offers[offerId].buy_amt)
+-            ) / 10 ** 9
++            ) / 1e9
+         ); //Add proportional amount of last offer to buy accumulator
+     }
 
-[G-15] Functions guaranteed to revert when called by normal users can be marked payable
+@@ -1172,9 +1172,9 @@ contract RubiconMarket is MatchingEvents, ExpiringMarket, DSNote {
+         fill_amt = add(
+             fill_amt,
+             rmul(
+-                mul(buy_amt, 10 ** 9),
++                mul(buy_amt, 1e9),
+                 rdiv(offers[offerId].buy_amt, offers[offerId].pay_amt)
+-            ) / 10 ** 9
++            ) / 1e9
+         ); //Add proportional amount of last offer to pay accumulator
+     }
+
+diff --git a/contracts/utilities/poolsUtility/Position.sol b/contracts/utilities/poolsUtility/Position.sol
+index 7c72d4f..48365ef 100644
+--- a/contracts/utilities/poolsUtility/Position.sol
++++ b/contracts/utilities/poolsUtility/Position.sol
+@@ -314,7 +314,7 @@ contract Position is Ownable, DSMath {
+         require(_shortfall == 0, "_maxBorrow: SHORTFALL != 0");
+ 
+         uint256 _price = oracle.getUnderlyingPrice(CToken(_bathToken));
+-        _max = (_liq.mul(10 ** 18)).div(_price);
++        _max = (_liq.mul(1e18)).div(_price);
+         require(_max > 0, "_maxBorrow: can't borrow 0");
+     }
+ 
+@@ -328,7 +328,7 @@ contract Position is Ownable, DSMath {
+ 
+         uint256 _interest = (
+             (_borrowedAmount).mul(borrowRate(_bathToken).mul(_blockDelta))
+-        ).div(10 ** 18);
++        ).div(1e18);
+         _debt = _borrowedAmount.add(_interest);
+     }
+```
+
+### [G-15] Functions guaranteed to revert when called by normal users can be marked payable
 
 If a function modifier such as onlyOwner is used, the function will revert if a normal user tries to pay the function. Marking the function as payable will lower the gas cost for legitimate callers because the compiler will not include checks for whether a payment was provided. The extra opcodes avoided are CALLVALUE(2),DUP1(3),ISZERO(3),PUSH2(3),JUMPI(10),PUSH1(3),DUP1(3),REVERT(0),JUMPDEST(1),POP(2), which costs an average of about 21 gas per call to the function, in addition to the extra deployment cost.
 
@@ -659,7 +790,7 @@ File: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 242:    function withdraw(address token, uint256 amount) external onlyOwner {
 ```
 
-[G-16] Unuesd events 
+### [G-16] Unuesd events 
 
 Unused events increase contract size and gas usage at deployment. 
 *Instances (6)*:
@@ -674,7 +805,7 @@ File: 2023-04-rubicon/contracts/BathBuddy.sol
 266:    event Recovered(address token, uint256 amount);
 ```
 
-[G-17] Unuesd Functions 
+### [G-17] Unuesd Functions 
 
 *Instances (4)*:
 ```solidity
@@ -693,6 +824,10 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 79:    }
 
 297:   function bump(bytes32 id_) external can_buy(uint256(id_)) {
+
+624:    function getTime() public view returns (uint64) {
+625:        return uint64(block.timestamp);
+626:    }
 ```
 
 [G-18] With assembly, .call (bool success) transfer can be done gas-optimized
@@ -744,6 +879,36 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 
 90:        z = add(mul(x, RAY), y / 2) / y;
 ```
+
+```diff
+diff --git a/contracts/RubiconMarket.sol b/contracts/RubiconMarket.sol
+index 219e915..0189738 100644
+--- a/contracts/RubiconMarket.sol
++++ b/contracts/RubiconMarket.sol
+@@ -75,19 +75,19 @@ contract DSMath {
+     uint256 constant RAY = 10 ** 27;
+ 
+     function wmul(uint256 x, uint256 y) internal pure returns (uint256 z) {
+-        z = add(mul(x, y), WAD / 2) / WAD;
++        z = add(mul(x, y), WAD >> 1) / WAD;
+     }
+ 
+     function rmul(uint256 x, uint256 y) internal pure returns (uint256 z) {
+-        z = add(mul(x, y), RAY / 2) / RAY;
++        z = add(mul(x, y), RAY >> 1) / RAY;
+     }
+ 
+     function wdiv(uint256 x, uint256 y) internal pure returns (uint256 z) {
+-        z = add(mul(x, WAD), y / 2) / y;
++        z = add(mul(x, WAD), y >> 1) / y;
+     }
+ 
+     function rdiv(uint256 x, uint256 y) internal pure returns (uint256 z) {
+-        z = add(mul(x, RAY), y / 2) / y;
++        z = add(mul(x, RAY), y >> 1) / y;
+     }
+ }
+ ```
 Recommended Mitigation Steps
 
 Replace / 2 with >>1.
@@ -770,6 +935,7 @@ to
 
         for (uint i = 0; i < ids.length; i++) {
 -            cancel(ids[i]);
+
 +		    unchecked{
 +	            cancel(ids[i]);
 +	        }
