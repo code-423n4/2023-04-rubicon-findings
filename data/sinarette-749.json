@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "sinarette",
+  "risk": "2",
+  "title": "Protocol does not support feeOnTransfer tokens",
+  "issueId": 749,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/749"
+}
