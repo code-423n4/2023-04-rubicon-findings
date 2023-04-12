@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xStalin",
+  "risk": "2",
+  "title": "External trustness on oracle returning prices scaled up by an exact power without validating the returned value is actually scaled up by the expected power",
+  "issueId": 649,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/649"
+}
