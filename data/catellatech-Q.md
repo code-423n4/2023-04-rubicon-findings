@@ -10,7 +10,7 @@
 | R  | Refactor | Changing the code |
 | S | Suggestions | Suggestion Details |
 
-| Total Found Issues | 42 |
+| Total Found Issues | 44 |
 |:--:|:--:|
 
 ### Low Risk
@@ -29,8 +29,9 @@
 | [L-11] | DID NOT APPROVE TO ZERO FIRST | 1 |
 | [L-12] | INCONSISTENT SOLIDITY PRAGMA |  |
 | [L-13] | PREVENT DIV BY 0 |  |
+| [L-14] | MISSING EMERGENCY STOP (CIRCUIT BREAKER) PATTERN | 2 |
 
-| Total Low Issues | 13 | Total Instances | 30 |
+| Total Low Issues | 14 | Total Instances | 32 |
 |:--:|:--:|:--:|--:|
 
 ### Non-Critical
@@ -48,29 +49,29 @@
 | [N-10] | REMOVE THE COMMENTED CODE FROM THE PROJECT | 2 |
 | [N-11] | NATSPEC DONT COMPLY WITH SOLDITY STYLE GUIDE | 1 |
 | [N-12] | FUNCTION WRITING THAT DOES NOT COMPLY WITH THE SOLIDITY STYLE GUIDE | all contracts |
-| [N-13] | MISSING EMERGENCY STOP (CIRCUIT BREAKER) PATTERN | 2 |
-| [N-14] | NON-LIBRARY/INTERFACE FILES SHOULD USE FIXED COMPILER VERSIONS, NOT FLOATING ONES | all contracts |
-| [N-15] | NEED FUZZING TEST | all contracts |
-| [N-16] | SORT SOLIDITY OPERATIONS USING SHORT-CIRCUIT MODE | 12 |
-| [N-17] | USE OF BYTES.CONCAT() INSTEAD OF ABI.ENCODEPACKED() | 6 |
-| [N-18] | LONG REVERT STRINGS | 2 |
-| [N-19] | MISSING ERROR MESSAGES IN REQUIRE STATEMENTS | 19 |
-| [N-20] | ASSEMBLY CODES SPECIFIC - SHOULD HAVE COMMENTS | 2 |
-| [N-21] | FUNCTION OVERLOADING | 4 |
-| [N-22] | USING WHILE FOR UNBOUNDED LOOPS ISN'T RECOMMENDED | 11 |
-| [N-23] | EVENTS IS MISSING INDEXED FIELDS | 2 |
-| [N-24] | TOKENS ACCIDENTALLY SENT TO THE CONTRACT CANNOT BE RECOVERED | 2 |
-| [N-25] | CONTRACT DOES NOT FOLLOW THE SOLIDITY STYLE GUIDE'S SUGGESTED LAYOUT ORDERING | 1 |
+| [N-13] | NON-LIBRARY/INTERFACE FILES SHOULD USE FIXED COMPILER VERSIONS, NOT FLOATING ONES | all contracts |
+| [N-14] | NEED FUZZING TEST | all contracts |
+| [N-15] | SORT SOLIDITY OPERATIONS USING SHORT-CIRCUIT MODE | 12 |
+| [N-16] | USE OF BYTES.CONCAT() INSTEAD OF ABI.ENCODEPACKED() | 6 |
+| [N-17] | LONG REVERT STRINGS | 2 |
+| [N-18] | MISSING ERROR MESSAGES IN REQUIRE STATEMENTS | 19 |
+| [N-19] | ASSEMBLY CODES SPECIFIC - SHOULD HAVE COMMENTS | 2 |
+| [N-20] | FUNCTION OVERLOADING | 4 |
+| [N-21] | USING WHILE FOR UNBOUNDED LOOPS ISN'T RECOMMENDED | 11 |
+| [N-22] | EVENTS IS MISSING INDEXED FIELDS | 2 |
+| [N-23] | TOKENS ACCIDENTALLY SENT TO THE CONTRACT CANNOT BE RECOVERED | 2 |
+| [N-24] | CONTRACT DOES NOT FOLLOW THE SOLIDITY STYLE GUIDE'S SUGGESTED LAYOUT ORDERING | 1 |
 
-| Total Non-Critical Issues | 25 | Total Instances | 102 |
+| Total Non-Critical Issues | 24 | Total Instances | 100 |
 |:--:|:--:|:--:|--:|
 
 ### Refactor Issues 
 | Count | Explanation | Instances |
 |:--:|:-------|:--:|
 | [R-01] | FUNCTION NAMING SUGGESTIONS | 2 |
+| [R-02] | SOME NUMBER VALUES CAN BE REFACTORED WITH _ | 2 |
 
-| Total Refactor Issues | 1 | Total Instances | 2 |
+| Total Refactor Issues | 2 | Total Instances | 4 |
 |:--:|:--:|:--:|--:|
 
 
@@ -80,8 +81,9 @@
 | [S-01] | WE SUGGEST USING THE OPENZEPPELIN SAFECAST LIBRARY |  |
 | [S-02] | WE SUGGEST USING THE OPENZEPPELIN ADDRESS LIBRARY |  |
 | [S-03] | WE SUGGEST USING THE BoringERC20 LIBRARY |  | 
+| [S-04] | WE SUGGEST USING A MORE RECENT SOLIDITY PRAGMA TO TAKE ADVANTAGE |  | 
 
-| Total Suggestions | 3 |
+| Total Suggestions | 4 |
 |:--:|:--:|
 
 # Detailed Findings
@@ -336,6 +338,11 @@ contracts/utilities/FeeWrapper.sol
 ```
 ### MITIGATION
 Recommend making sure division by 0 won’t occur by checking the variables beforehand and handling this edge case.
+
+## [L-14] MISSING EMERGENCY STOP (CIRCUIT BREAKER) PATTERN
+At the start of the project, the system may need to be stopped or upgraded, I suggest you have a script beforehand and add it to the documentation. This can also be called an `EMERGENCY STOP (CIRCUIT BREAKER) PATTERN`. Use the follow example to implement it into in the `BathHouseV2.sol`, `claimRewards` function and `RubiconMarket.sol` in the following functions `sellAllAmount`, `buyAllAmount`.
+
+[Emergency Stop Pattern Example](https://github.com/maxwoe/solidity_patterns/blob/master/security/EmergencyStop.sol)
 
 
 ## [N-01] USE OF FLOATING PRAGMA 
@@ -678,12 +685,7 @@ According to the Solidity style guide, functions should be laid out in the follo
 
 Functions should be grouped according to their visibility and ordered: `within a grouping, place the view and pure functions last`
 
-## [N-13] MISSING EMERGENCY STOP (CIRCUIT BREAKER) PATTERN
-At the start of the project, the system may need to be stopped or upgraded, I suggest you have a script beforehand and add it to the documentation. This can also be called an `EMERGENCY STOP (CIRCUIT BREAKER) PATTERN`. Use the follow example to implement it into in the `BathHouseV2.sol`, `claimRewards` function and `RubiconMarket.sol` in the following functions `sellAllAmount`, `buyAllAmount`.
-
-[Emergency Stop Pattern Example](https://github.com/maxwoe/solidity_patterns/blob/master/security/EmergencyStop.sol)
-
-## [N-14] NON-LIBRARY/INTERFACE FILES SHOULD USE FIXED COMPILER VERSIONS, NOT FLOATING ONES
+## [N-13] NON-LIBRARY/INTERFACE FILES SHOULD USE FIXED COMPILER VERSIONS, NOT FLOATING ONES
 Avoid floating pragmas for non-library contracts.
 
 While floating pragmas make sense for libraries to allow them to be included with multiple different versions of applications, it may be a security risk for application implementations.
@@ -699,7 +701,7 @@ staking/NeoTokyoStaker.sol#L1517-L1521
 + pragma solidity 0.8.9;
 ```
 
-## [N-15] NEED FUZZING TEST
+## [N-14] NEED FUZZING TEST
 We recommend the use of fuzzing tests, especially in finance oriented protocols, due to the complexity and risk involved in handling large amounts of money in these smart contracts. Finance oriented contracts are critical in terms of security and accuracy, as any errors or vulnerabilities could be exploited by malicious attackers to steal funds or cause significant damage. 
 
 Fuzzing tests are an important tool for identifying possible vulnerabilities in the code through the automatic and random generation of input data in the contract, which can help avoid costly errors in production. 
@@ -707,7 +709,7 @@ Fuzzing tests are an important tool for identifying possible vulnerabilities in 
 ### RECOMMENDATION 
 Use should fuzzing test like Echidna or [Foundry](https://book.getfoundry.sh/forge/fuzz-testing).
 
-## [N-16] SORT SOLIDITY OPERATIONS USING SHORT-CIRCUIT MODE
+## [N-15] SORT SOLIDITY OPERATIONS USING SHORT-CIRCUIT MODE
 Short-circuiting is a solidity contract development model that uses `OR/AND` logic to sequence different cost operations. It puts low gas cost operations in the front and high gas cost operations in the back, so that if the front is low If the cost operation is feasible, you can skip (short-circuit) the subsequent high-cost Ethereum virtual machine operation.
 
 ```solidity
@@ -754,7 +756,7 @@ contracts/utilities/poolsUtility/Position.sol
         )
 ```
 
-## [N-17] USE OF BYTES.CONCAT() INSTEAD OF ABI.ENCODEPACKED()
+## [N-16] USE OF BYTES.CONCAT() INSTEAD OF ABI.ENCODEPACKED()
 Since version 0.8.4 for appending bytes, [bytes.concat()](https://docs.soliditylang.org/en/v0.8.19/types.html#bytes-concat) can be used instead of abi.encodePacked().
 
 ### PROOF OF CONCEPT
@@ -768,7 +770,7 @@ contracts/RubiconMarket.sol
 555:  keccak256(abi.encodePacked(pay_gem, buy_gem))
 ```
 
-## [N-18] LONG REVERT STRINGS
+## [N-17] LONG REVERT STRINGS
 Shortening revert strings to fit in 32 bytes will decrease gas costs for deployment and gas costs when the revert condition has been met.
 
 ### PROOF OF CONCEPT
@@ -793,7 +795,7 @@ contracts/RubiconMarket.sol
 ### MITIGATION
 Consider using `Custom Errors` as they are more gas efficient while allowing developers to describe the error in detail using NatSpec. 
 
-## [N-19] MISSING ERROR MESSAGES IN REQUIRE STATEMENTS
+## [N-18] MISSING ERROR MESSAGES IN REQUIRE STATEMENTS
 Require statements should have descriptive strings to describe why the revert occurs.
 
 ```solidity
@@ -812,7 +814,7 @@ contracts/RubiconMarket.sol
 ```
 - (Another lines with this in RubiconMarket.sol)[https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L519-L525]
 
-## [N-20] ASSEMBLY CODES SPECIFIC - SHOULD HAVE COMMENTS
+## [N-19] ASSEMBLY CODES SPECIFIC - SHOULD HAVE COMMENTS
 Since this is a low level language that is more difficult to parse by readers, include extensive documentation, comments on the rationale behind its use, clearly explaining what each assembly instruction does
 
 This will make it easier for users to trust the code, for reviewers to validate the code, and for developers to build on or update the code.
@@ -843,7 +845,7 @@ contracts/utilities/poolsUtility/Position.sol
         }        
 ```
 
-## [N-21] FUNCTION OVERLOADING
+## [N-20] FUNCTION OVERLOADING
 Having multiple functions with the same name in a smart contract can be dangerous or not a good practice for several reasons:
 
 - Confusion: If there are several functions with the same name, it can be confusing for developers and users who are interacting with the smart contract. This can lead to errors and misunderstandings in the use of the contract.
@@ -963,7 +965,7 @@ Some recommendations are:
 
 By following these recommendations, developers can avoid function overloading and create smarter and more secure contracts that are easier to use.
 
-## [N-22] USING WHILE FOR UNBOUNDED LOOPS ISN'T RECOMMENDED
+## [N-21] USING WHILE FOR UNBOUNDED LOOPS ISN'T RECOMMENDED
 Improve the efficiency and stability of your code by avoiding unbounded `while loops`. Instead of using a `while loop` for unbounded iterations, it is recommended to use other loop structures like `for` that have a clearer structure and can provide better control flow for the loop. Don't write loops that are unbounded as this can hit the gas limit, causing your transaction to fail. For the reason above, while and do-while loops are rarely used.
 
 ### PROOF OF CONCEPT
@@ -987,7 +989,7 @@ contracts/RubiconMarket.sol
 ### RECOMMENDATION
 - Avoid unbounded loops: As mentioned before, it is important to avoid unbounded while loops in your smart contracts. If you need to make a loop, make sure that the number of iterations is limited and known in advance.
 
-## [N-23]  EVENTS IS MISSING INDEXED FIELDS
+## [N-22]  EVENTS IS MISSING INDEXED FIELDS
 Index event fields make the field more quickly accessible to off-chain. Each event should use three [indexed](https://docs.soliditylang.org/en/v0.8.0/contracts.html#events) fields if there are three or more fields.
 
 ### PROOF OF CONCEPT
@@ -999,7 +1001,7 @@ contracts/BathHouseV2.sol
 24:  event BuddySpawned(address bathToken, address bathBuddy);
 ```
 
-## [N-24] TOKENS ACCIDENTALLY SENT TO THE CONTRACT CANNOT BE RECOVERED
+## [N-23] TOKENS ACCIDENTALLY SENT TO THE CONTRACT CANNOT BE RECOVERED
 It can't be recovered if the tokens accidentally arrive at the V2Migrator contract address, in the line 65,it is noted that `BATH TOKENS V2` may get stuck, but no token recovery implementation is implemented if this happens so we recommend adding a recovery code to this contract.
 
 ### MITIGATION
@@ -1020,7 +1022,7 @@ function rescueERC20(address account, address externalToken, uint256 amount) pub
 }
 ```
 
-## [N-25] CONTRACT DOES NOT FOLLOW THE SOLIDITY STYLE GUIDE'S SUGGESTED LAYOUT ORDERING
+## [N-24] CONTRACT DOES NOT FOLLOW THE SOLIDITY STYLE GUIDE'S SUGGESTED LAYOUT ORDERING
 The [style guide](https://docs.soliditylang.org/en/v0.8.16/style-guide.html#order-of-layout) says that, within a contract, the ordering should be: 
 - 1. Type declarations 
 - 2. State variables,
@@ -1052,6 +1054,15 @@ contracts/utilities/poolsUtility/Position.sol
 ```diff
 -35: function isAuthorized(address src) internal view returns (bool)
 +35: function _isAuthorized(address src) internal view returns (bool) 
+```
+
+## [R-02] SOME NUMBER VALUES CAN BE REFACTORED WITH _
+Consider using underscores for number values to improve readability.
+
+```solidity
+contracts/utilities/poolsUtility/Position.sol
+481: uint256 _fee = _minFill.mul(_feeBPS).div(10000);
+490:  _fee = _payAmount.mul(_feeBPS).div(10000);
 ```
 
 ## [S-01] WE SUGGEST USING THE OPENZEPPELIN SAFECAST LIBRARY
@@ -1109,3 +1120,13 @@ openzeppelin-contracts/blob/master/contracts/utils/Address.sol
 ## [S-03] WE SUGGEST USING THE BoringERC20 LIBRARY
 We suggest implementing best practices for SYMBOL, DECIMALS & NAME on lines `L146-147` and `L148` in the `BathHouseV2` contract . Therefore, we recommend using the following functions from this library: 
 [Library BoringERC20](https://github.com/boringcrypto/BoringSolidity/blob/ccb743d4c3363ca37491b87c6c9b24b1f5fa25dc/contracts/libraries/BoringERC20.sol#L33-L55).
+
+## [S-04] WE SUGGEST USING A MORE RECENT SOLIDITY PRAGMA TO TAKE ADVANTAGE
+We recommend using a more recent version of Solidity, such as 0.8.18, to take advantage of the latest improvements and features, including better code readability in the case of mappings.
+
+You guys have 19 mappings in the scope.
+
+For example: 
+```solidity
+mapping(address account => uint256 balance)
+```
