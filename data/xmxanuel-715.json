@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "xmxanuel",
+  "risk": "2",
+  "title": "Router.approveAssetOnMarket is not called/checked in every Router function which limits the usage of new ERC20 tokens",
+  "issueId": 715,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/715"
+}
