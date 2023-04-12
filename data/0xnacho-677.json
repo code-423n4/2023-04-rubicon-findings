@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xnacho",
+  "risk": "2",
+  "title": "Users end up with a lower amount of `BathTokenV2`s than they should after migrating their `BathTokenV1`",
+  "issueId": 677,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/677"
+}
