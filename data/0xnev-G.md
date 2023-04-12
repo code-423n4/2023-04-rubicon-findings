@@ -15,10 +15,11 @@
 | [G-12] | Refactor `RubiconMarket._next_id()` function  | 1 | ~ 107 |
 | [G-13] | Refactor `SimpleMarket.buy()` function   | 1 | - |
 | [G-14] | `set` functions do not require a return boolean value   | 3 | ~ 57345 |
+| [G-15] | State variables only set in constructor can be declared immutable  | 3 | 80000 |
 
-| Total Found Issues | 13 |
+| Total Found Issues | 15 |
 |:--:|:--:|
-| Total Gas Savings | Estimated >= 177125 |
+| Total Gas Savings | Estimated >= 257125 |
 
 
 Note: Most values for gas savings are estimations using remix so take with discretion
@@ -483,3 +484,18 @@ This function can be refactored to simply declaring `quantity` and `spend` as `u
 ```
 Consider removing the return bool value as it is uneeded an incurs unecessary gas.
 
+### [G-15] State variables only set in constructor can be declared immutable
+[Position.sol#L55-L58](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L55-L58)
+```solidity
+4 results - 1 file
+
+/Position.sol
+54:    constructor(address _oracle, address _rubiconMarket, address _bathHouseV2) {
+55:        oracle = PriceOracle(_oracle);
+56:        rubiconMarket = RubiconMarket(_rubiconMarket);
+57:        bathHouseV2 = BathHouseV2(_bathHouseV2);
+58:        comptroller = bathHouseV2.comptroller();
+59:    }
+```
+
+Avoids a Gsset (20000 gas) in the constructor, and replaces each Gwarmacces (100 gas) with a PUSH32 (3 gas).
