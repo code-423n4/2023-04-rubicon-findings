@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "thekmj",
+  "risk": "2",
+  "title": "Attempting a high leverage may end up consuming all gas and revert, depending on market configs.",
+  "issueId": 650,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/650"
+}
