@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "sces60107",
+  "risk": "3",
+  "title": "Attackers can steal rewards in BathBuddy after the period ends.",
+  "issueId": 765,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/765"
+}
