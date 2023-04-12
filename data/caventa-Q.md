@@ -1,6 +1,6 @@
 1.
 
-initialize functions can be front-run. The initialize function that initializes important contract state can be called by anyone.
+initialize functions and spawnBuddy function can be front-run. The initialize function that initializes important contract state can be called by anyone.
 
 Occurences:
 
@@ -39,9 +39,29 @@ BathHouseV2.initialize
     }
 ```
 
-The attacker can initialize the contract before the legitimate deployer, hoping that the victim continues to use the same contract. In the best case for the victim, they notice it and have to redeploy their contract costing gas.
+BathBuddy.spawnBuddy
 
-Recommend using the constructor to initialize non-proxied contracts. For initializing proxy contracts, recommend deploying contracts using a factory contract that immediately calls initialize after deployment, or make sure to call it immediately after deployment and verify the transaction succeeded.
+```solidity
+    function spawnBuddy(
+        address _owner,
+        address newBud,
+        address _bathHouse
+    ) external {
+        require(!friendshipStarted, "I already have a buddy!");
+        owner = _owner;
+        myBathTokenBuddy = newBud;
+        bathHouse = _bathHouse;
+
+        // Note, rewards duration must be set by admin
+
+        // Constructor pattern
+        friendshipStarted = true;
+    }
+```
+
+The attacker can call the function before the legitimate deployer, hoping that the victim continues to use the same contract. In the best case for the victim, they notice it and have to redeploy their contract costing gas.
+
+Recommend using the constructor to initialize non-proxied contracts. For initializing proxy contracts, recommend deploying contracts using a factory contract that immediately calls function after deployment, or make sure to call it immediately after deployment and verify the transaction succeeded.
 
 2.
 
@@ -128,17 +148,3 @@ function buyAllAmountWithLeverage(
         );
     }
 ```
-
-6.
-
-spawnBuddy function can be frontrunned
-
-8.
-
-msg.sender != address(0) && // @audit msg.sender is impossible to be address(0)
-
-9.
-
-2 contracts may have same name symbol decimal
-
-Should add token address as unique identifier
