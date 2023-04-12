@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "popular00",
+  "risk": "3",
+  "title": "Users can create offers that are not sorted into the orderbook and are ineligible for market order functionality",
+  "issueId": 796,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/796"
+}
