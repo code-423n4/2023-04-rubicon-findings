@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "DedOhWale",
+  "risk": "3",
+  "title": "`this.offer()` within `batchOffer` in the `RubiconMarket.sol` contract does not work as intended. Offers will revert with failed allowance allocation.",
+  "issueId": 646,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/646"
+}
