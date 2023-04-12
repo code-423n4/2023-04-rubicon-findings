@@ -64,6 +64,8 @@ Missing Natspec comments or code comments makes it hard for external developers 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L136-L150
 ## [QA-15] Use of Natspec Comments (///) for Regular Comments
 Natspec comments (using the /// notation) have been used to create regular comments in the code. The code should be refactored to ensure comments use (//).
+Example instance:
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L666
 ## [QA-16] Partial Utilization of OpenZeppelin Contracts 
 Consider importing the OpenZeppelin re-entrancy guard contract instead of re-implementing . Here is an example.
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L264-L269
@@ -77,6 +79,13 @@ Here are some instances.
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L917-L933
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L30-L35
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L115-L128
+## [QA-19] Floating Pragma
+Locking the pragma helps to ensure that contracts do not accidentally get deployed using another pragma,
+for example, either an outdated pragma version that might introduce bugs or a recently released pragma
+version which has not been extensively tested.
+Instances:
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L2
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L2
 
 
 
