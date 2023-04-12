@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "luciana",
+  "risk": "2",
+  "title": "`BathBuddy.getReward` is intended to be pausable but it is not",
+  "issueId": 639,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/639"
+}
