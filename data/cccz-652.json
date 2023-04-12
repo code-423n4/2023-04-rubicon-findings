@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cccz",
+  "risk": "2",
+  "title": "_marketBuy does not need to take into account fees when calculating _buyAmount, which will make the user less leveraged",
+  "issueId": 652,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/652"
+}
