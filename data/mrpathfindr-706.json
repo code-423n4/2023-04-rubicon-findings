@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "mrpathfindr",
+  "risk": "3",
+  "title": "BathBuddy rewards can be drained by Minting BathToken and Claiming rewards in the same block.",
+  "issueId": 706,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/706"
+}
