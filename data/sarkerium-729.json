@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "sarkerium",
+  "risk": "2",
+  "title": "claimRewards function does not check for equal array length of \"buddies\" & \"rewardsTokens\" input parameter.",
+  "issueId": 729,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/729"
+}
