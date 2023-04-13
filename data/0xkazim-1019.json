@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xkazim",
+  "risk": "2",
+  "title": "owner can set himself as recipient when RubiconMarket.Make() called",
+  "issueId": 1019,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1019"
+}
