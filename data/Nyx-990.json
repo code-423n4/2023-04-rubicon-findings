@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Nyx",
+  "risk": "3",
+  "title": "If the recipient is added to the USDC blacklist, then cancel() and other functions might not work",
+  "issueId": 990,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/990"
+}
