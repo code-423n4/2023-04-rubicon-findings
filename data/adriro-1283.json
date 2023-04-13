@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "adriro",
+  "risk": "3",
+  "title": "Unused amount of ERC20 token by target contract will be lost in `FeeWrapper`",
+  "issueId": 1283,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1283"
+}
