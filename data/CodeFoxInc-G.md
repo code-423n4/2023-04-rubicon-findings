@@ -116,8 +116,10 @@ When you change the variable into `immutable`, it is supposed to be saved in the
 
 ### Proof of Concept
 I also [made a POC](https://github.com/thurendous/WTFgas) to show how many gas it can save by changing the address variable to `immutable`. 
+The TLDR is when you use `immutable`, your cost changes like this 2347 -> 182. It costs 10 times less gas. 
 
-
+### Recommendation
+Change the code as follow: 
 ```diff
 -	 address public owner;
 -        address public myBathTokenBuddy;
