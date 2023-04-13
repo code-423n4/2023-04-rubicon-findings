@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "BPZ",
+  "risk": "2",
+  "title": "# Miscalculation of pay_amt so that _matcho function doesn't work as expected ",
+  "issueId": 853,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/853"
+}
