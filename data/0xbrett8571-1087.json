@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Reentrancy attack possible in the `_marketSell` function.",
+  "issueId": 1087,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1087"
+}
