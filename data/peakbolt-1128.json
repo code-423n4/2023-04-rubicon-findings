@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "peakbolt",
+  "risk": "3",
+  "title": "Fee-on-transfer token will prevent complete closure of leveraged position, resulting in lost funds",
+  "issueId": 1128,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1128"
+}
