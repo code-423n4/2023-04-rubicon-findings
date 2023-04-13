@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "schrodinger",
+  "risk": "3",
+  "title": "RubiconMarket.sol: offers aren't set properly due to  precision loss in `_matcho` function",
+  "issueId": 986,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/986"
+}
