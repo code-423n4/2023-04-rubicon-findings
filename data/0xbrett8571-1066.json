@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "Missing Contract Address Check in `onlyBuddy` Modifier.",
+  "issueId": 1066,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1066"
+}
