@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Ocean_Sky",
+  "risk": "2",
+  "title": "Function isClosed() from RubiconMarket.sol (Expiring Market Contract) is not working as designed.",
+  "issueId": 826,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/826"
+}
