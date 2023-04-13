@@ -9,7 +9,9 @@
 - [N-07] Confusing variable name
 - [L-01] Include checks to ensure fee inputs are valid
 - [L-02] Limited error handling for `claimRewards` function
-- [L-03] `getReward` should not be paused
+- [L-03] Truncation of decimals may result in no fees paid
+- [L-04] Function `isClosed()` is irrelevant
+- [L-05] Include check to ensure that `bathToken` is listed
 
 ## [N-01] Insufficient test coverage
 The test coverage rate of the project is 60%. Testing all functions is best practice in terms of security criteria.
@@ -177,30 +179,51 @@ function claimRewards(
 ```
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L115-L128
 
-## [L-03] `getReward` should not be paused
+## [L-03] Truncation of decimals may result in no fees paid
 
-In general and in the spirit of DeFi, function `getReward` should not have a pause modifier. Users should always be able to withdraw their rewards.
+Token with low decimal places could avoid paying fees. In function `calcAmountAfterFee` of `RubiconMarket.sol`, the amount is multiplied by feeBPS then divided by the denominator of 100,000. 
+
+As a result, the fee can be avoided when transacting with tokens that has low or zero decimals.
 
 ```
-File: 2023-04-rubicon/contracts/periphery/BathBuddy.sol#L168-185
+File:  2023-04-rubicon/contracts/RubiconMarket.sol#L578-588
 
- function getReward(
-        IERC20 rewardsToken,
-        address holderRecipient
-    )
-        external
-        override
-        nonReentrant
-        whenNotPaused
-        updateReward(holderRecipient, address(rewardsToken))
-        onlyBathHouse
-    {
-        uint256 reward = tokenRewards[address(rewardsToken)][holderRecipient];
-        if (reward > 0) {
-            tokenRewards[address(rewardsToken)][holderRecipient] = 0;
-            rewardsToken.safeTransfer(holderRecipient, reward);
-            emit RewardPaid(holderRecipient, reward);
+function calcAmountAfterFee(
+        uint256 amount
+    ) public view returns (uint256 _amount) {
+        require(amount > 0);
+        _amount = amount;
+        _amount -= mul(amount, feeBPS) / 100_000;
+
+        if (makerFee() > 0) {
+            _amount -= mul(amount, makerFee()) / 100_000;
         }
     }
 ```
-https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L168-L185 
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L578-L588
+
+## [L-04] Function `isClosed()` is irrelevant
+
+Function `isClosed` of `RubiconMarket.sol` will always return false. This makes checks to this function redundant i.e. waste gas. Consider removing it. 
+
+```
+File: 2023-04-rubicon/contracts/RubiconMarket.sol#L620-622
+
+function isClosed() public pure returns (bool closed) {
+        return false;
+    }
+```
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L620-L622
+
+## [L-05] Include check to ensure that `bathToken` is listed
+
+Function `_borrowLimit` of `Position.sol` does not check if `bathToken` is listed. While 3 values are returned when calling `comptroller.markets` (isListed, collateralFactorMantissa, isComped), `_borrowLimit` only returns 1 value. 
+
+It is recommended to check whether the bathToken is listed. 
+
+```
+File: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol#L532
+
+  (, uint256 _collateralFactor, ) = comptroller.markets(_bathToken);
+```
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L532
