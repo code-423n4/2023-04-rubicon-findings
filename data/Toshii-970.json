@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Toshii",
+  "risk": "2",
+  "title": "Improper oracle integration, due to lack of accounting for sequencer downtime",
+  "issueId": 970,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/970"
+}
