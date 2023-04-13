@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nirlin",
+  "risk": "2",
+  "title": "Lack of zero checks in `Position` constructor and `Pools Utility` initializer can lead to costly redeploy",
+  "issueId": 1271,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1271"
+}
