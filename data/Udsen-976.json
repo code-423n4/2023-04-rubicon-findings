@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Udsen",
+  "risk": "2",
+  "title": "`ExpiringMarket.isClosed()` FUNCTION, IN THE `RubiconMarket` CONTRACT ALWAYS RETURNS `false`",
+  "issueId": 976,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/976"
+}
