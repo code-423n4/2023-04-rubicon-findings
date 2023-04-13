@@ -37,5 +37,4 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L38
 
 12)consider allowing the owner to be transfered (RubiconMarket)
-14)consider adding a blacklist system on the market(RubiconMarket)
-
+13)consider adding a blacklist system on the market(RubiconMarket)
