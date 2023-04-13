@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xkazim",
+  "risk": "3",
+  "title": "order in parameters of `openPosition` are incorrect  when called in `buyAllAmountWithLeverage` ",
+  "issueId": 1219,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1219"
+}
