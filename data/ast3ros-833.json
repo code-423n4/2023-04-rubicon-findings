@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ast3ros",
+  "risk": "2",
+  "title": "[M-5] Incorrect arguments in openPosition function can cause wrong bets and losses",
+  "issueId": 833,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/833"
+}
