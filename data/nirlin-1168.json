@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nirlin",
+  "risk": "3",
+  "title": "Reward vesting formula is wrongly implemented and lead to wrong and unevenly distribution of rewards",
+  "issueId": 1168,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1168"
+}
