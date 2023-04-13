@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Udsen",
+  "risk": "2",
+  "title": "REENTRANCY ATTACK POSSIBLE IF THE `_feeTo` IS A MALICIOUS CONTRACT IN `FeeWrapper._chargeFeePayable()` FUNCTION",
+  "issueId": 1166,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1166"
+}
