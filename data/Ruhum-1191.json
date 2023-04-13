@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Ruhum",
+  "risk": "2",
+  "title": "BathBuddy accrual logic can round down to 0 for low decimal tokens",
+  "issueId": 1191,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1191"
+}
