@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xmuxyz",
+  "risk": "2",
+  "title": "Each `bathTokenV1` and `bathTokenV2` may be wrongly migrated and recored due to lack of the validation to check the `length of arrays` of both `bathTokensV1` and `bathTokensV2`",
+  "issueId": 809,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/809"
+}
