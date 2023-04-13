@@ -16,8 +16,9 @@
 | [L-04] | Missing Event for critical parameters init and change | 4 |
 | [L-05] | Add a timelock to critical functions | 2 |
 | [L-06] | Critical Address Changes Should Use Two-step Procedure | 1 |
+| [L-07] | Front-runnable initializer `spawnBuddy` | 1 |
 
-| Total Low-Risk Issues | 6 |
+| Total Low-Risk Issues | 7 |
 |:--:|:--:|
 
 ### Non-Critical Template
@@ -42,6 +43,7 @@
 | Total Non-Critical Issues | 16 |
 |:--:|:--:|
 
+## Low-Risk issues
 ### [L-01] Failed Function Call Could Occur Without Contract Existence Check.
 Performing low-level calls without confirming the contract’s existence (not yet deployed or has been destructed) could return success even though no function call was executed.
 
@@ -135,13 +137,18 @@ The critical procedures should be a two-step process.
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1478
 
+### [L-07] Front-runnable initializer `spawnBuddy`
+There is nothing preventing another account from calling the initializer `spawnBuddy` before the contract owner.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L1478
+
 
 ### [N-01] Netspec comment format error 
 The syntax of some Netspec comments is not well written for example in line 250 of the RuiconMarket.sol file, we found that the line starts with 2 slashes followed by 3 slashes which have disabled the @notice identifier
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L250
 
-
+## Non-Critical Issues
 ### [N-02] String constants used in multiple places should be defined as constants
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L341
