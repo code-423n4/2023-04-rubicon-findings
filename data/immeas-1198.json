@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "immeas",
+  "risk": "2",
+  "title": "`rewardsPerTokensStored` can be manipulated",
+  "issueId": 1198,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1198"
+}
