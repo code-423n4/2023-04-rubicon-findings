@@ -46,12 +46,12 @@ Below are the overall average gas savings for the following tested functions, wi
 | [G-12](#use-assembly-for-value-transfer-and-success-check) | Use assembly for value transfer and success check | 1 | 
 
 ## Do not use SafeMath
-Since version 0.8.0, the compiler will throw an error for under/overflows. It does so by including extra opcodes to perform the necessary checks. Therefore, using `SafeMath` and the in-house `DSMath` contract is unecessary and is wasting gas by doing extra computation (under/overflow checks). Save gas by not using `SafeMath` and the `DSMath` contract.
+Since version 0.8.0, the compiler will throw an error for under/overflows. It does so by including extra opcodes to perform the necessary checks. Therefore, using `SafeMath` and the in-house `DSMath` contract is unnecessary and is wasting gas by doing extra computation (under/overflow checks). Save gas by not using `SafeMath` and the `DSMath` contract.
 
 The following files have this issue: RubiconMarket.sol, which uses the [DSMath](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L44) contract, [BathBuddy.sol](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol), and [Position.sol](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol). 
 
 ## Use a more gas efficient `synchronized` modifier
-Each time a function that uses the `synchronized` modifier is called, said function will undergo a gas cost of `22.9k` for setting the `locked` slot to 1 from 0 (20k gas) and then back to 1 from 0 (2.9k gas). We are able to use a `1` and `2` instead of `false` and `true` to make a more efficient modifier. Using `1` and `2`, the functions will undergo a gas cost of `5.8k`: `1` -> `2` (2.9k gas) & `2` -> `1` (2.9k gas). See [this](https://hackmd.io/@fvictorio/gas-costs-after-berlin) article for more information.
+Each time a function that uses the `synchronized` modifier is called, said function will undergo a gas cost of `22.9k` for setting the `locked` slot to 1 from 0 (20k gas) and then back to 0 from 1 (2.9k gas). We are able to use a `1` and `2` instead of `false` and `true` to make a more efficient modifier. Using `1` and `2`, the functions will undergo a gas cost of `5.8k`: `1` -> `2` (2.9k gas) & `2` -> `1` (2.9k gas). See [this](https://hackmd.io/@fvictorio/gas-costs-after-berlin) article for more information.
 
 Functions which have the `synchronized` modifier: [SimpleMarket.buy](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L314), [SimpleMarket.cancel](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L452), and [SimpleMarket.offer](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L511).
 
@@ -1253,7 +1253,7 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.
 
 ### Pack `next`, `prev` and `delb` into a single storage slot to save 2 SLOTS (~2000 gas)
 
-*`uint80` should be large enough to hold offer ids and timestamps without fear of overflowing*
+*`uint80` should be large enough to hold offer ids and block numbers without fear of overflowing*
 ```solidity
 File: contracts/RubiconMarket.sol
 686:    struct sortInfo {
@@ -1394,8 +1394,8 @@ index 4aac344..a05bb11 100644
      bool public friendshipStarted;
 ```
 
-## Return values from external calls can be cached to avoid unecessary call
-External calls are expensive as they use the `CALL` opcode (~100 gas). If you are calling the same external function more than once you should cache the return value to avoid an unecessary `CALL`.
+## Return values from external calls can be cached to avoid unnecessary call
+External calls are expensive as they use the `CALL/STATICCALL` opcode (~100 gas). If you are calling the same external function more than once you should cache the return value to avoid an unnecessary `CALL/STATICCALL`.
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L121-L135
 
