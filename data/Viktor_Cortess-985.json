@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Viktor_Cortess",
+  "risk": "2",
+  "title": "Possible reentrancy in _chargeFeePayable function",
+  "issueId": 985,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/985"
+}
