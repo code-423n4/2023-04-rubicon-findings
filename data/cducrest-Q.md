@@ -99,3 +99,63 @@ buyAllAmount has the same break check.
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1083-L1088
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1043-L1048
+
+## Low 3: Position.openPosition wrong calculation of currentAssetBalance
+
+When opening a new short / long position in `Position.sol` the function will convert asset to bathAsset, borrow quote token, swap quote token to asset, and repeat.
+
+This means the balance of the contract in `asset` is constantly changing after each loop. The function keeps track of the `currentAssetBalance` via the logic:
+
+```solidity
+    uint256 assetBalance = IERC20(asset).balanceOf(address(this));
+
+    if (vars.initAssetBalance == 0) {
+        vars.currentAssetBalance = assetBalance;
+    } else if (vars.initAssetBalance < assetBalance) {
+        vars.currentAssetBalance = assetBalance.sub(
+            vars.initAssetBalance
+        );
+    } else {
+        vars.currentAssetBalance = vars.initAssetBalance.sub(
+            assetBalance
+        );
+    }
+```
+
+The value of `vars.initAssetBalance` is the initial balance in asset of the contract before the loop and before receiving asset from the user.
+
+The last else clause will set the value of `vars.currentAssetBalance` to the initial balance minus the current asset balance. The clause is ran when `initAssetBalance > assetBalance`. Meaning that if we started with 100 units of asset and now have 10, the value of `vars.currentAssetBalance` will be 90.
+
+Later on this value is used to call `_borrowLoop()`:
+
+```solidity
+    vars.currentBathTokenAmount += _borrowLoop(
+        asset,
+        quote,
+        bathTokenAsset,
+        bathTokenQuote,
+        vars.currentAssetBalance,
+        vars.toBorrow
+    );
+```
+
+and `_borrowLoop()` will attempt to convert the asset tokens to bathAsset:
+
+```solidity
+    function _borrowLoop(
+        address _asset,
+        address _quote,
+        address _bathTokenAsset,
+        address _bathTokenQuote,
+        uint256 _amount,
+        uint256 _toBorrow
+    ) internal returns (uint256 _bathTokenAmount) {
+        // supply collateral
+        _bathTokenAmount = _supply(_asset, _bathTokenAsset, _amount);
+```
+
+This means that the contract will attempt to convert 90 assets token while owning only 10. The call to `_supply()` will revert.
+
+I could not find a way to abuse this behaviour for global DOS of the Position contract. I tried sending some bathAsset to the Position contract and abuse the fact that it would swap too many of borrowed quote token to reach this condition to no avail.
+
+If the development team is aware of a situation where this clause can be reached, they should reconsider the logic of this loop. With the limited testing I could do, I do not think it can be reached, which is why I submit this issue as low.
