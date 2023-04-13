@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "joestakey",
+  "risk": "2",
+  "title": "Mismatch of fee bps between `Position` and `RubiconMarket` lead to lower amount of assets received than expected in `Position._marketBuy()`",
+  "issueId": 1146,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1146"
+}
