@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "favelanky",
+  "risk": "2",
+  "title": "A lack of zero address checks can lead to a loss of user funds",
+  "issueId": 1126,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1126"
+}
