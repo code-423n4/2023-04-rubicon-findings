@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xPkhatri",
+  "risk": "3",
+  "title": "Leverage _Limit Calculation Vulnerability Due to Collateral Factor in _borrowLimit Function",
+  "issueId": 1294,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1294"
+}
