@@ -190,6 +190,7 @@ There is a failure to check for zero after the `getUnderlyingPrice` call is made
 This will cause reverts on functions that depend on the `_maxBorrow` function
 
 ##### Mitigation
+Consider a way of preventing division by zero perhaps caching the price at every block probably not the best approach 
 
 ```diff
 
