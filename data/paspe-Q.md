@@ -1,6 +1,3 @@
-Aa
-
-
 # [N1] Function isAuthorized() is useless, it is only called in the `modifier auth()` for the require statement
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L30-L42 
