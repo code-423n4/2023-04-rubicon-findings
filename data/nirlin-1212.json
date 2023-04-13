@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nirlin",
+  "risk": "3",
+  "title": "Wrong use of block.number on optimism leads to wrong interest calculations and user may end up paying alot of interest or unable to close leverage position.",
+  "issueId": 1212,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1212"
+}
