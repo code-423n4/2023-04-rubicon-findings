@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Ace-30",
+  "risk": "2",
+  "title": "Attacker can grieve users by sending batchOffers that cause the offer of the user to exceed the gas limit.",
+  "issueId": 1081,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1081"
+}
