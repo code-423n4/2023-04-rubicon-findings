@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "lukris02",
+  "risk": "3",
+  "title": "Part of collateral assets is not taken into account when calculating the borrow amount",
+  "issueId": 1017,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1017"
+}
