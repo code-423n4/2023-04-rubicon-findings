@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "zhuXKET",
+  "risk": "3",
+  "title": "`Position._marketBuy` sells more quote amount than it should be",
+  "issueId": 1308,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1308"
+}
