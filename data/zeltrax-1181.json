@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "zeltrax",
+  "risk": "3",
+  "title": "`_borrowLimit` is not updated, leading to inaccurate collateral positions.",
+  "issueId": 1181,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1181"
+}
