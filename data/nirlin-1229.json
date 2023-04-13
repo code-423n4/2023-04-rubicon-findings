@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nirlin",
+  "risk": "3",
+  "title": "Using `batchOffer()` and `batchQuote()` functions malicious user can disrupt the whole order book in his benefit and can drain the whole contract balance.",
+  "issueId": 1229,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1229"
+}
