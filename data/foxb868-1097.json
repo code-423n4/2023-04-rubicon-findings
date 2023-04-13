@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "foxb868",
+  "risk": "3",
+  "title": "Integer overflow in the buy function.",
+  "issueId": 1097,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1097"
+}
