@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nirlin",
+  "risk": "2",
+  "title": "No deadline parameter in `sellAllAmount()` and `buyAllAmount()` functions:",
+  "issueId": 1257,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1257"
+}
