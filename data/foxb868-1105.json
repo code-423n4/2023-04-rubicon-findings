@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "foxb868",
+  "risk": "3",
+  "title": "Exploring Risks Associated with Lack of Input Validation in `batchOffer()` and `batchCancel()` Functions.",
+  "issueId": 1105,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1105"
+}
