@@ -29,3 +29,7 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 ## L-07 The function NotifyRewardAmount can be manipulated with a direct deposit of reward tokens to the contract 
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L216
+
+
+## Function batchrequote does not check if pay.gem arrays are the same length
+
