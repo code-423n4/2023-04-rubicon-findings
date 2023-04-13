@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xmuxyz",
+  "risk": "2",
+  "title": "Due to mishandling of decimals precision, the bathUSDC holders will receive the amount of rewards that is smaller than the actual amount of rewards to be received.",
+  "issueId": 892,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/892"
+}
