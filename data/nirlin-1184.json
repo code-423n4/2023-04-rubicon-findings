@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nirlin",
+  "risk": "3",
+  "title": "Reward token will be lost when leftover tokens are different from the new duration rewards tokens",
+  "issueId": 1184,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1184"
+}
