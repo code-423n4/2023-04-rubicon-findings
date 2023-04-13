@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xBeirao",
+  "risk": "3",
+  "title": "The borrowing loop mechanism for leverage makes all traders using leverage subject to liquidation",
+  "issueId": 1362,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1362"
+}
