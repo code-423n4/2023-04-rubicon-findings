@@ -1,4 +1,4 @@
-*** FeeWrapper ***
+# FeeWrapper 
 
 The functions _chargeFee and _chargeFeePayable lacks validation/security checks to prevent unauthorized access, since others contracts are supposed to interact with it there's a potential risk that both sides lack validation. Therefore, I reccomend adding security checks to prevent future attacks.
 
