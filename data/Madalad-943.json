@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Madalad",
+  "risk": "3",
+  "title": "Use of certain ERC20 tokens leads to trapped funds",
+  "issueId": 943,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/943"
+}
