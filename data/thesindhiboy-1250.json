@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "thesindhiboy",
+  "risk": "3",
+  "title": "arbitrary-send-eth : Dangerous calls to send eth to arbitrary user",
+  "issueId": 1250,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1250"
+}
