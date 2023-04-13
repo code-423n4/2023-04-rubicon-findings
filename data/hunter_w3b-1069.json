@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "hunter_w3b",
+  "risk": "2",
+  "title": "Changing matchingEnabled in RubiconMarket breaks protocol",
+  "issueId": 1069,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1069"
+}
