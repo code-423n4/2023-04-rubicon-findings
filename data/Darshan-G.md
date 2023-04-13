@@ -485,3 +485,20 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/pool
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L2 
         pragma solidity ^0.8.0;
+
+## <x> += <y> Costs More Gas Than <x> = <x> + <y> For State Variables
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L184 
+            vars.currentBathTokenAmount += _borrowLoop(
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L431
+           positions[_positionId].bathTokenAmount += _bathTokenAmount;
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L560
+            _assetAmount += _loopBorrowed;
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L583 
+           _amount -= mul(amount, feeBPS) / 100_000; 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L586
+            _amount -= mul(amount, makerFee()) / 100_000;
