@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "adriro",
+  "risk": "3",
+  "title": "Orders created in RubiconMarket V1 will send dust to address(0)",
+  "issueId": 1281,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1281"
+}
