@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "adriro",
+  "risk": "2",
+  "title": "Swaps in Position contract fail to consider potential maker fees of RubiconMarket v2",
+  "issueId": 1321,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1321"
+}
