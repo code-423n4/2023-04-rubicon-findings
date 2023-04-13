@@ -24,6 +24,8 @@
 | [GAS-19](#GAS-19) | Unused function parameter  | 1 |
 | [GAS-20](#GAS-20) | Shifting cheaper than division | 4 |
 | [GAS-21](#GAS-21) | Using unchecked blocks to save gas | * |
+| [GAS-22](#GAS-22) | Structs can be packed into fewer storage slots | 4 |
+
 
 ### [GAS-1] Use assembly to check for `address(0)`
 *Saves 6 gas per instance*
@@ -830,7 +832,7 @@ File: 2023-04-rubicon/contracts/RubiconMarket.sol
 626:    }
 ```
 
-### [G-18] With assembly, .call (bool success) transfer can be done gas-optimized
+[G-18] With assembly, .call (bool success) transfer can be done gas-optimized
 
 `return` data `(bool OK,)` has to be stored due to EVM architecture, but in a usage like below, ‘out’ and ‘outsize’ values are given (0,0), this storage disappears and gas optimization is provided.
 
@@ -940,4 +942,114 @@ to
 +	            cancel(ids[i]);
 +	        }
 	    }
+```
+
+### [G‑22] Structs can be packed into fewer storage slots
+
+Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct. Subsequent reads as well as writes have smaller gas savings
+
+```solidity
+File: 2023-04-rubicon/contracts/RubiconMarket.sol
+234:   struct OfferInfo {
+235:        uint256 pay_amt;
+236:        ERC20 pay_gem;
+237:        uint256 buy_amt;
+238:        ERC20 buy_gem;
+239:        address recipient;
+240:        uint64 timestamp;
+241:        address owner;
+242:    }
+```
+
+```solidity
+File: 2023-04-rubicon/contracts/utilities/FeeWrapper.sol
+12:    struct CallParams {
+13:        bytes4 selector; // function selector
+14:        bytes args; // encoded arguments (abi.encode() || abi.encodePacked)
+15:        address target; // target contract to call
+16:        FeeParams feeParams;
+17:    }
+
+19:    struct FeeParams {
+20:        address feeToken; // token in the form of which fee paid
+21:        uint256 totalAmount; // amount without deducted fee
+22:        uint256 feeAmount; // amount of feeToken from which fee should be charged
+23:        address feeTo; // receiver of the fee
+24:    }
+```
+
+```solidity
+File: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
+
+33:    struct Position {
+34:        address asset; // supplied as collateral
+35:        address quote; // borrowed token
+36:        uint256 borrowedAmount; // amount of borrowed quote
+37:        uint256 bathTokenAmount; // amount of bathTokens to which collateral was supplied
+38:        uint256 blockNum; // block number on which position was opened
+39:        bool isActive; // false by default, when active - true
+40:    }
+```
+
+to 
+
+```diff
+diff --git a/contracts/RubiconMarket.sol b/contracts/RubiconMarket.sol
+index 219e915..006629f 100644
+--- a/contracts/RubiconMarket.sol
++++ b/contracts/RubiconMarket.sol
+@@ -232,13 +232,13 @@ contract SimpleMarket is EventfulMarket, DSMath {
+     bytes32 internal constant MAKER_FEE_SLOT = keccak256("WOB_MAKER_FEE");
+ 
+     struct OfferInfo {
+-        uint256 pay_amt;
+         ERC20 pay_gem;
+-        uint256 buy_amt;
+         ERC20 buy_gem;
+         address recipient;
+         uint64 timestamp;
+         address owner;
++        uint256 pay_amt;
++        uint256 buy_amt;
+     }
+
+diff --git a/contracts/utilities/poolsUtility/Position.sol b/contracts/utilities/poolsUtility/Position.sol
+index 7c72d4f..4500957 100644
+--- a/contracts/utilities/poolsUtility/Position.sol
++++ b/contracts/utilities/poolsUtility/Position.sol
+@@ -31,12 +31,12 @@ contract Position is Ownable, DSMath {
+     }
+ 
+     struct Position {
++        bool isActive; // false by default, when active - true
+         address asset; // supplied as collateral
+         address quote; // borrowed token
+         uint256 borrowedAmount; // amount of borrowed quote
+         uint256 bathTokenAmount; // amount of bathTokens to which collateral was supplied
+         uint256 blockNum; // block number on which position was opened
+-        bool isActive; // false by default, when active - true
+     }
+
+diff --git a/contracts/utilities/FeeWrapper.sol b/contracts/utilities/FeeWrapper.sol
+index 88d6cfe..3d3b304 100644
+--- a/contracts/utilities/FeeWrapper.sol
++++ b/contracts/utilities/FeeWrapper.sol
+@@ -10,23 +10,23 @@ contract FeeWrapper {
+     using SafeERC20 for IERC20;
+ 
+     struct CallParams {
+-        bytes4 selector; // function selector
+         bytes args; // encoded arguments (abi.encode() || abi.encodePacked)
++        bytes4 selector; // function selector
+         address target; // target contract to call
+         FeeParams feeParams;
+     }
+ 
+     struct FeeParams {
++        address feeTo; // receiver of the fee
+         address feeToken; // token in the form of which fee paid
+         uint256 totalAmount; // amount without deducted fee
+         uint256 feeAmount; // amount of feeToken from which fee should be charged
+-        address feeTo; // receiver of the fee
+     }
 ```
