@@ -68,3 +68,60 @@ Modify function as below to address this issue.
 
 ```
 
+
+## Low-02
+
+`claimRewards()` function in `BathHouseV2.sol`  don't check for matching array length with can cause `Array out of bound` error which is not handled.
+
+## Summary 
+
+This function takes an array of `buddies` and `rewardsTokens`, however it doesn't check if the array length is same.
+
+[Link to the code on Github](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L115-L128)
+
+```solidity
+
+    function claimRewards(
+        address[] memory buddies,
+        address[] memory rewardsTokens
+    ) external {
+
+        
+        // claim rewards from comptroller
+        comptroller.claimComp(msg.sender);
+        // get rewards from bathBuddy
+        for (uint256 i = 0; i < buddies.length; ++i) {
+            IBathBuddy(buddies[i]).getReward(
+                IERC20(rewardsTokens[i]),
+                msg.sender
+            );
+        }
+    }
+```
+
+Update the function as below .
+
+```solidity
+
+    function claimRewards(
+        address[] memory buddies,
+        address[] memory rewardsTokens
+    ) external {
+
+     require(buddies.length == rewardsTokens.length,
+    "Array lengths do not match"
+);
+        
+        // claim rewards from comptroller
+        comptroller.claimComp(msg.sender);
+        // get rewards from bathBuddy
+        for (uint256 i = 0; i < buddies.length; ++i) {
+            IBathBuddy(buddies[i]).getReward(
+                IERC20(rewardsTokens[i]),
+                msg.sender
+            );
+        }
+    }
+
+
+```
