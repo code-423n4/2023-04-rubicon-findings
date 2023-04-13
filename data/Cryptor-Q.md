@@ -33,3 +33,6 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 
 ## Function batchrequote does not check if pay.gem arrays are the same length
 
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L916-L933
+
+
