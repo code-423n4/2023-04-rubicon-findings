@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nemveer",
+  "risk": "2",
+  "title": "Checking for boolean in transfer and transferFrom makes the protocol useless for some Non-ERC20 tokens",
+  "issueId": 1369,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1369"
+}
