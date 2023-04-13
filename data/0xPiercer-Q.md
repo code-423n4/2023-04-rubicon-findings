@@ -7,7 +7,7 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L628
 
 ### Recommendation
-According to the Solidiity Style guide, functions should be ordered as follows:
+According to the Solidity Style guide, functions should be ordered as follows:
 - constructor
 - receive
 - fallback
