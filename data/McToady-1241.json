@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "McToady",
+  "risk": "2",
+  "title": "Expiring Market has no close_time and isClosed always returns false",
+  "issueId": 1241,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1241"
+}
