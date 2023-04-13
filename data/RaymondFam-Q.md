@@ -26,6 +26,9 @@ Consider having the affected functions refactored as follows:
 +        z = x >= y ? x : y;
     }
 ```
+## Inexpedient returned output of sellAllAmount() and buyAllAmount()
+On the last code line of [`sellAllAmount()`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1066) and [`buyAllAmount()`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1111), the returned value `fill_amt` is assigned by casting itself into [`calcAmountAfterFee()`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L578-L589). This does not make much sense since the fees has separately been paid by the takers and could possibly lead to miscalculation if the returned output is used elsewhere for accounting or other arithmetic operations. Consider looking into the codes and see whether or not the code line may need to be removed.
+
 ## Typo mistakes
 [File: RubiconMarket.sol#L250](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L250)
 
@@ -39,7 +42,18 @@ Consider having the affected functions refactored as follows:
 -        uint256 currentBathTokenAmount; // amount of basthTokenAsset in the moment of execution
 +        uint256 currentBathTokenAmount; // amount of bathTokenAsset in the moment of execution
 ```
-## Hardcode `isClosed()`
+## Incorrect use of returned variable name
+[File: RubiconMarket.sol#L284-L286](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L284-L286)
+
+```diff
+-    function getRecipient(uint256 id) public view returns (address owner) {
++    function getRecipient(uint256 id) public view returns (address recipient) {
+        return offers[id].recipient;
+    }
+```
+Note: Comment the asociated V1 to V2 Changeset where possible.
+
+## Hardcoded `isClosed()`
 `isClosed()` has been hardcoded to `false`, making the market always open. There is no option to close it.
 
 Consider making the function toggling as follows, and have the function [initialized](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L700) in contract `RubiconMarket` where possible:
@@ -182,5 +196,81 @@ Here are the two instances entailed:
         (bool OK, ) = payable(_feeTo).call{value: _feeAmount}("");
 		require(OK, "ETH transfer failed");
         _msgValue = msg.value - _feeAmount;
+    }
+```
+## Lines too long
+Lines in source code are typically limited to 80 characters, but it’s reasonable to stretch beyond this limit when need be as monitor screens theses days are comparatively larger. Considering the files will most likely reside in GitHub that will have a scroll bar automatically kick in when the length is over 164 characters, all code lines and comments should be split when/before hitting this length. Keep line width to max 120 characters for better readability where possible.
+
+Here are some of the instances entailed:
+
+[File: BathBuddy.sol#L28](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L28)
+[File: BathBuddy.sol#L31](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L31)
+
+## Gas griefing/theft is possible on unsafe external call
+`return` data (bool success,) has to be stored due to EVM architecture, if in a usage like below, ‘out’ and ‘outsize’ values are given (0,0). Thus, this storage disappears and may come from external contracts a possible gas grieving/theft problem is avoided as denoted in the link below:
+
+https://twitter.com/pashovkrum/status/1607024043718316032?t=xs30iD6ORWtE2bTTYsCFIQ&s=19
+
+Here are the instances entailed:
+
+[File: FeeWrapper.sol](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol)
+
+```solidity
+66:        (bool _OK, bytes memory _data) = _params.target.call(
+67:            bytes.concat(_params.selector, _params.args)
+68:        );
+
+82:        (bool _OK, bytes memory _data) = _params.target.call{value: _msgValue}(
+83:            bytes.concat(_params.selector, _params.args)
+84:        );
+
+118:        (bool OK, ) = payable(_feeTo).call{value: _feeAmount}("");
+119:		require(OK, "ETH transfer failed");
+```
+## V1 bathTokens might not be wiped clean
+V2 bathTokens sent into V2Migrator will be all swept to the next mighrator. The same approach adopting contract balance instead of pre post balance difference should be implemented on V1 bathTokens too. Consider refactoring the affected code block as follows. Otherwise, the donated V1 bathTokens will never be able to get out of the contract:
+
+[File: V2Migrator.sol#L39-L57](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L39-L57)
+
+```diff
+        //////////////// V1 WITHDRAWAL ////////////////
+        uint256 bathBalance = bathTokenV1.balanceOf(msg.sender);
+        require(bathBalance > 0, "migrate: ZERO AMOUNT");
+
+        /// @dev approve first
+        bathTokenV1.transferFrom(msg.sender, address(this), bathBalance);
+
+        // withdraw all tokens from the pool
+-        uint256 amountWithdrawn = bathTokenV1.withdraw(bathBalance);
++        uint256 amountWithdrawn = bathTokenV1.withdraw(bathTokenV1.balanceOf(address(this)));
+
+        //////////////// V2 DEPOSIT ////////////////
+        IERC20 underlying = bathTokenV1.underlyingToken();
+        address bathTokenV2 = v1ToV2Pools[address(bathTokenV1)];
+
+        underlying.approve(bathTokenV2, amountWithdrawn);
+        require(
+            CErc20Interface(bathTokenV2).mint(amountWithdrawn) == 0,
+            "migrate: MINT FAILED"
+        );
+```
+## Incorrect concatenation in _bathify()
+[File: BathHouseV2.sol#L137-L149](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L137-L149)
+
+```diff
+    function _bathify(
+        address _underlying
+    )
+        internal
+        view
+        returns (string memory _name, string memory _symbol, uint8 _decimals)
+    {
+        require(_underlying != address(0), "_bathify: ADDRESS ZERO");
+
+-        _name = string.concat("bath", ERC20(_underlying).symbol());
++        _name = string.concat("bath", ERC20(_underlying).name());
+-        _symbol = string.concat(_name, "v2");
+-        _symbol = string.concat(ERC20(_underlying).symbol(), "v2");
+        _decimals = ERC20(_underlying).decimals();
     }
 ```
