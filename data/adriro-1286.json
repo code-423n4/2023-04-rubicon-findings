@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "adriro",
+  "risk": "2",
+  "title": "BathBuddy contract should implement methods to pause and unpause contract",
+  "issueId": 1286,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1286"
+}
