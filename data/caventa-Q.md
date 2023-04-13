@@ -1,4 +1,4 @@
-1.
+[Issue 1]
 
 initialize functions and spawnBuddy function can be front-run. The functions that initialize important contract state can be called by anyone.
 
@@ -63,7 +63,8 @@ The attacker can call the functions before the legitimate deployer, hoping that 
 
 Recommend using the constructor to initialize non-proxied contracts. For initializing proxy contracts, recommend deploying contracts using a factory contract that immediately calls function after deployment, or make sure to call it immediately after deployment and verify the transaction succeeded.
 
-2.
+
+[Issue 2]
 
 See FeeWrapper.sol,
 
@@ -92,7 +93,8 @@ To fix this, add a require function to ensure the value will be never be zero (S
     }
 ```
 
-3.
+
+[Issue 3]
 
 SafeMath library is not required in version 0.8.
 Overflow and underflow problems which could happen in uint arithmetic operations in previous versions is automatically checked in version 0.8.
@@ -106,6 +108,7 @@ div keyword should be replaced by /
 
 For eg, 
 
+```solidity
 rewardsPerTokensStored[token].add(
 lastTimeRewardApplicable(token)
 .sub(lastUpdateTime[token])
@@ -113,9 +116,11 @@ lastTimeRewardApplicable(token)
 .mul(1e18)
 .div(IERC20(myBathTokenBuddy).totalSupply())
 );
+```
 
 can be rewritten as
 
+```solidity
 rewardsPerTokensStored[token] + (
 lastTimeRewardApplicable(token)
 - lastUpdateTime[token]
@@ -123,13 +128,14 @@ lastTimeRewardApplicable(token)
 * 1e18
 / IERC20(myBathTokenBuddy).totalSupply())
 );
-
+```
 
 Also, SafeMath should not be imported
 
 in BathBuddy.sol and Position.sol
 
-4.
+
+[Issue 4]
 
 In position.sol, 
 
@@ -139,9 +145,10 @@ The addresses for asset and quote could be the same and this should be prevented
 
 To fix this, we should add a require statement in any LOC of both functions
 
-+++ require(quote != asset);
++++ ```require(quote != asset);```
 
-5.
+
+[Issue 5]
 
 Reentrancy is possible in _rubicallPayable and _rubicall functions which could send all fees without performing any actual meaningful targeted rubicall contract.
 
@@ -152,7 +159,7 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeW
 
 In the _rubicall function, the first two LOCs are
 
-```
+```solidity
 _chargeFee(_params.feeParams, _params.target); // line 1
 
 (bool _OK, bytes memory _data) = _params.target.call( // line 2
@@ -164,7 +171,7 @@ If _params.target is set to own _rubicall function, both line 1 and line 2 will 
 
 In the _rubicallPayable function, the first two LOCs are
 
-```
+```solidity
 uint256 _msgValue = _chargeFeePayable(_params.feeParams); // line 1
 
 (bool _OK, bytes memory _data) = _params.target.call{value: _msgValue}( // line 2
