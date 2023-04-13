@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xkazim",
+  "risk": "2",
+  "title": "Reentrancy attack may cause the protocol drain of funds",
+  "issueId": 1239,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1239"
+}
