@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cducrest",
+  "risk": "3",
+  "title": "Position `_maxBorrow` does not check for market liquidity limit",
+  "issueId": 1218,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1218"
+}
