@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cducrest",
+  "risk": "3",
+  "title": "Canceling V1 offer in closed V2 market will refund to address(0)",
+  "issueId": 1195,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1195"
+}
