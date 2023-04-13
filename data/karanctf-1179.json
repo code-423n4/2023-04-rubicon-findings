@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "karanctf",
+  "risk": "3",
+  "title": "No access control on `del_rank()` function resulting on deletion of any arbitrary id",
+  "issueId": 1179,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1179"
+}
