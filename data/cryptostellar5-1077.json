@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cryptostellar5",
+  "risk": "2",
+  "title": "Missing upper limit on `_rewardsDuration` can lead to setting up of arbitrarily large values",
+  "issueId": 1077,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1077"
+}
