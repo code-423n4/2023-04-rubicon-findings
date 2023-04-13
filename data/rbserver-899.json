@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "rbserver",
+  "risk": "2",
+  "title": "Calling `Position._marketSell` function compares `fill_amt` that includes fee to `min_fill_amount` that does not include fee",
+  "issueId": 899,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/899"
+}
