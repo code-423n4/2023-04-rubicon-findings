@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ks__xxxxx",
+  "risk": "3",
+  "title": "batchRequote() function is missing few important validations on the function inputs ",
+  "issueId": 935,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/935"
+}
