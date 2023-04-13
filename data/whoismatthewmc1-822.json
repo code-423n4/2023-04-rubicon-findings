@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "whoismatthewmc1",
+  "risk": "2",
+  "title": "Missing owner/recipient validation in RubiconMarket `offer()` leads to offer creator being unable to cancel offer and locked funds",
+  "issueId": 822,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/822"
+}
