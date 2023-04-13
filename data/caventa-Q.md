@@ -69,7 +69,7 @@ See FeeWrapper.sol,
 
 Feetype maybe 0 which will always cause the function always revert at this line of code
 ```fees[i] = (tokenAmounts[i] * feeValue) / feeType;```. 
-To fix this, add a require function to ensure the value will be never to be zero (See below).
+To fix this, add a require function to ensure the value will be never be zero (See below).
 
 ```
     function calculateFee(
@@ -95,7 +95,7 @@ To fix this, add a require function to ensure the value will be never to be zero
 3.
 
 SafeMath library is not required in version 0.8.
-Overflow and underflow problems which could happen in uint arithmetic operations is automatically checked in version 0.8.
+Overflow and underflow problems which could happen in uint arithmetic operations in previous versions is automatically checked in version 0.8.
 
 Hence, 
 
@@ -103,12 +103,6 @@ add keyword should be replaced by +
 sub keyword should be replaced by -
 mod keyword should be replaced by *
 div keyword should be replaced by /
-
-and 
-
-SafeMath should not be imported
-
-in BathBuddy.sol and Position.sol
 
 For eg, 
 
@@ -130,64 +124,56 @@ lastTimeRewardApplicable(token)
 / IERC20(myBathTokenBuddy).totalSupply())
 );
 
+
+Also, SafeMath should not be imported
+
+in BathBuddy.sol and Position.sol
+
 4.
 
 In position.sol, 
 
-buyAllAmountWithLeverage and sellAllAmountWithLeverage are the public functions which have asset and quote parameters.
+buyAllAmountWithLeverage and sellAllAmountWithLeverage are the external functions which have asset and quote parameters.
 
 The addresses for asset and quote could be the same and this should be prevented.
 
-Like in buyAllAmountWithLeverage function, add another code line to prevent quote == asset.
+To fix this, we should add a require statement in any LOC of both functions
 
-```
-function buyAllAmountWithLeverage(
-        address quote,
-        address asset,
-        uint256 quotePayAmount,
-        uint256 leverage
-    ) external onlyOwner {
-        +++ require(quote != asset);
-        //@audit what happened if quote and asset are the same
-        _leverageCheck(leverage, true);
-        require(
-            openPosition(quote, asset, quotePayAmount, leverage),
-            "buyAllAmountWithLeverage: FAILED TO OPEN POSITION"
-        );
-    }
-```
++++ require(quote != asset);
 
 5.
 
-Reentrancy is possible in _rubicallPayable and _rubicall functions which could send all fees without performing call to a router function.
+Reentrancy is possible in _rubicallPayable and _rubicall functions which could send all fees without performing any actual meaningful targeted rubicall contract.
 
 See 
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L60-L73
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L76-L89
 
-In the _rubicall function,
+In the _rubicall function, the first two LOCs are
 
+```
 _chargeFee(_params.feeParams, _params.target); // line 1
 
 (bool _OK, bytes memory _data) = _params.target.call( // line 2
   bytes.concat(_params.selector, _params.args)
 );
+```
 
 If _params.target is set to own _rubicall function, both line 1 and line 2 will be executed recursively and drain all fee
 
-In the _rubicallPayable function,
+In the _rubicallPayable function, the first two LOCs are
 
+```
 uint256 _msgValue = _chargeFeePayable(_params.feeParams); // line 1
 
 (bool _OK, bytes memory _data) = _params.target.call{value: _msgValue}( // line 2
   bytes.concat(_params.selector, _params.args)
 );
+```
 
 If _params.target is set to own _rubicallPayable function, both line 1 and line 2 will be executed recursively and drain all msg.value as fee
 
-To fix this potential reentrancy problem,
-
-add ReentrancyGuard to parent function (which is rubicall)
+To fix this potential reentrancy problem, add ReentrancyGuard to parent function (which is rubicall)
 See https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard
 
