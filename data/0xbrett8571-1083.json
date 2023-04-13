@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Tricky No Check on Approved Contracts in Repay Function.",
+  "issueId": 1083,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1083"
+}
