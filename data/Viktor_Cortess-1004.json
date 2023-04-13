@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Viktor_Cortess",
+  "risk": "2",
+  "title": "dAPP won't work with ERC20 tokens that don't return boolean value after transfers.",
+  "issueId": 1004,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1004"
+}
