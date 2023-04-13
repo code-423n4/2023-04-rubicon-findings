@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xkazim",
+  "risk": "2",
+  "title": "Anyone can create buddy for himself without calling `BathHouseV2.createBathToken` function ",
+  "issueId": 1172,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1172"
+}
