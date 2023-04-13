@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Qeew",
+  "risk": "3",
+  "title": "The Bathbuddy contract  is susceptible to First Deposit bug commonly found in Compoundv2 forks",
+  "issueId": 984,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/984"
+}
