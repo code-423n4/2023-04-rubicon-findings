@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "rbserver",
+  "risk": "3",
+  "title": "Calling `Position._marketBuy` and `Position._marketSell` functions that calculate `_fee` by dividing by `10000` can cause incorrect calculations",
+  "issueId": 903,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/903"
+}
