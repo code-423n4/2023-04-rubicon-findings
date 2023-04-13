@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "saneryee",
+  "risk": "2",
+  "title": "Dangerous shadowing of state variables",
+  "issueId": 925,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/925"
+}
