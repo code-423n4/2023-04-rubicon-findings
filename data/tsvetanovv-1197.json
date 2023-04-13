@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "tsvetanovv",
+  "risk": "2",
+  "title": "Malicious user can take control over `BathBuddy.sol`",
+  "issueId": 1197,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1197"
+}
