@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Failure to Remove an Offer from the Sorted List in `_unsort()` Function.",
+  "issueId": 1060,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1060"
+}
