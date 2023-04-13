@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "McToady",
+  "risk": "2",
+  "title": "Same token checks don’t account for double entry point tokens.",
+  "issueId": 1232,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1232"
+}
