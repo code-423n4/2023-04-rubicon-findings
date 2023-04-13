@@ -565,24 +565,7 @@ Make the function simpler like this:
     }
 ```
 
-## NC-12 Use the contract as `abstract` if it is possible
-
-There is no storage inside the contract, so use it as library if it is possible. 
-
-```solidity
-File: RubiconMarket.sol
-44: /// @notice DSMath library for safe math without integer overflow/underflow
-45: contract DSMath {   // @audit use this contract as library instead of contract
-```
-
-### Recommendation
-
-```diff
-- contract DSMath {   // @audit use this contract as `abstract` instead of contract
-+ abstract contract DSMath {   // @audit use this contract as library instead of contract
-```
-
-## NC-13 Improve the naming of the event
+## NC-12 Improve the naming of the event
 
 The naming of the events with `emit` is not necessary and we can rename it without it to improve the readability. 
 
@@ -611,7 +594,7 @@ The naming of the events with `emit` is not necessary and we can rename it witho
 +    event Cancel(
 ```
 
-## NC-14 Variable name after `returns` is not needed
+## NC-13 Variable name after `returns` is not needed
 
 Variable name `owner` after `returns` is not needed when the function has the code `return` in the function. Always either `return` the value in the function or name it after the key word `returns`. Do not use both. 
 
@@ -622,7 +605,7 @@ Variable name `owner` after `returns` is not needed when the function has the co
     }
 ```
 
-## NC-15 Do not let anyone call the `initialize` function in implementation(logic) contract
+## NC-14 Do not let anyone call the `initialize` function in implementation(logic) contract
 
 In the upgradeable patterns, UUPS pattern has a vulnerability like this. This time the upgradeable pattern is Transparent Proxy, so leave the functions there can be called by anyone cause no problems as far as I know. 
 
@@ -669,7 +652,7 @@ What you should do is:
 +    }
 ```
 
-## NC-16 Argument not used should be left empty
+## NC-15 Argument not used should be left empty
 
 The argument is not used in the function so you can ignore it. 
 
@@ -685,7 +668,7 @@ The argument is not used in the function so you can ignore it.
     ) internal returns (uint256 _limit, uint256 _lastBorrow) {
 ```
 
-## NC-17 Can emit explicit event value and improve gas cost
+## NC-16 Can emit explicit event value and improve gas cost
 
 In function `setRewardsDuration`, you can make the event more clear by adding `calldata` `token` as a value too. And using `calldata` instead of `memory` cache as event’s argument can also improve the gas cost. 
 
@@ -706,12 +689,12 @@ Change the code as below:
         );
         rewardsDuration[token] = _rewardsDuration;
 -        emit RewardsDurationUpdated(rewardsDuration[token]); // @audit non-critical (token, _rewardsDuration)
-+        emit RewardsDurationUpdated(_rewardsDuration, token); // @audit non-critical (token, _rewardsDuration)
++        emit RewardsDurationUpdated(_rewardsDuration, token); 
     }
 ```
 
 
-## NC-18 Set the `symbol` of BathToken V1 and V2 compatible
+## NC-17 Set the `symbol` of BathToken V1 and V2 compatible
 
 In `BathTokenV1` contract, the `symbol` and `name` is defined as follow: 
 
