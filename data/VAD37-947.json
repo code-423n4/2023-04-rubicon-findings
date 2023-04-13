@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "VAD37",
+  "risk": "2",
+  "title": "`FeeWrapper.sol` stuck token problem with `approve()`",
+  "issueId": 947,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/947"
+}
