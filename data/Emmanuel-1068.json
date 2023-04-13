@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Emmanuel",
+  "risk": "3",
+  "title": "A BathToken holder can steal rewards set by admin for a `rewardsDuration` by sending his bathTokens to other addresses.",
+  "issueId": 1068,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1068"
+}
