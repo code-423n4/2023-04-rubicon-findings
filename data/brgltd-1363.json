@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "brgltd",
+  "risk": "2",
+  "title": "Checking the returned value for erc20 tokens will fail for widely used tokens such as USDT",
+  "issueId": 1363,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1363"
+}
