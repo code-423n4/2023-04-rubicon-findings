@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Input validation is missing in `closePosition(), increaseMargin()`, and `_borrowLoop()` functions.",
+  "issueId": 1080,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1080"
+}
