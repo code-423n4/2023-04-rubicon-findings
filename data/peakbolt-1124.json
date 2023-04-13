@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "peakbolt",
+  "risk": "3",
+  "title": "Leveraged position can be frontrunned due to lack of limit price and slippage control",
+  "issueId": 1124,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1124"
+}
