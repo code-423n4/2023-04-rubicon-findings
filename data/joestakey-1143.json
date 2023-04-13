@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "joestakey",
+  "risk": "2",
+  "title": "`SimpleMarket.offer` is not overriden, making all offers done via this function unsorted and unavailable from `Position` calls.",
+  "issueId": 1143,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1143"
+}
