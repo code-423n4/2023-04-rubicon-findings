@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Delvir0",
+  "risk": "3",
+  "title": "BathBuddy.sol rewards per token calculation will results in too high or low if reward token decimals are not 18",
+  "issueId": 894,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/894"
+}
