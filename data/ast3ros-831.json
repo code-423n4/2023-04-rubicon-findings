@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ast3ros",
+  "risk": "2",
+  "title": "[M-3] Offer is deleted but unsorted from order book when outstanding amount is less than _dust",
+  "issueId": 831,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/831"
+}
