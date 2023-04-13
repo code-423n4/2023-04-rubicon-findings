@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "darksnow",
+  "risk": "3",
+  "title": "anyone can initialize RubiconMarket.sol and BathHouseV2.sol and became the owner of the implementation contracts",
+  "issueId": 880,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/880"
+}
