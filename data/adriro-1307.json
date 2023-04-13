@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "adriro",
+  "risk": "2",
+  "title": "ERC20 tokens with fee on transfer won't work in FeeWrapper",
+  "issueId": 1307,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1307"
+}
