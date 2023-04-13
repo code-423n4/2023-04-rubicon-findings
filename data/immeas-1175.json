@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "immeas",
+  "risk": "3",
+  "title": "attacker can steal reward tokens in `BathBuddy`",
+  "issueId": 1175,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1175"
+}
