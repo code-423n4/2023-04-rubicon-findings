@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "brgltd",
+  "risk": "2",
+  "title": "Hardcoding 10**18 when fetching the price from oracle in `Position._maxBorrow()`",
+  "issueId": 1367,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1367"
+}
