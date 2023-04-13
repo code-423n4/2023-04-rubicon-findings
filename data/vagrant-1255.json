@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "vagrant",
+  "risk": "2",
+  "title": "Offers with Fee-On-Transfer tokens or similar tokens such as deflationary ones will lead to inconsistencies in the order book",
+  "issueId": 1255,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1255"
+}
