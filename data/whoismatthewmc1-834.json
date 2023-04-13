@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "whoismatthewmc1",
+  "risk": "2",
+  "title": "RubiconMarket offer() with owner or recipient set to address(0) can DoS buy()",
+  "issueId": 834,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/834"
+}
