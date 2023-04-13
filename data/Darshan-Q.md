@@ -94,3 +94,14 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/pool
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L4 
 
 
+## Contract files should define a locked compiler version
+Contracts should be deployed with the same compiler version and flags that they have been tested with thoroughly. Locking the pragma helps to ensure that contracts do not accidentally get deployed using, for example, an outdated compiler version that might introduce bugs that affect the contract system negatively.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L2 
+    pragma solidity ^0.8.9;
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L2 
+    pragma solidity ^0.8.0;
+
+
+
