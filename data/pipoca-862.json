@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "pipoca",
+  "risk": "3",
+  "title": "No Check for Incorrect Token Address Passed to notifyRewardAmount Function",
+  "issueId": 862,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/862"
+}
