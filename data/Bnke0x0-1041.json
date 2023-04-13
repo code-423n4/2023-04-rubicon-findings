@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Bnke0x0",
+  "risk": "2",
+  "title": "initialize function in BathHouseV2.sol, RubiconMarket.sol can be invoked multiple times from the implementation contract",
+  "issueId": 1041,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1041"
+}
