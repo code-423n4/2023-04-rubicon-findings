@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xBeirao",
+  "risk": "2",
+  "title": "If a trader has already opened a position (in Position.sol) he will not be able to create an other position on the same asset",
+  "issueId": 1234,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1234"
+}
