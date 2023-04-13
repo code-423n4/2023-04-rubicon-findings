@@ -7,11 +7,11 @@ Here are example instances.
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L11
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L136
 ## [QA-3] Open TODOs
-Code architecture, incentives, and error handling/reporting questions/issues should be resolved before deployment. There are open TODOs throughout the entire codebase. An example below.
+Code architecture and error handling/reporting questions/issues should be resolved before deployment. There are open TODOs throughout the entire codebase. An example below.
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L99
 There are 13 instances of open TODOs in the codebase
 ## [QA-4] Contract does not follow the Solidity style guide’s suggested layout ordering
-The style guide says that, within a contract, the ordering should be 1) Type declarations, 2) State variables, 3) Events, 4) Modifiers, and 5) Functions, but the contract(s) below do not follow this ordering.
+The style guide says that, within a contract, the ordering should be 1) Type declarations, 2) State variables, 3) Events, 4) Modifiers, and 5) Functions, but the contract below do not follow this ordering.
 In the "periphery/bathBuddy.sol" contract the events appear at the end of the contract 
 ## [QA-5] Use a more recent version of solidity
 Using the latest version of Solidity can help ensure compatibility with other contracts
@@ -73,12 +73,14 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 There is concern that as the size of the arrays increases, the function may exceed the block gas limit and become unable to execute. Here is an instance where by a function takes in four arrays as input parameters and loops through all during execution.
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L887-L907
 
+The code should be refactored to ensure its scalable to potential increase in array size.
 ## [QA-18] Possible Array Length Mismatch in Function
 functions that takes in two or more arrays as input without validating their lengths may result in an array length mismatch error during execution. This error could potentially impact the functionality of the function.
 Here are some instances.
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L917-L933
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L30-L35
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L115-L128
+Recommendations: Always use "require()" statement before the loop to ensure arrays of equal length.
 ## [QA-19] Floating Pragma
 Locking the pragma helps to ensure that contracts do not accidentally get deployed using another pragma,
 for example, either an outdated pragma version that might introduce bugs or a recently released pragma
@@ -86,6 +88,75 @@ version which has not been extensively tested.
 Instances:
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L2
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L2
+## [QA-20] Shorthand way to write if / else statement
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L48-L56
+
+contracts/utilities/FeeWrapper.sol contains the code:
+```
+ 
+    function rubicall(
+        CallParams memory params
+    ) external payable returns (bytes memory) {
+        if (msg.value == 0) {
+            return _rubicall(params);
+        } else {
+            return _rubicallPayable(params);
+        }
+    }
+```
+This can be refactored to 
+```
+return (msg.value == 0) ? _rubicall(params) : _rubicallPayable(params);
+```
+This Increases readability and Shortens the overall SLOC.
+
+## [QA-21] Missing Minimum Time Requirement for Reward Collection
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L232-L242
+
+The contract BathBuddy.sol implements a **setRewardDuration()** function as follows:
+
+```
+    function setRewardsDuration(
+        uint256 _rewardsDuration,
+        address token
+    ) external onlyOwner {
+        require(
+            block.timestamp > periodFinish[token],
+            "Previous rewards period must be complete before changing the duration for the new period"
+        );
+        rewardsDuration[token] = _rewardsDuration;
+        emit RewardsDurationUpdated(rewardsDuration[token]);
+    }
+```
+The function ensures that previous rewards period  are complete before setting new ones but it does not
+check for minimum time requirements.
+Missing minimum time requirement for reward collection could  allow a malicious owner to set a very short time period for reward collection leading to unfair rewards distribution and loss of trust in the system
+Precautions should be taken to implement a minimum time requirement for reward collection to prevent a malicious owner from setting a very short time period.
+## [QA-21] Lack of isContract() Check in Functions Passing Contract Address
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L60-L84
+
+```
+    function createBathToken(
+        address underlying,
+        InterestRateModel interestRateModel,
+        uint256 initialExchangeRateMantissa,
+        address implementation,
+        bytes memory becomeImplementationData
+```
+
+The contract BathHouseV2.sol takes a contract addresses (Implementation address) as parameter without checking if the address is actually a contract address or an externally owned account (EOA). This can potentially lead to unexpected behavior since EOAs do not have the same functionality as contract addresses. 
+The function should include **isContract()** assembly code to verify contract addresses.
+```
+function isContract(address addr) internal view returns (bool) {
+    uint256 size;
+    assembly {
+        size := extcodesize(addr)
+    }
+    return size > 0;
+}
+```
+
+
 
 
 
