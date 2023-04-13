@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "nirlin",
+  "risk": "3",
+  "title": "User can do an first deposit inflation attack on bathToken and can take away all the shares and rewards too.",
+  "issueId": 1156,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1156"
+}
