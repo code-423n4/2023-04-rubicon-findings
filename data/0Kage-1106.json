@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0Kage",
+  "risk": "2",
+  "title": "`buyAllAmount` will always revert when `buy` amount is greater than the best offer quote",
+  "issueId": 1106,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1106"
+}
