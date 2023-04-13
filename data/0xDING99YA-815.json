@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xDING99YA",
+  "risk": "2",
+  "title": "transferFrom() and transfer() used in RubinconMarket.sol may not handle all ERC20 types.",
+  "issueId": 815,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/815"
+}
