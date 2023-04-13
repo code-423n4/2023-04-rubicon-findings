@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "foxb868",
+  "risk": "2",
+  "title": "Integer Overflow/Underflow in sellAllAmount Function.",
+  "issueId": 1108,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1108"
+}
