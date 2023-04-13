@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "immeas",
+  "risk": "2",
+  "title": "lowering interest rate will cause `closePosition` to fail",
+  "issueId": 1185,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1185"
+}
