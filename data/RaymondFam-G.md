@@ -1,5 +1,5 @@
 ## Unused functions
-Unused functions may be removed to reduce contract size and save gas on deployment.
+Unused functions may be removed to reduce contract size and save gas on deployment. Apparently, 
 
 Here is a specific instance entailed:
 
@@ -11,6 +11,28 @@ Here is a specific instance entailed:
 628:    function stop() external auth {
 629:        stopped = true;
 630:    }
+```
+## Unneeded zero address check
+The zero address check for `underlying` in the internal function `_bathify()` is a double job since it has already been executed by [`createBathToken()`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L72-L75) calling `_bathify()`. 
+
+Consider having the unneeded require statement removed to save gas both on function call and contract deployment:
+
+[File: BathHouseV2.sol#L137-L149](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L137-L149)
+
+```diff
+    function _bathify(
+        address _underlying
+    )
+        internal
+        view
+        returns (string memory _name, string memory _symbol, uint8 _decimals)
+    {
+-        require(_underlying != address(0), "_bathify: ADDRESS ZERO");
+
+        _name = string.concat("bath", ERC20(_underlying).symbol());
+        _symbol = string.concat(_name, "v2");
+        _decimals = ERC20(_underlying).decimals();
+    }
 ```
 ## Private function with embedded modifier reduces contract size
 Consider having the logic of a modifier embedded through a private function to reduce contract size if need be. A `private` visibility that saves more gas on function calls than the `internal` visibility is adopted because the modifier will only be making this call inside the contract.
