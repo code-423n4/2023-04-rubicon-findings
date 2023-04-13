@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cducrest",
+  "risk": "3",
+  "title": "SimpleMarket.Buy() rounds down spend amount",
+  "issueId": 1076,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1076"
+}
