@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xDING99YA",
+  "risk": "2",
+  "title": "Division before multiplication can cause unnecessary rounding loss.",
+  "issueId": 847,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/847"
+}
