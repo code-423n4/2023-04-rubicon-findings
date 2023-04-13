@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Delvir0",
+  "risk": "3",
+  "title": "New users can drain the rewards which are calculated in BathBuddy.sol due to not tracking activity",
+  "issueId": 901,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/901"
+}
