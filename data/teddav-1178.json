@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "teddav",
+  "risk": "2",
+  "title": "Fee should be specified in bps but is computed wrong in buy",
+  "issueId": 1178,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1178"
+}
