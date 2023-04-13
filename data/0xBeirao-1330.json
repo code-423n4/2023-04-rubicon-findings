@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xBeirao",
+  "risk": "3",
+  "title": "Malicious user can easily make the protocol revert on every USDT swap on market sell orders",
+  "issueId": 1330,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1330"
+}
