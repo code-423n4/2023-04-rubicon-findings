@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "__141345__",
+  "risk": "3",
+  "title": "`userRewardsPerTokenPaid` need to be initialized when `mint` new `bathToken`",
+  "issueId": 881,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/881"
+}
