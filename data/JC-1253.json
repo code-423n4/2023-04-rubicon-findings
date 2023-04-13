@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "JC",
+  "risk": "2",
+  "title": "RubiconMarket.buy() Missing sanity check on feeTo before transfer",
+  "issueId": 1253,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1253"
+}
