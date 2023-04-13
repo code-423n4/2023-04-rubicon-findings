@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "sashik_eth",
+  "risk": "3",
+  "title": "Any assets approved to FeeWrapper could be stolen",
+  "issueId": 1015,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1015"
+}
