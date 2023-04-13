@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ddimitrov22",
+  "risk": "2",
+  "title": "`BathBuddy.sol` is intended to be `Pausable` but it is not",
+  "issueId": 922,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/922"
+}
