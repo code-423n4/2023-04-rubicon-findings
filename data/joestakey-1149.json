@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "joestakey",
+  "risk": "2",
+  "title": "Fee accounted twice in `Position._rubiconSwap()`, results in less asset received than what it should",
+  "issueId": 1149,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1149"
+}
