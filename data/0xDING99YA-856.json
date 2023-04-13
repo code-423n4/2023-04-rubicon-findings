@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xDING99YA",
+  "risk": "3",
+  "title": "Users can specify the feeAmount as any number they want, making FeeWrapper.sol useless.",
+  "issueId": 856,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/856"
+}
