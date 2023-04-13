@@ -31,8 +31,11 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L216
 
 
-## Function batchrequote does not check if pay.gem arrays are the same length
+## L-08 Function batchrequote does not check if pay.gem arrays are the same length
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L916-L933
+
+## L-09 Oracle can be manipulated to change Max Borrow 
+
 
 
