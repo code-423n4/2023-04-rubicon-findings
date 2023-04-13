@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "rbserver",
+  "risk": "3",
+  "title": "Increase of `IERC20(myBathTokenBuddy).totalSupply()` can cause user's unclaimed rewards to drop",
+  "issueId": 896,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/896"
+}
