@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "dec3ntraliz3d",
+  "risk": "2",
+  "title": "Incorrect basis point calculation in RubiconMarket.sol",
+  "issueId": 1010,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1010"
+}
