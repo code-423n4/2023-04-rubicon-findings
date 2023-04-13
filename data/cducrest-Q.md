@@ -92,6 +92,22 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1252
 
+## Non-Critical 9 Use mul instead of div for precision:
+
+In the calculation:
+
+```solidity
+        require(
+            rewardRates[address(rewardsToken)] <=
+                balance.div(rewardsDuration[address(rewardsToken)]),
+            "Provided reward too high"
+        );
+```
+
+There is no risk of overflow if instead of dividing on the right side, we do a multiply on the left side. This will improve precision and prevent reversal in edge cases.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L217-L221
+
 ## Low 1: RubiconMarket.buy() does not require buyEnabled
 
 The function `RubiconMarket.buy()` calls either `_buys()` or `super.buy()` depending on the value of `matchingEnabled`. 
