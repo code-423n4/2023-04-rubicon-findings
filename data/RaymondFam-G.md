@@ -12,7 +12,23 @@ Here is a specific instance entailed:
 629:        stopped = true;
 630:    }
 ```
-## Unneeded zero address check
+## Unused modifier
+modifier `onlyBuddy()` in BathBuddy is not found to be used in contract or other code base. Consider removing it to reduce the contract size where possible.
+
+[File: BathBuddy.sol#L94-L102](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L94-L102)
+
+```diff
+-    modifier onlyBuddy() {
+-        require(
+-            msg.sender == myBathTokenBuddy &&
+-                msg.sender != address(0) &&
+-                friendshipStarted,
+-            "You are not my buddy!"
+-        );
+-        _;
+-    }
+```
+## Unneeded zero address check in _bathify()
 The zero address check for `underlying` in the internal function `_bathify()` is a double job since it has already been executed by [`createBathToken()`](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L72-L75) calling `_bathify()`. 
 
 Consider having the unneeded require statement removed to save gas both on function call and contract deployment:
