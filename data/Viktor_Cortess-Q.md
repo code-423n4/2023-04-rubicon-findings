@@ -32,6 +32,20 @@ So using them as a method to prevent smth doesn’t make sense.
 
 Also changing the logic of work of these boolean variables or deleting them could save some gas.
 
+contracts\periphery\BathBuddy.sol
+
+94:  modifier onlyBuddy() {
+        require(
+            msg.sender == myBathTokenBuddy &&
+                msg.sender != address(0) && 
+                friendshipStarted,
+            "You are not my buddy!"
+        );
+        _;
+    }
+
+Nobody knows the keys from address(0), so msg.sender is always !=0.
+
 ## [L] USE SAFETRANSFEROWNERSHIP INSTEAD OF TRANSFEROWNERSHIP FUNCTION
 
 Recommend implementing a two-step process where the owner or admin nominates an account and the nominated account needs to call an acceptOwnership() function for the transfer of ownership to succeed. This ensures the nominated EOA account is a valid and active account.
