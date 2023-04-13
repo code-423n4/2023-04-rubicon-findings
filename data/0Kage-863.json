@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0Kage",
+  "risk": "2",
+  "title": "`V2Migrator` is not verifying if the underlying tokens for `bathTokenV1` and `bathTokenV2` addresses are same ",
+  "issueId": 863,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/863"
+}
