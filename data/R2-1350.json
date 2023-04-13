@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "R2",
+  "risk": "3",
+  "title": "Attacker can get more rewards from BathBuddy than expected",
+  "issueId": 1350,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1350"
+}
