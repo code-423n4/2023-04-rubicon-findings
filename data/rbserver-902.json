@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "rbserver",
+  "risk": "3",
+  "title": "Incorrect calculations can occur when calling `Position._marketBuy` and `Position._marketSell` functions that do not include maker fee in `_fee`",
+  "issueId": 902,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/902"
+}
