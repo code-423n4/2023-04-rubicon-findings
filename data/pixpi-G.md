@@ -1,26 +1,26 @@
-|                   | Issue                                                                             | Instances |
-| ----------------- | :-------------------------------------------------------------------------------- | :-------: |
-| [GAS-1](#GAS-1)   | Refactor `Position` struct                                                        |     1     |
-| [GAS-2](#GAS-2)   | Refactor `CallParams` struct in the `FeeWrapper` contract                         |     1     |
-| [GAS-3](#GAS-3)   | Optimize `getOffer()` function                                                    |     1     |
-| [GAS-4](#GAS-4)   | Refactor functions to use `storage` rather than `memory`                          |     3     |
-| [GAS-5](#GAS-5)   | Refactor `offer()` function in the `RubiconMarket` contract                       |     1     |
-| [GAS-6](#GAS-6)   | Cache state variable values in memory                                             |     7     |
-| [GAS-7](#GAS-7)   | Cache call to `getOwner(id)` in the `can_cancel()` function                       |     2     |
-| [GAS-8](#GAS-8)   | Use `unchecked` for `lastPositionId` counter                                      |     1     |
-| [GAS-9](#GAS-9)   | `x += y` costs more gas than `x = x + y` for state variables                      |     1     |
-| [GAS-10](#GAS-10) | Simplify `isAuthorized`() function                                                |     1     |
-| [GAS-11](#GAS-11) | Usage of `uint`s smaller than 32 bytes (256 bits) incurs overhead                 |    21     |
-| [GAS-12](#GAS-12) | Optimize `isActive()` function                                                    |     1     |
-| [GAS-13](#GAS-13) | Use nested `if` instead of multiple `&&` combinations                             |     4     |
-| [GAS-14](#GAS-14) | `require()/revert()` strings >= 32 chars cost extra gas                           |    12     |
-| [GAS-15](#GAS-15) | Change return value of `getTime()` to `uint256`                                   |     1     |
-| [GAS-16](#GAS-16) | Refactor `batchOffer()` and `batchRequote()` to use `struct`                      |     1     |
-| [GAS-17](#GAS-17) | Use separate `require` statements instead of `&&` operators                       |     5     |
-| [GAS-18](#GAS-18) | Use `calldata` instead of `memory` for function arguments that do not get mutated |     3     |
-| [GAS-19](#GAS-19) | State variables only set in the constructor should be declared `immutable`        |     4     |
-| [GAS-20](#GAS-20) | Optimize function names to save gas                                               |     X     |
-| [GAS-21](#GAS-21) | Use solidity version >=0.8.10 to avoid contract existence checks                  |     2     |
+|          | Issue                                                                             | Instances | Estimated Gas Savings |
+| -------- | :-------------------------------------------------------------------------------- | :-------: | --------------------- |
+| [GAS-1]  | Refactor `Position` struct                                                        |     1     | 43600 / 3900          |
+| [GAS-2]  | Refactor `CallParams` struct in the `FeeWrapper` contract                         |     1     | 22100                 |
+| [GAS-3]  | Optimize `getOffer()` function                                                    |     1     | 4400                  |
+| [GAS-4]  | Refactor functions to use `storage` rather than `memory`                          |     3     | 2100                  |
+| [GAS-5]  | Refactor `offer()` function in the `RubiconMarket` contract                       |     1     | 217                   |
+| [GAS-6]  | Cache state variable values in memory                                             |     7     | 200                   |
+| [GAS-7]  | Cache call to `getOwner(id)` in the `can_cancel()` function                       |     2     | 200                   |
+| [GAS-8]  | Use `unchecked` for `lastPositionId` counter                                      |     1     | 120                   |
+| [GAS-9]  | `x += y` costs more gas than `x = x + y` for state variables                      |     1     | 113                   |
+| [GAS-10] | Simplify `isAuthorized`() function                                                |     1     | 35                    |
+| [GAS-11] | Usage of `uint`s smaller than 32 bytes (256 bits) incurs overhead                 |    21     | 12 / 188              |
+| [GAS-12] | Optimize `isActive()` function                                                    |     1     | 12                    |
+| [GAS-13] | Use nested `if` instead of multiple `&&` combinations                             |     4     | 18                    |
+| [GAS-14] | `require()/revert()` strings >= 32 chars cost extra gas                           |    12     | 18                    |
+| [GAS-15] | Change return value of `getTime()` to `uint256`                                   |     1     | 9                     |
+| [GAS-16] | Refactor `batchOffer()` and `batchRequote()` to use `struct`                      |     1     |
+| [GAS-17] | Use separate `require` statements instead of `&&` operators                       |     5     | 10 \* n               |
+| [GAS-18] | Use `calldata` instead of `memory` for function arguments that do not get mutated |     3     |
+| [GAS-19] | State variables only set in the constructor should be declared `immutable`        |     4     |
+| [GAS-20] | Optimize function names to save gas                                               |     X     |
+| [GAS-21] | Use solidity version >=0.8.10 to avoid contract existence checks                  |     2     | 22 \* n               |
 
 In the following report, gas optimizations are sorted by the estimated amount of gas savings.
 
@@ -30,7 +30,7 @@ Settings used: `{version: "0.8.17", settings: {optimizer: {enabled: true, runs: 
 
 ---
 
-## <a name="GAS-1">[GAS-1]</a> Refactor `Position` struct
+## [GAS-1] Refactor `Position` struct
 
 The refactoring allows for the `asset` and `isActive` fields to be packed into a single storage slot.
 
@@ -63,11 +63,11 @@ File: contracts/utilities/poolsUtility/Position.sol
 
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L33-L39">Position.sol#L33-L39</a>
+[Position.sol#L33-L39](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L33-L39)
 
 ---
 
-## <a name="GAS-2">[GAS-2]</a> Refactor `CallParams` struct in the `FeeWrapper` contract
+## [GAS-2] Refactor `CallParams` struct in the `FeeWrapper` contract
 
 In Solidity, `struct` fields are packed tightly, which means that adjacent fields that fit in the same storage slot are packed into it. Moving the `args` field to the top of the struct, allows the `selector` and the `target` fields to be packed into a single storage slot, reducing the total number of storage slots required for the struct. This optimization can help to reduce the gas cost of contract deployment and storage operations.
 
@@ -93,11 +93,11 @@ File: contracts/utilities/FeeWrapper.sol
 
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L12-L17">FeeWrapper.sol#L12-L17</a>
+[FeeWrapper.sol#L12-L17](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L12-L17)
 
 ---
 
-## <a name="GAS-3">[GAS-3]</a> Optimize `getOffer()` function
+## [GAS-3] Optimize `getOffer()` function
 
 The current implementation saves the entire `OfferInfo` struct in memory, even though only four fields from it are used in the `return` statement. Accessing every unused slot wastes 2100 gas due to cold access to the storage variable.
 
@@ -113,11 +113,11 @@ File: contracts/RubiconMarket.sol
 + 291:        return (offers[id].pay_amt, offers[id].pay_gem, offers[id].buy_amt, offers[id].buy_gem);
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L291-L292">RubiconMarket.sol#L291-L292</a>
+[RubiconMarket.sol#L291-L292](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L291-L292)
 
 ---
 
-## <a name="GAS-4">[GAS-4]</a> Refactor functions to use `storage` rather than `memory`
+## [GAS-4] Refactor functions to use `storage` rather than `memory`
 
 Creating a copy of the `Position` struct in memory incurs significant gas costs due to cold access to each storage slot of the struct. It might only make sense if every field of the struct is used more than once later in a function's code.
 
@@ -141,15 +141,15 @@ File: contracts/utilities/poolsUtility/Position.sol
 + 227:        Position storage pos = positions[posId];
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L75">Position.sol#L75</a>
+[Position.sol#L75](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L75)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L211">Position.sol#L211</a>
+[Position.sol#L211](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L211)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L227">Position.sol#L227</a>
+[Position.sol#L227](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L227)
 
 ---
 
-## <a name="GAS-5">[GAS-5]</a> Refactor `offer()` function in the `RubiconMarket` contract
+## [GAS-5] Refactor `offer()` function in the `RubiconMarket` contract
 
 The refactoring optimizes the gas cost of the `offer()` function by eliminating the need to declare and initialize a memory variable to store the `OfferInfo` struct before assigning it to the `offers` mapping. Instead, the `offers[id]` mapping is assigned directly within the function, avoiding unnecessary memory allocation and reducing gas usage.
 
@@ -190,13 +190,13 @@ File: contracts/RubiconMarket.sol
 
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L527-L536">RubiconMarket.sol#L527-L536</a>
+[RubiconMarket.sol#L527-L536](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L527-L536)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L568-L571">RubiconMarket.sol#L568-L571</a>
+[RubiconMarket.sol#L568-L571](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L568-L571)
 
 ---
 
-## <a name="GAS-6">[GAS-6]</a> Cache state variable values in memory
+## [GAS-6] Cache state variable values in memory
 
 Every call to the state variable after the first one incurs a cost of 100 gas (warm access). Therefore, it is advisable to cache the result of the first call in memory, in order to avoid wasting gas for the following calls to that variable.
 
@@ -233,23 +233,23 @@ File: contracts/periphery/BathBuddy.sol
 112:    function lastTimeRewardApplicable(
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1314">RubiconMarket.sol#L314</a>
+[RubiconMarket.sol#L314](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1314)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1028">RubiconMarket.sol#L1028</a>
+[RubiconMarket.sol#L1028](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1028)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1069">RubiconMarket.sol#L1069</a>
+[RubiconMarket.sol#L1069](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1069)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1157">RubiconMarket.sol#L1157</a>
+[RubiconMarket.sol#L1157](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1157)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1183">RubiconMarket.sol#L1183</a>
+[RubiconMarket.sol#L1183](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1183)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1405">RubiconMarket.sol#L1405</a>
+[RubiconMarket.sol#L1405](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1405)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L112">BathBuddy.sol#L112</a>
+[BathBuddy.sol#L112](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L112)
 
 ---
 
-## <a name="GAS-7">[GAS-7]</a> Cache call to `getOwner(id)` in the `can_cancel()` function
+## [GAS-7] Cache call to `getOwner(id)` in the `can_cancel()` function
 
 Each time `getOwner(id)` is called (after the first one), it incurs a cost of 100 gas due to the warm access to the corresponding state variable. As a result, it is advisable to cache the `getOwner(id)` value in memory prior to usage, in order to avoid incurring the same gas cost multiple times.
 
@@ -257,9 +257,9 @@ Gas savings: ~200 gas (when triggered the second check)
 
 2 instances in 1 file:
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L253-L256">RubiconMarket.sol#L253-256</a>
+[RubiconMarket.sol#L253-256](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L253-L256)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L612-L616">RubiconMarket.sol#L612-L616</a>
+[RubiconMarket.sol#L612-L616](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L612-L616)
 
 ### Recommendation code:
 
@@ -294,7 +294,7 @@ File: contracts/RubiconMarket.sol
 
 ---
 
-## <a name="GAS-8">[GAS-8]</a> Use `unchecked` for `lastPositionId` counter
+## [GAS-8] Use `unchecked` for `lastPositionId` counter
 
 It is safe to assume that `lastPositionId` won't exceed the maximum value for `uint256` type, so using `unchecked` to suppress overflow/underflow checks saves gas.
 
@@ -309,11 +309,11 @@ File: contracts/utilities/poolsUtility/Position.sol
 + 407:        unchecked {lastPositionId++;}
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L407">Position.sol#L407</a>
+[Position.sol#L407](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L407)
 
 ---
 
-## <a name="GAS-9">[GAS-9]</a> `x += y` costs more gas than `x = x + y` for state variables
+## [GAS-9] `x += y` costs more gas than `x = x + y` for state variables
 
 `x += y` costs more than `x = x + y`. The same applies for `x -= y`
 
@@ -331,11 +331,11 @@ File: contracts/utilities/poolsUtility/Position.sol
 
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L431">Position.sol#L431</a>
+[Position.sol#L431](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L431)
 
 ---
 
-## <a name="GAS-10">[GAS-10]</a> Simplify `isAuthorized()` function
+## [GAS-10] Simplify `isAuthorized()` function
 
 The original function `isAuthorized()` checks if the provided address `src` is equal to the `owner` address, and returns `true` if they are the same, otherwise it returns `false`. However, since the comparison expression `src == owner` already returns a boolean value, it can be directly returned by the function without the need for an `if-else` statement.
 
@@ -354,11 +354,11 @@ File: contracts/RubiconMarket.sol
 + 36:        return (src == owner)
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L36-L40">RubiconMarket.sol#L36-L40</a>
+[RubiconMarket.sol#L36-L40](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L36-L40)
 
 ---
 
-## <a name="GAS-11">[GAS-11]</a> Usage of `uint`'s smaller than 32 bytes incurs overhead
+## [GAS-11] Usage of `uint`'s smaller than 32 bytes incurs overhead
 
 For instance:
 
@@ -366,7 +366,7 @@ For instance:
 
 - set function for smaller `uint`'s costs 188 extra gas (for a storage variable)
 
-<a href="https://docs.soliditylang.org/en/v0.8.18/internals/layout_in_storage.html#layout-of-state-variables-in-storage">From the Solidity docs:</a>
+[From the Solidity docs:](https://docs.soliditylang.org/en/v0.8.18/internals/layout_in_storage.html#layout-of-state-variables-in-storage)
 
 When using elements that are smaller than 32 bytes, your contract’s gas usage may be higher. This is because the EVM operates on 32 bytes at a time. Therefore, if the element is smaller than that, the EVM must use more operations in order to reduce the size of the element from 32 bytes to the desired size.
 
@@ -416,11 +416,11 @@ File: contracts/RubiconMarket.sol
 
 Replace smaller `uint`'s with `uint256`
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L124">RubiconMarket.sol#L124</a>
+[RubiconMarket.sol#L124](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L124)
 
 ---
 
-## <a name="GAS-12">[GAS-12]</a> Optimize `isActive()` function
+## [GAS-12] Optimize `isActive()` function
 
 Using `pay_amt` instead of `timestamp`, or any other `uint256` variable from the `OfferInfo` struct, can save gas because it eliminates the need for the compiler to convert `uint64` to `uint256` before the actual check.
 
@@ -435,11 +435,11 @@ File: contracts/RubiconMarket.sol
 + 277:        return offers[id].pay_amt > 0;
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L276-L277">RubiconMarket.sol#L276-277</a>
+[RubiconMarket.sol#L276-277](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L276-L277)
 
 ---
 
-## <a name="GAS-13">[GAS-13]</a> Use nested `if` instead of multiple `&&` combinations
+## [GAS-13] Use nested `if` instead of multiple `&&` combinations
 
 Using nested `if` statements is cheaper than using multiple `&&` combinations. It also results in more readable code and better coverage reports.
 
@@ -477,17 +477,17 @@ File: contracts / RubiconMarket.sol
 +                     if(t_pay_amt >= _dust[address(t_pay_gem)])
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L349">RubiconMarket.sol#L349</a>
+[RubiconMarket.sol#L349](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L349)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1324-L1328">RubiconMarket.sol#L1324-L1328</a>
+[RubiconMarket.sol#L1324-L1328](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1324-L1328)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L176">Position.sol#L176</a>
+[Position.sol#L176](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L176)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L391-L394">Position.sol#L391-L394</a>
+[Position.sol#L391-L394](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L391-L394)
 
 ---
 
-## <a name="GAS-14">[GAS-14]</a> `require()/revert()` strings >= 32 chars cost extra gas
+## [GAS-14] `require()/revert()` strings >= 32 chars cost extra gas
 
 Even strings with `lengh = 32` cost extra 3 gas. Anything above that would cost additional 15 gas.
 
@@ -533,21 +533,21 @@ File: contracts/utilities/poolsUtility/Position.sol
 596:                "_leverageCheck{Short}: INVLAID LEVERAGE"
 ```
 
-### Mitigation
+### Recommendation:
 
 Try to limit `require` strings to 31 character.
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L376">RubiconMarket.sol#L376</a>
+[RubiconMarket.sol#L376](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L376)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L70">BathHouseV2.sol#L70</a>
+[BathHouseV2.sol#L70](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L70)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L238">BathBuddy.sol#L238</a>
+[BathBuddy.sol#L238](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L238)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L102">Position.sol#L102</a>
+[Position.sol#L102](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L102)
 
 ---
 
-## <a name="GAS-15">[GAS-15]</a> Change `return` value of `getTime()` to `uint256`
+## [GAS-15] Change `return` value of `getTime()` to `uint256`
 
 By changing the return type to `uint256`, the compiler will not need to perform an implicit conversion, which can save gas costs.
 
@@ -566,11 +566,11 @@ File: contracts / RubiconMarket.sol
 + 625:        return block.timestamp;
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L624-L626">RubiconMarket.sol#L624-L626</a>
+[RubiconMarket.sol#L624-L626](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L624-L626)
 
 ---
 
-## <a name="GAS-16">[GAS-16]</a> Refactor `batchOffer()` and `batchRequote()` to use `struct`
+## [GAS-16] Refactor `batchOffer()` and `batchRequote()` to use `struct`
 
 The refactoring simplifies the function's interface by consolidating four separate arrays into a single array of a new `struct` type, `BatchOffer`. The use of a `struct` type eliminates the need to check for array length consistency, reducing the complexity of the function and making it easier to read and maintain.
 
@@ -602,13 +602,13 @@ File: contracts / RubiconMarket.sol
 
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L887-L898">RubiconMarket.sol#L887-L898</a>
+[RubiconMarket.sol#L887-L898](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L887-L898)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L917-L923">RubiconMarket.sol#L917-L923</a>
+[RubiconMarket.sol#L917-L923](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L917-L923)
 
 ---
 
-## <a name="GAS-17">[GAS-17]</a> Use separate `require` statements instead of `&&` operators
+## [GAS-17] Use separate `require` statements instead of `&&` operators
 
 Each `require` statement is compiled into a separate `JUMP` instruction, whereas using `&&` operators creates a single `JUMP` instruction for all the conditions combined. When a `require` statement fails, it immediately terminates the execution of the function, which can save gas in the case where multiple conditions are being checked and only some of them fail. Additionally, using separate `require` statements can improve code readability and make debugging easier.
 
@@ -664,19 +664,19 @@ File: contracts/RubiconMarket.sol
 +        require(delbCache < block.number - 10);
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L940-L944">RubiconMarket.sol#L940-L944</a>
+[RubiconMarket.sol#L940-L944](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L940-L944)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1412-L1415">RubiconMarket.sol#L1412-L1415</a>
+[RubiconMarket.sol#L1412-L1415](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1412-L1415)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L95-L100">BathBuddy.sol#L95-L100</a>
+[BathBuddy.sol#L95-L100](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L95-L100)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L591-L592">Position.sol#L591-L592</a>
+[Position.sol#L591-L592](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L591-L592)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L595-L596">Position.sol#L595-L596</a>
+[Position.sol#L595-L596](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L595-L596)
 
 ---
 
-## <a name="GAS-18">[GAS-18]</a> Use `calldata` instead of `memory` for function arguments that do not get mutated
+## [GAS-18] Use `calldata` instead of `memory` for function arguments that do not get mutated
 
 The following items are missing in the automated findings report.
 
@@ -691,15 +691,15 @@ File: contracts/utilities/FeeWrapper.sol
 109:        FeeParams memory _feeParams
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L77">FeeWrapper.sol#L77</a>
+[FeeWrapper.sol#L77](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L77)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L93">FeeWrapper.sol#L93</a>
+[FeeWrapper.sol#L93](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L93)
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L109">FeeWrapper.sol#L109</a>
+[FeeWrapper.sol#L109](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/FeeWrapper.sol#L109)
 
 ---
 
-## <a name="GAS-19">[GAS-19]</a> State variables only set in the constructor should be declared `immutable`
+## [GAS-19] State variables only set in the constructor should be declared `immutable`
 
 When state variables are declared as `immutable`, the compiler is able to perform additional optimizations that can result in significant gas savings at runtime. This is because the `immutable` keyword informs the compiler that the value of the variable will not change after it is set in the constructor. As a result, the compiler can replace the variable with its value in the bytecode, which eliminates the need for additional storage reads and reduces the overall gas cost of the contract.
 
@@ -713,17 +713,19 @@ File: contracts/utilities/poolsUtility/Position.sol
 47:    BathHouseV2 public bathHouseV2;
 ```
 
-<a href="https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L44-L47">Position.sol#L44-L47</a>
+[Position.sol#L44-L47](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L44-L47)
 
 ---
 
-## <a name="GAS-20">[GAS-20]</a> Optimize function names to save gas </a>
+## [GAS-20] Optimize function names to save gas </a>
 
 Calling a function at runtime will be cheaper if the function is positioned earlier in the order (has a relatively lower Method ID), because 22 gas are added to the cost of a function for every position that came before it.
 
 It might be especially beneficial for the contracts containing many functions. For instance, `RubiconMarket` contract has 62 function declarations. Using analytics data from the V1, it is possible to optimize function names, at least for the most common used ones, thus saving considerable amounts of gas.
 
-## <a name="GAS-21">[GAS-21]</a> Use solidity version >=0.8.10 to avoid contract existence checks
+---
+
+## [GAS-21] Use solidity version >=0.8.10 to avoid contract existence checks
 
 Prior to `0.8.10` the compiler inserted extra opcode `EXTCODESIZE` (100 gas) to check for contract existence for external calls. In more recent solidity versions, the compiler will not insert these checks if the external call has a return value.
 
