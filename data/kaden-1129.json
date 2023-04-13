@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "kaden",
+  "risk": "3",
+  "title": "`FeeWrapper` calling context allows attackers to steal from other users",
+  "issueId": 1129,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1129"
+}
