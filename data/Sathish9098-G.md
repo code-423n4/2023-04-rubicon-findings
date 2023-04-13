@@ -1,8 +1,40 @@
 ## GAS OPTIMIZATIONS
 
+| Issue Counts | Issues | Instances | Gas Saved |
+|-----------------|-----------------|-----------------|-----------------|
+| [G-1] | State variables only set in the constructor should be declared immutable  | 4  | 80000 (4 slots)  |
+| [G-2] | variables can be packed into fewer storage slots  | 1  | 20000 (1 slot)  |
+| [G-3] | Structs can be packed into fewer storage slots   | 2  | 40000 (2 slot)  |
+| [G-4] | Use a more recent version of solidity | 4  | - |
+| [G-5] | Optimize names to save gas  | 67  | -  |
+| [G-6] | Multiple address/ID mappings can be combined into a single mapping of an address/ID to a struct, where appropriate  | 14  | -  |
+| [G-7] | Functions guaranteed to revert when called by normal users can be marked payable   | 15  | 315 |
+| [G-8] | Do not calculate constants   | 1  | -  |
+| [G-9] | internal/Private functions or Modifiers only called once can be inlined to save gas   | 47  | 1880  |
+| [G-10] | NOT USING THE NAMED RETURN VARIABLES WHEN A FUNCTION RETURNS, WASTES DEPLOYMENT GAS   | 10  | -  |
+| [G-11] | Setting the constructor to payable   | 2  | 26  |
+| [G-12] | Use assembly to write address storage values   | 12  | -  |
+| [G-13] | Use nested if and, avoid multiple check combinations   | 6  | 54  |
+| [G-14] | Usage of uints/ints smaller than 32 bytes (256 bits) incurs overhead   | 6  | 126 |
+| [G-15] | Splitting require() statements that use && saves gas   | 12  | 36  |
+| [G-16] | Add unchecked {} for subtractions where the operands cannot underflow   | 1  | 120  |
+| [G-17] | Repeated same value assignments for buyEnabled, matchingEnabled varibales in initialize() function  | 1  | -  |
+| [G-18] | For events use 3 indexed rule to save gas   | 15  | -  |
+| [G-19] | Modifiers not called by contract should be removed to save deployment cost   | 1 | -  |
+| [G-20] | public functions not called by contract can be declared as external to save gas    | 6 | -  |
+| [G-21] | Avoid contract existence checks by using low level calls   | 50  | 5000  |
+| [G-22] | No need to evaluate all expressions to know if one of them is true   | 5  | -  |
+| [G-23] | Multiple accesses of a mapping/array should use a local variable cache   | 2  | -  |
+| [G-24] | Cache the repeated functions instead of recalling  | 2  | -  |
+
+
 ##
 
 ## [G-1] State variables only set in the constructor should be declared immutable
+
+> Instances(5)
+
+> Approximate Gas Saved (80000 gas 5 slots)
 
 Avoids a Gsset (20000 gas) in the constructor, and replaces the first access in each transaction (Gcoldsload - 2100 gas) and each access thereafter (Gwarmacces - 100 gas) with a PUSH32 (3 gas).
 
@@ -32,6 +64,10 @@ FILE : 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 ##
 
 ## [G-2] State variables can be packed into fewer storage slots
+
+> Instances(1)
+
+> Approximate Gas Saved (20000 gas 1 slot)
 
 If variables occupying the same slot are both written the same function or by the constructor, avoids a separate Gsset (20000 gas). Reads of the variables can also be cheaper
 
@@ -70,6 +106,10 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
 ## [G-3] Structs can be packed into fewer storage slots
 
+> Instances(2)
+
+> Approximate Gas Saved (40000 gas 2 slots)
+
 Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct.
 
 ```solidity
@@ -106,6 +146,8 @@ FILE : 2023-04-rubicon/contracts/utilities/FeeWrapper.sol
 
 ## [G-4] Use a more recent version of solidity
 
+> Instances(4)
+
 One of the main ways that Solidity reduces gas costs is through the use of more efficient bytecode. The Solidity compiler generates optimized bytecode that uses fewer instructions and consumes less gas than previous versions. This optimization can result in significant gas savings, particularly for contracts with complex logic or large data structures
 
 - Inline assembly
@@ -133,6 +175,8 @@ FILE : 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 ##
 
 ## [G-5] Optimize names to save gas
+
+> Instances(67)
 
 public/external function names and public member variable names can be optimized to save gas. See this [link](https://gist.github.com/IllIllI000/a5d8b486a8259f9f77891a919febd1a9) for an example of how it works. Below are the interfaces/abstract contracts that can be optimized so that the most frequently-called functions use the least amount of gas possible during method lookup. Method IDs that have two leading zero bytes can save 128 gas each during deployment, and renaming functions to have lower method IDs will save 22 gas per call, [per sorted position shifted](https://medium.com/joyso/solidity-how-does-function-name-affect-gas-consumption-in-smart-contract-47d270d8ac92)
 
@@ -188,6 +232,8 @@ FILE : 2023-04-rubicon/contracts/BathHouseV2.sol
 
 ## [G-6] Multiple address/ID mappings can be combined into a single mapping of an address/ID to a struct, where appropriate
 
+> Instances(14)
+
 Saves a storage slot for the mapping. Depending on the circumstances and sizes of types, can avoid a Gsset (20000 gas) per mapping combined. Reads and subsequent writes can also be cheaper when a function requires both values and they both fit in the same storage slot. Finally, if both fields are accessed in the same function, can save ~42 gas per access due to [not having to recalculate the key’s keccak256 hash](https://gist.github.com/IllIllI000/ec23a57daa30a8f8ca8b9681c8ccefb0) (Gkeccak256 - 30 gas) and that calculation’s associated stack operations.
 
 ```solidity
@@ -227,6 +273,10 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 ##
 
 ## [G-7] Functions guaranteed to revert when called by normal users can be marked payable
+
+> Instances(15)
+
+> Approximate Gas Saved (315 gas)
 
 If a function modifier such as onlyOwner is used, the function will revert if a normal user tries to pay the function. Marking the function as payable will lower the gas cost for legitimate callers because the compiler will not include checks for whether a payment was provided. The extra opcodes avoided are CALLVALUE(2),DUP1(3),ISZERO(3),PUSH2(3),JUMPI(10),PUSH1(3),DUP1(3),REVERT(0),JUMPDEST(1),POP(2), which costs an average of about 21 gas per call to the function, in addition to the extra deployment cost
 
@@ -297,6 +347,8 @@ function setRewardsDuration(
 
 ## [G-8] Do not calculate constants
 
+> Instances(1)
+
 Due to how constant variables are implemented (replacements at compile-time), an expression assigned to a constant variable is recomputed each time that the variable is used, which wastes some gas
 
 ```solidity
@@ -309,6 +361,10 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 ##
 
 ## [G-9] internal/Private functions or Modifiers only called once can be inlined to save gas
+
+> Instances(47)
+
+> Approximate Gas Saved (1880 gas )
 
 Not inlining costs 20 to 40 gas because of two extra JUMP instructions and additional stack operations needed for function calls.
 
@@ -398,6 +454,8 @@ FILE:2023-04-rubicon/contracts/utilities/FeeWrapper.sol
 
 ## [G-10] NOT USING THE NAMED RETURN VARIABLES WHEN A FUNCTION RETURNS, WASTES DEPLOYMENT GAS
 
+> Instances(10)
+
 It is true that not using the named return variables when a function returns wastes deployment gas.
 
 ```solidity
@@ -418,6 +476,10 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
 ## [G-11] Setting the constructor to payable
 
+> Instances(2)
+
+> Approximate Gas Saved (26 gas )
+
 You can cut out 10 opcodes in the creation-time EVM bytecode if you declare a constructor payable. Making the constructor payable eliminates the need for an initial check of msg.value == 0 and saves 13 gas on deployment with no security risks
 
 ```solidity
@@ -437,6 +499,8 @@ FILE : 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 ##
 
 ## [G-12] Use assembly to write address storage values
+
+> Instances(12)
 
 ```solidity
 FILE : 2023-04-rubicon/contracts/BathHouseV2.sol
@@ -484,6 +548,10 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
 ## [G-13] Use nested if and, avoid multiple check combinations
 
+> Instances(6)
+
+> Approximate Gas Saved (54 gas )
+
 Using nested is cheaper than using && multiple check combinations. There are more advantages, such as easier to read code and better coverage reports.
 
 ```solidity
@@ -522,6 +590,10 @@ FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 
 ## [G-14] Usage of uints/ints smaller than 32 bytes (256 bits) incurs overhead
 
+> Instances(6)
+
+> Approximate Gas Saved (126 gas  )
+
 When using elements that are smaller than 32 bytes, your contracts gas usage may be higher. This is because the EVM operates on 32 bytes at a time. Therefore, if the element is smaller than that, the EVM must use more operations in order to reduce the size of the element from 32 bytes to the desired size.
 
 (https://docs.soliditylang.org/en/v0.8.11/internals/layout_in_storage.html)
@@ -545,6 +617,10 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 ##
 
 ## [G-15] Splitting require() statements that use && saves gas
+
+> Instances(6)
+
+> Approximate Gas Saved (18 gas )
 
 See [this issue](https://github.com/code-423n4/2022-01-xdefi-findings/issues/128) which describes the fact that there is a larger deployment gas cost, but with enough runtime calls, the change ends up being cheaper by 3 gas
 
@@ -606,6 +682,8 @@ FILE: 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
 
 ## [G-16] Add unchecked {} for subtractions where the operands cannot underflow
 
+> Instances(1)
+
 ```solidity
 FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
@@ -618,6 +696,8 @@ The block.number is not going to less than 10
 ##
 
 ## [G-17] Repeated same value assignments for buyEnabled, matchingEnabled varibales in initialize() function 
+
+> Instances(1)
 
 The buyEnabled, matchingEnabled values already set true when declaring state variables. Inside initialize() function again the buyEnabled, matchingEnabled values set to true. This is waste of work and consumes large volume of gas. The values should be set true only if the buyEnabled, matchingEnabled variables value is false otherwise we can simply skip this assignments 
 
@@ -632,7 +712,11 @@ FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
 ```
 [RubiconMarket.sol#L675-L676](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L675-L676)
 
+##
+
 ## [G-18] For events use 3 indexed rule to save gas 
+
+> Instances(15)
 
 Need to declare 3 indexed fields for event parameters. If the event parameter is less than 3 should declare all event parameters indexed 
 
@@ -673,6 +757,8 @@ event Recovered(address token, uint256 amount);
 
 ## [G-19] Modifiers not called by contract should be removed to save deployment cost 
 
+> Instances(1)
+
 ```solidity
 FILE: rubicon/contracts/periphery/BathBuddy.sol
 
@@ -692,6 +778,9 @@ modifier onlyBuddy() {
 ##
 
 ## [G-20] public functions not called by contract can be declared as external to save gas
+
+> Instances(6)
+
 
 ```solidity
 FILE: 2023-04-rubicon/contracts/BathHouseV2.sol
@@ -723,6 +812,10 @@ FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
 ##
 
 ## [G-21] Avoid contract existence checks by using low level calls
+
+> Instances(50)
+
+> Approximate Gas Saved (5000 gas )
 
 Prior to 0.8.10 the compiler inserted extra code, including EXTCODESIZE (100 gas), to check for contract existence for external function calls. In more recent solidity versions, the compiler will not insert these checks if the external call has a return value. Similar behavior can be achieved in earlier versions by using low-level calls, since low level calls never check for contract existence
 
@@ -824,6 +917,8 @@ FILE: 2023-04-rubicon/contracts/utilities/FeeWrapper.sol
 
 ## [G-22] No need to evaluate all expressions to know if one of them is true
 
+> Instances(5)
+
 When we have a code expressionA || expressionB if expressionA is true then expressionB will not be evaluated and gas saved;
 
 ```solidity
@@ -863,6 +958,8 @@ FILE: 2023-04-rubicon/contracts/RubiconMarket.sol
 
 ## [G-23] Multiple accesses of a mapping/array should use a local variable cache
 
+> Instances(2)
+
 The instances below point to the second+ access of a value inside a mapping/array, within a function. Caching a mapping’s value in a local storage or calldata variable when the value is accessed multiple times, saves ~42 gas per access due to not having to recalculate the key’s keccak256 hash (Gkeccak256 - 30 gas) and that calculation’s associated stack operations. Caching an array’s struct avoids recalculating the array offsets into memory/calldata.
 
 ```solidity
@@ -880,6 +977,8 @@ _rank[id].delb value should be cached
 
 ## [G-24] Cache the repeated functions instead of recalling 
 
+> Instances(4)
+
 ```solidity
 FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 
@@ -894,18 +993,3 @@ makerFee() function should be cached
 ```
 [RubiconMarket.sol#L345-L346](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L345-L346)
 
-
-GAS-1	Use assembly to check for address(0)	14
-GAS-2	Using bools for storage incurs overhead	7
-GAS-3	Cache array length outside of loop	6
-GAS-4	State variables should be cached in stack variables rather than re-reading them from storage	2
-GAS-5	Use calldata instead of memory for function arguments that do not get mutated	7
-GAS-6	Use Custom Errors	36
-GAS-7	Don't initialize variables with default value	8
-GAS-8	Long revert strings	7
-GAS-9	Pre-increments and pre-decrements are cheaper than post-increments and post-decrements	8
-GAS-10	Use shift Right/Left instead of division/multiplication if possible	4
-GAS-11	Use storage instead of memory for structs/arrays	12
-GAS-12	Increments can be unchecked in for-loops	7
-GAS-13	Use != 0 instead of > 0 for unsigned integer comparison	21
-GAS-14	internal functions not called by the contract should be removed	4
