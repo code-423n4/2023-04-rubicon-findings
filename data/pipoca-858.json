@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "pipoca",
+  "risk": "2",
+  "title": "Unchecked Return Value of transferFrom Function Call",
+  "issueId": 858,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/858"
+}
