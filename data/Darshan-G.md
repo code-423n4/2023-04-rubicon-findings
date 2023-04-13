@@ -502,3 +502,56 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L586
             _amount -= mul(amount, makerFee()) / 100_000;
+
+## Use hardcode address instead address(this) 
+
+Instead of using address(this), it is more gas-efficient to pre-calculate and use the hardcoded address 
+
+References: https://book.getfoundry.sh/reference/forge-std/compute-create-address
+
+https://twitter.com/transmissions11/status/1518507047943245824
+
+Proof Of Concept
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L538 
+        require(pay_gem.transferFrom(msg.sender, address(this), pay_amt));
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L104 
+           buddy.spawnBuddy(admin, bathToken, address(this));
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L44 
+           bathTokenV1.transferFrom(msg.sender, address(this), bathBalance); 
+
+            msg.sender,
+            IERC20(bathTokenV2).balanceOf(address(this))
+        );
+        require(
+            IERC20(bathTokenV2).balanceOf(address(this)) == 0,
+            "migrate: BATH TOKENS V2 STUCK IN THE CONTRACT"
+        ); 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L100 
+
+       uint256 balance = rewardsToken.balanceOf(address(this));
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol
+
+     function borrowBalance(address bathToken) public returns (uint256 balance) {
+        balance = CTokenInterface(bathToken).borrowBalanceCurrent(
+            address(this)
+        );
+       }
+
+         /// @dev save initial balance of asset to calculate then amount to borrow
+        vars.initAssetBalance = IERC20(asset).balanceOf(address(this));
+
+        // transfer initial margin amount
+        IERC20(asset).safeTransferFrom(msg.sender, address(this), initMargin);
+
+          uint256 assetBalance = IERC20(asset).balanceOf(address(this));
+
+
+
+
+Recommended Mitigation Steps
+Use hardcoded address.
