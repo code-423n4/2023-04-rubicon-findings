@@ -92,4 +92,10 @@ sellAllAmount loops over best offers and matches them until the user has sold en
             }
 ```
 
-Meaning that it breaks when `pay_amt < offer_buy_amt / offer_pay_amt`. This looks quite arbitrary and will often break for tokens with different decimals. If `pay_gem` is 6 decimals and `buy_gem` is 18 decimals
+Meaning that it breaks when `pay_amt < offer_buy_amt / offer_pay_amt`. It breaks when `pay_amt` is lower than the sell price. This looks quite arbitrary and may often break for tokens with different decimals.
+
+buyAllAmount has the same break check.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1083-L1088
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1043-L1048
