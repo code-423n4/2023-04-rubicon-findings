@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "qbs",
+  "risk": "2",
+  "title": "Insufficient check on reward token balance in BathBuddy.notifyRewardAmount function",
+  "issueId": 1067,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1067"
+}
