@@ -252,7 +252,72 @@ There are two more instances of this issue:
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L924-L932 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L911-L913
 
-## 16. TYPOs FOUND IN THE FOLLOWING `NATSPEC` COMMENTS
+## 16. `payable` KEYWORD IS MISSING IN THE FUNCTION.
+
+The `FeeWrapper._rubicallPayable()` and `FeeWrapper._chargeFeePayable()` functions accept `Eth` via `msg.value`.
+But these functions are not defined with the `payable` keyword to allow them to recive `Eth`.
+
+Hence implement `payable` keyword in the function signatures of those two functions.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L76
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L108
+
+
+## 17. WHEN USING MULTIPLE `arrays` WITHIN A `for` LOOP, MAKE SURE TO CHECK THAT THIER ARRAY LENGHTS ARE EQUAL.
+
+`BathHouseV2.claimRewards()` function uses `for` loop to get the `rewards` for the `buddies` array for each of the reward tokens given in the `rewardTokens` array.
+But the array lenghts of `buddies` and `rewardsTokens` are never checked for equality.
+
+    function claimRewards(
+        address[] memory buddies,
+        address[] memory rewardsTokens
+    ) external {
+        // claim rewards from comptroller
+        comptroller.claimComp(msg.sender);
+        // get rewards from bathBuddy
+        for (uint256 i = 0; i < buddies.length; ++i) {
+            IBathBuddy(buddies[i]).getReward(
+                IERC20(rewardsTokens[i]),
+                msg.sender
+            );
+        }
+    }
+
+Hence if one array lenght is different from the other, this will break the functionality of the `for` loop thus giving unexpected results.
+
+Check the array lengths as below:
+
+     require(buddies.length == rewards.length, "Array length mismatch");
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L115-L128
+
+There is 1 more instance of this issue:
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L917-L933
+
+## 18. CHECK FOR `contract existence` WHEN SENDING `Eth` TO AN EXTERNAL CONTRACT ADDRESS.
+
+In the `FeeWrapper._rubicallPayable()` function, `Eth` is sent to the `_params.target` address by calling the low level `call` function.
+But the contract existence of `_params.target` is never checked. If there is no contract at the `_params.target` the low level `call` function will return `true` and the sent `Eth` will be lost.
+
+Hence it is recommended to check the contract existence of the `_params.target` address.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L82
+
+## 19. IN `Position._leverageCheck` FUNCTION, THE `_leverageMax` IS HARDCODED TO `3`
+
+In Position._leverageCheck the `_leverageMax` can not be changed and is hardcoded to `3`, as shown below:
+
+        uint256 _leverageMax = WAD.mul(3);
+
+So in the future if there is a requirement to increase the `max leverage` times, the `Position` contract will have to redeployed with the new `max leverage` value.
+This could be difficult change to execute.
+
+Hence the it is recommended to keep the `max leverage` value as a `settable` value. And new function should be implemented to set the `max leverage` which is only accessible by the `owner`.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L588
+
+## 20. TYPOs FOUND IN THE FOLLOWING `NATSPEC` COMMENTS
 
 Typos found in the `natspec` comments have been highlighted below: 
 
