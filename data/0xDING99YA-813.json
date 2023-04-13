@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xDING99YA",
+  "risk": "3",
+  "title": "RubiconMarket.sol _hide() can DOS due to out of gas",
+  "issueId": 813,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/813"
+}
