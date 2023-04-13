@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "kutugu",
+  "risk": "3",
+  "title": "The calculation of fee in `calcAmountAfterFee` function is incorrect",
+  "issueId": 1002,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1002"
+}
