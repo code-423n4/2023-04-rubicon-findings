@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Viktor_Cortess",
+  "risk": "2",
+  "title": "Function oracle.getUnderlyingPrice could return non 18 decimals price ",
+  "issueId": 1138,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1138"
+}
