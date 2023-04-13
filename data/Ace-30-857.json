@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Ace-30",
+  "risk": "2",
+  "title": "Problem with setting reasonable rewardRates for tokens with low decimals because of rounding to zero",
+  "issueId": 857,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/857"
+}
