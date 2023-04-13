@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "zhuXKET",
+  "risk": "3",
+  "title": "`SimpleMarket.offer` doesn't validate owner and recipient",
+  "issueId": 1315,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1315"
+}
