@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "foxb868",
+  "risk": "2",
+  "title": "Repeated Calls to \"sellAllAmount\" can cause a Denial-of-Service (DoS) Attack.",
+  "issueId": 1107,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1107"
+}
