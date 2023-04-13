@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Madalad",
+  "risk": "3",
+  "title": "Funds can be stolen from market contract using reentrancy",
+  "issueId": 945,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/945"
+}
