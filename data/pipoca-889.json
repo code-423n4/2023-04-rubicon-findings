@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "pipoca",
+  "risk": "3",
+  "title": "Potential Reentrancy Risk in _chargeFeePayable Function",
+  "issueId": 889,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/889"
+}
