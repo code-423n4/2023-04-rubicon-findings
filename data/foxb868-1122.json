@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "foxb868",
+  "risk": "3",
+  "title": "Integer overflow/underflow vulnerability in Rubicon smart contract.",
+  "issueId": 1122,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1122"
+}
