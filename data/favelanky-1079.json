@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "favelanky",
+  "risk": "2",
+  "title": "Tokens with `bytes32` metadata not supported",
+  "issueId": 1079,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1079"
+}
