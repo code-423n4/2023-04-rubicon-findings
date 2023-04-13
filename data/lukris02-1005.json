@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "lukris02",
+  "risk": "2",
+  "title": "Using a single EOA for admin role is dangerous",
+  "issueId": 1005,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1005"
+}
