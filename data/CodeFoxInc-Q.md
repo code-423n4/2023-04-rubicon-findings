@@ -607,13 +607,13 @@ Variable name `owner` after `returns` is not needed when the function has the co
 
 ## NC-14 Do not let anyone call the `initialize` function in implementation(logic) contract
 
-In the upgradeable patterns, UUPS pattern has a vulnerability like this. This time the upgradeable pattern is Transparent Proxy, so leave the functions there can be called by anyone cause no problems as far as I know. 
+In the upgradeable patterns, UUPS pattern has a vulnerability like this. This time the upgradeable pattern is Transparent Proxy, so leave the functions there can be called by anyone cause no big problems as far as I know. 
 
-But leaving the implementation contract’s initializing function which can be called by any random person out there is not a good practice. 
+But leaving the implementation contract’s initializing function which can be called by any random person out there is still not a good practice. 
 
 ### Recommendation
 
-For following the best practice, I recommend add a constructor function into the contract to prevent it from happening. 
+For following the best practice, I recommend add a `constructor` function in the contract to prevent it from happening. 
 
 And I also recommend inherit the OpenZeppelin’s `Initializable` contract because it includes `_disableInitializers` function. 
 
@@ -621,7 +621,7 @@ And I also recommend inherit the OpenZeppelin’s `Initializable` contract becau
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 ```
 
-Code below is from the wizard by OpenZeppelin’s Wizard which follows the best practices. It includes a constructor function which will call the `_disableInitializers`. 
+Code below is made by OpenZeppelin’s Wizard which follows the best practices. It includes a constructor function which will call the `_disableInitializers` to stop anyone from calling the implementation's `initialize` function. 
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -642,7 +642,9 @@ contract MyToken is Initializable, ERC20Upgradeable {
 }
 ```
 
-What you should do is: 
+What you should do is this: 
+- Import the file.
+- Add `constructor` with `_disableInitializers` called inside. 
 
 ```diff
 + import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -652,9 +654,11 @@ What you should do is:
 +    }
 ```
 
+And don't forget to add the `initializer` modifier after the `initialize` function. 
+
 ## NC-15 Argument not used should be left empty
 
-The argument is not used in the function so you can ignore it. 
+The argument is not used in the function so you can ignore it by give no variable name to it. 
 
 [https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L525-L531](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L525-L531)
 
