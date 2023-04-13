@@ -68,6 +68,16 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 
 This will improve the matchability for the user.
 
+## Non-Critical 7: sell/buyAllAmount return incorrect value
+
+The value returned by sellAllAmount is `calcAmountAfterFee(fill_amt)`. I.e. it subtract the fees on the total fill amount. However, the fees have been paid in multiple steps if multiple offers have been filled. The applied fees could be lower than `calcAmountAfterFee(fill_amt)` due to rounding taking place in the match with each individual offer filled.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1066
+
+Same for buyAllAmount
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1111
+
 ## Low 1: RubiconMarket.buy() does not require buyEnabled
 
 The function `RubiconMarket.buy()` calls either `_buys()` or `super.buy()` depending on the value of `matchingEnabled`. 
