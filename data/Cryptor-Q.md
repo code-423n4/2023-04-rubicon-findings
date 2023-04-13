@@ -21,7 +21,7 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L824
 
 
-## L-06 No check to see if the address arrays in claimrewards are the same 
+## L-06 No check to see if the address arrays in claimrewards are the same length
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L113-L128
 
@@ -37,5 +37,6 @@ https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e
 
 ## L-09 Oracle can be manipulated to change Max Borrow 
 
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L304-L319
 
 
