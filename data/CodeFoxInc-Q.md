@@ -775,3 +775,45 @@ Change the code as follow to make the symbol and name consistent and compatible 
         _decimals = ERC20(_underlying).decimals();
     }
 ```
+
+## NC-18 Use `constructor` if the contract doesn't adopt upgradeable pattern
+
+I noticed in the BathBuddy contract below, the initiating function is called spawnBuddy and there is no constructor. As far as I understand, the contract BathBuddy is not supposed to be a upgradeable contract, so `constructor` can work very well in the contract. 
+
+[https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L71-L85](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L71-L85)
+
+### Recommendation
+
+Change the code as follow: 
+
+```diff
+// Proxy-safe constructor
+-    function spawnBuddy( //@audit non-critical - the implementation can get initialized by anyone. And this is risking getting initialized by a malicious attacker. In the worst case, the attacker can make the implementation destruct itself. This will make the proxy unusable. The attacker can put his malicious token as the argument `newBut` and then call the 
++    constructor( 
+        address _owner,
+        address newBud,
+        address _bathHouse
+-    ) external {
++   ) {
+        require(!friendshipStarted, "I already have a buddy!"); // @audit gas - can use bathHouse as a flag to check if the contract is initialized. We can reduce storage by 1 slot in this case. `require(myBathTokenBuddy == address(0), "Already spawned!");`
+        owner = _owner;
+        myBathTokenBuddy = newBud;
+        bathHouse = _bathHouse;
+
+        // Note, rewards duration must be set by admin
+
+        // Constructor pattern
+        friendshipStarted = true;
+    }
+```
+
+And in BathHouseV2 contract you also need to tweak the code.
+
+[https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L103-L105](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/BathHouseV2.sol#L103-L105)
+
+```diff
+			// spawn buddy
+-                      BathBuddy buddy = new BathBuddy();
+-                      buddy.spawnBuddy(admin, bathToken, address(this));
++		       BathBuddy buddy = new BathBuddy(admin, bathToken, address(this));
+```
