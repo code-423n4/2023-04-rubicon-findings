@@ -1,5 +1,59 @@
 ## LOW FINDINGS 
 
+| Issue Count | Issues | Instances |
+|-----------------|-----------------|-----------------|
+| [L-1] | MIXING AND OUTDATED COMPILER   |  4 |
+| [L-2] | Sanity/Threshold/Limit Checks   | 10  |
+| [L-3] | Unsafe typecasting method is used to cast bytes32 to uint256   | 5  |
+| [L-4] | Consider using OpenZeppelin’s SafeCast library to prevent unexpected overflows when casting from uint256    | 13  |
+| [L-5] | Prevent division by 0  | 3  |
+| [L-6] | Function may run out of gas  | -  |
+| [L-7] |  Array lengths not checked before batch operations | 1  |
+| [L-8] | Missing event and or timelock for critical parameter change | -  |
+| [L-9] |  Don’t use payable.call()  |  1 |
+| [L-10] | Inconsistent spacing in comments  | -  |
+| [L-11] | A single point of failure   | 12  |
+| [L-12] | Loss of precision due to rounding   | 5  |
+| [L-13] | Low-level calls that are unnecessary for the system should be avoided   |  1 |
+| [L-14] | Project Upgrade and Stop Scenario should be  | -  |
+| [L-15] |  Update codes to avoid Compile Errors  | 3  |
+
+# NON CRITICAL FINDINGS
+
+| Issue Count | Issues | Instances |
+|-----------------|-----------------|-----------------|
+| [NC-1]  | Named imports can be used  |  3 |
+| [NC-2]  | Remove commented out code  |  - |
+| [NC-3]  |  Test environment comments and codes should not be in the main version | 1  |
+| [NC-4]  | Add a timelock to critical functions  |  - |
+| [NC-5]  | No same value control  |  - |
+| [NC-6]  | Critical changes should use two-step procedure  | -  |
+| [NC-7]  | Emit both old and new values in critical changes  |  - |
+| [NC-8]  | Missing NATSPEC  |  - |
+| [NC-9]  | For functions, follow Solidity standard naming conventions (internal function style rule)   |  14 |
+| [NC-10]  | FUNCTIONS,PARAMETERS,MODIFIERS AND VARIABLES IN SNAKE CASE  | -  |
+| [NC-11]  | Use a more recent version of solidity  | -  |
+| [NC-12]  | NATSPEC COMMENTS SHOULD BE INCREASED IN CONTRACTS  | -  |
+| [NC-13]  | NOT USING THE NAMED RETURN VARIABLES ANYWHERE IN THE FUNCTION IS CONFUSING  | -  |
+| [NC-14]  | Mark visibility of initialize(…) functions as external   | 1  |
+| [NC-15]  |  Contract layout and order of functions |  - |
+| [NC-16]  |  Pragma float | -  |
+| [NC-17]  | Use solidity naming conventions for state variables   |  6 |
+| [NC-18]  | Interchangeable usage of uint and uint256  |  - |
+| [NC-19]  | TYPOS  | 3  |
+| [NC-20]  | public functions not called by the contract should be declared external instead   |  6 |
+| [NC-21]  | Use scientific notations rather than exponential notations  |  5 |
+| [NC-22]  |  Use underscores for number literals  |  7 |
+| [NC-23]  | Unused variables   |  2 |
+| [NC-24]  | Keccak Constant values should used to immutable rather than constant   |  1 |
+| [NC-25]  | Tokens accidentally sent to the contract cannot be recovered  | -  |
+| [NC-26]  | Use SMTChecker  | -  |
+| [NC-27]  | Constants on the left are better  | -  |
+| [NC-28]  | Use constants instead of using numbers directly     |  5 |
+| [NC-29]  |  According to the syntax rules, use => mapping ( instead of => mapping( using spaces as keyword   |   6|
+| [NC-30]  | Assembly Codes Specific – Should Have Comments   | 2  |
+| [NC-31]  | Large multiples of ten should use scientific notation (e.g. 1e5) rather than decimal literals (e.g. 100000), for readability    |  4 |
+
 ##
 
 ## [L-1] MIXING AND OUTDATED COMPILER
@@ -154,7 +208,7 @@ FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
 ```
 [RubiconMarket.sol#L321-L322](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L321-L322),[RubiconMarket.sol#L405-L406](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L405-L406),[RubiconMarket.sol#L480-L481](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L480-L481),[RubiconMarket.sol#L519-L520](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L519-L520),[RubiconMarket.sol#L534](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L534),[RubiconMarket.sol#L1053](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1053)
 
-Recommended Mitigation Steps:
+### Recommended Mitigation Steps:
 Consider using OpenZeppelin’s SafeCast library to prevent unexpected overflows when casting from uint256.
 
 ##
