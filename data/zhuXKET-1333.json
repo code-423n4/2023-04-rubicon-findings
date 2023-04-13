@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "zhuXKET",
+  "risk": "2",
+  "title": "`Position._marketSell` might revert due to lack of asset tokens",
+  "issueId": 1333,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1333"
+}
