@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xBeirao",
+  "risk": "2",
+  "title": "offer() lack of sanity check can result in a loss of fund for traders",
+  "issueId": 1274,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1274"
+}
