@@ -30,7 +30,8 @@
 ### Low risk issues
 ### [L&#x2011;01]  onlyOwner/auth privileges can cause damage of the project in a possible privateKey exploit
 The contract owner account is the one who deploys the smart contract. Therefore the owner is able to perform certain privileged activities like updating functions, etc as per smart contract functioanlities.
-In the Ethos-Core smart contracts, the owner has number of privileges like updating collateral ratios, set yeilding percentage/claim/distribution, etc. but there is no timelock and Multisign structure while taking care of these functions. Mostly, the Owner is an Externally Owned Account(EOA).
+
+In the RubiconV2 smart contracts, the owner has number of privileges like seOwner,  setMinSell, setMakerFee, setFeeTo, etc. but there is no timelock and Multisign structure while taking care of these functions. Mostly, the Owner is an Externally Owned Account(EOA).
 With the increase in private key theft, which may in case of project owners, this vulnerability has been termed as medium vulnerability.
 
 Similar vulnerabilities: Private keys theft/stolen.
