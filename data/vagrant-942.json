@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "vagrant",
+  "risk": "2",
+  "title": "Owner of a position can transfer ownership of position to anyone without an update to positionAddresses in PoolsUtility",
+  "issueId": 942,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/942"
+}
