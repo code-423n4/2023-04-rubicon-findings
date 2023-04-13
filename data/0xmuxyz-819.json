@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xmuxyz",
+  "risk": "2",
+  "title": "Lack of validation for the `rewardsDuration`, which lead to no reward for the certain `rewardToken`",
+  "issueId": 819,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/819"
+}
