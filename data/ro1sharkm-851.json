@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ro1sharkm",
+  "risk": "2",
+  "title": "Precision Loss Issue in calculateFee Function",
+  "issueId": 851,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/851"
+}
