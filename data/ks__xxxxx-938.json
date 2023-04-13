@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "ks__xxxxx",
+  "risk": "2",
+  "title": "_maxBorrow() function would lead to division by zero error, which further breaks the borrow functionality if the _bathToken price is unavailable.",
+  "issueId": 938,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/938"
+}
