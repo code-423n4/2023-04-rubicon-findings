@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "lukris02",
+  "risk": "2",
+  "title": "No unstop() function in the contract ExpiringMarket",
+  "issueId": 1012,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1012"
+}
