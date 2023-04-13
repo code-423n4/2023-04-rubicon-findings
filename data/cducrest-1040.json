@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "cducrest",
+  "risk": "2",
+  "title": "Offer buy vulnerable to front-run DOS",
+  "issueId": 1040,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1040"
+}
