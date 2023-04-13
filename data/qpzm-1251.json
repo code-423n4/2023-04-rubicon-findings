@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "qpzm",
+  "risk": "3",
+  "title": "`Position.closePosition` fails when maker fee is big enough.",
+  "issueId": 1251,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1251"
+}
