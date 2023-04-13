@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "karanctf",
+  "risk": "2",
+  "title": "Not checking the length of arrays on `claimRewards`  if they are equal or not.",
+  "issueId": 1193,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1193"
+}
