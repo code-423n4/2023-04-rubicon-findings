@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "peakbolt",
+  "risk": "3",
+  "title": "Tokens like USDT will prevent users from closing leveraged positions and cause funds to be locked",
+  "issueId": 1125,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1125"
+}
