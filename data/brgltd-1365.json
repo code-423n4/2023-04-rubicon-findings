@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "brgltd",
+  "risk": "2",
+  "title": "Double counting the fees in `RubiconMarket.buy()` and `SimpleMarket.buy()`",
+  "issueId": 1365,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1365"
+}
