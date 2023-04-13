@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "bytes032",
+  "risk": "2",
+  "title": "Broken invariant in `notifyRewardAmount` allows adding rewards without sending funds",
+  "issueId": 918,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/918"
+}
