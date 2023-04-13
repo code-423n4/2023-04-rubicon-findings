@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "joestakey",
+  "risk": "2",
+  "title": "Incorrect maths in `RubiconMarket.calcAmountAfterFee` leads to amount filled less than what it should be",
+  "issueId": 1148,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1148"
+}
