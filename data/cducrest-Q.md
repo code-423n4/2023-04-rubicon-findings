@@ -78,6 +78,20 @@ Same for buyAllAmount
 
 https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1111
 
+## Non-Critical 8: Unbound loops may fail if large amount of offers to sort
+
+There are multiple unbound loops ran when sorting an offer in the `_rank` double linked list.
+
+If the number of offer is very large, it could be that sorting becomes more expansive gas-wise than the block limit. The transaction that attempts to sort an offer will revert.
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1217
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1229
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1244
+
+https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L1252
+
 ## Low 1: RubiconMarket.buy() does not require buyEnabled
 
 The function `RubiconMarket.buy()` calls either `_buys()` or `super.buy()` depending on the value of `matchingEnabled`. 
