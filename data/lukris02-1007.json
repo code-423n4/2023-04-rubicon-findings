@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "lukris02",
+  "risk": "2",
+  "title": "Some DSMath library functions do not work properly",
+  "issueId": 1007,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1007"
+}
