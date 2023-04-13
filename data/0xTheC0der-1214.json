@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xTheC0der",
+  "risk": "3",
+  "title": "Staking rewards can be stolen from BathBuddy and Comptroller",
+  "issueId": 1214,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1214"
+}
