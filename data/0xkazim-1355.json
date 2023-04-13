@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xkazim",
+  "risk": "2",
+  "title": "an attacker can prevent users to migrate their tokens via v2Migrator.sol",
+  "issueId": 1355,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1355"
+}
