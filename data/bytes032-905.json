@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "bytes032",
+  "risk": "2",
+  "title": "Reward truncation due to precision loss in BathBuddy contract",
+  "issueId": 905,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/905"
+}
