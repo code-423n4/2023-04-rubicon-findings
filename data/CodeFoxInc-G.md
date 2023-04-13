@@ -112,6 +112,8 @@ The related code is this:
 [https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L44-L50](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L44-L50)
 
 If you followed my QA report’s NC-18 to change the BathBuddy’s `spawnBuddy` to `constructor`. Then it is good to conduct the change below to save more gas. Because `immutable` variables can only be set in the `constructor`.
+When you change the variable into `immutable`, it is supposed to be saved in the byte code instead of the storage slot. Because storage slots are the most gas expensive part of EVM, it can save a significant amount of gas. During the reading process, uint256 with a `public immutable` consumes 161 gas and save 2144(93%) amount of gas when compared with uint256 with only `public` according to [this source](https://github.com/WTFAcademy/WTF-gas-optimization/blob/main/01_Constant/readme.md#democode).  
+
 
 ```diff
 -	 address public owner;
