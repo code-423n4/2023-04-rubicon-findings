@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "zhuXKET",
+  "risk": "2",
+  "title": "`RubiconMarket._buys` will not work for V1 offers due to the reversion in `cancel` method.",
+  "issueId": 1324,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1324"
+}
