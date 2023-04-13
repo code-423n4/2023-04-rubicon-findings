@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Lack of try-catch block in external function call.",
+  "issueId": 1073,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1073"
+}
