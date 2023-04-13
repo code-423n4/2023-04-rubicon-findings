@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "zhuXKET",
+  "risk": "2",
+  "title": "DOS attack possibliity on `SimpleMarket.buy` with full amount",
+  "issueId": 1329,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1329"
+}
