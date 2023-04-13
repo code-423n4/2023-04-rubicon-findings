@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "`ExpiringMarket` contract does not close the market even after the closing time has been reached, allowing new offers to be created and purchased.",
+  "issueId": 1058,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1058"
+}
