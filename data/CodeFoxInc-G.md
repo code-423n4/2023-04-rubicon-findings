@@ -104,3 +104,20 @@ Instead of using `bool`, the library uses `uint256` type of variables, i.e. 1, 2
 Adopt Openzeppelin’s `ReentrancyGuard` library. 
 
 [https://github.com/OpenZeppelin/openzeppelin-contracts/blob/86f6eb2c9c0eb741de18ef75a290ff340acf7148/contracts/security/ReentrancyGuard.sol#L23-L33](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/86f6eb2c9c0eb741de18ef75a290ff340acf7148/contracts/security/ReentrancyGuard.sol#L23-L33)
+
+## Gas-05 Change the variables into `immutable` to save gas
+
+The related code is this: 
+
+[https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L44-L50](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/periphery/BathBuddy.sol#L44-L50)
+
+If you followed my QA report’s NC-18 to change the BathBuddy’s `spawnBuddy` to `constructor`. Then it is good to conduct the change below to save more gas. Because `immutable` variables can only be set in the `constructor`.
+
+```diff
+-	 address public owner;
+-        address public myBathTokenBuddy;
+-        address public bathHouse;
++	 address public immutable owner;
++       address public immutable myBathTokenBuddy;
++       address public immutable bathHouse;
+```
