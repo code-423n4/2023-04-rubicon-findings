@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Delvir0",
+  "risk": "3",
+  "title": "Rebasing and Fee on Transfer tokens will affect offer accounting and revert offer buys",
+  "issueId": 926,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/926"
+}
