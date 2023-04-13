@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "MohammedRizwan",
+  "risk": "2",
+  "title": "Possible division by zero depending on oracle.getUnderlyingPrice return values",
+  "issueId": 937,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/937"
+}
