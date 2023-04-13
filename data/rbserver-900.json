@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "rbserver",
+  "risk": "2",
+  "title": "`Position._marketBuy` or `Position._marketSell` function can be DOS'ed if corresponding `_quote` or `_asset` token is USDT",
+  "issueId": 900,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/900"
+}
