@@ -100,4 +100,19 @@ RubiconMarket.sol:694:    mapping(address => uint256) public _dust; //minimum se
 RubiconMarket.sol:695:    mapping(uint256 => uint256) public _near; //next unsorted offer id
 RubiconMarket.sol:696:    uint256 public _head; //first unsorted offer id
 ```
-
+## [G-7] Use of state vairable [`_head` ](https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L1446)  twice
+```git
+function _hide(
+uint256 id //id of maker offer to remove from unsorted list
+) internal returns (bool) {
+uint256 uid = _head; //id of an offer in unsorted offers list
+uint256 pre = uid; //id of previous offer in unsorted offers list
+.
+.
+-- if (_head == id) {
+++ if (uid == id) {// use uid as it is already caching _head
+.
+.
+}
+.
+.
