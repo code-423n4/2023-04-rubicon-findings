@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "`RubiconMarket` does not support ERC20 tokens that do not return bool on transfer (USDT, BNB, etc.)",
+  "issueId": 949,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/949"
+}
