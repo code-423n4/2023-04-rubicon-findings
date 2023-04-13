@@ -1,0 +1,8 @@
+{
+  "contest": 229,
+  "handle": "zeltrax",
+  "risk": "3",
+  "title": "Risk of reentrancy attack",
+  "issueId": 1200,
+  "issueUrl": "https://github.com/code-423n4/2023-04-rubicon-findings/issues/1200"
+}
