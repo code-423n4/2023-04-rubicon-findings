@@ -457,3 +457,31 @@ https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.so
         require(_underlying != address(0), "_bathify: ADDRESS ZERO"); 
 
 https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol 
+
+
+## Use solidity version 0.8.19 to gain some gas boost
+
+Upgrade to the latest solidity version 0.8.19 to get additional gas savings.
+
+See latest release for reference: https://blog.soliditylang.org/2023/02/22/solidity-0.8.19-release-announcement/
+
+Proof Of Concept
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/RubiconMarket.sol#L2
+          pragma solidity ^0.8.9;
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/BathHouseV2.sol#L2 
+          pragma solidity 0.8.17;
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/V2Migrator.sol#L2 
+         pragma solidity 0.8.17; 
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/FeeWrapper.sol#L2
+         pragma solidity 0.8.17;
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/utilities/poolsUtility/Position.sol#L2
+         pragma solidity 0.8.17;
+
+
+https://github.com/code-423n4/2023-04-rubicon/blob/main/contracts/periphery/BathBuddy.sol#L2 
+        pragma solidity ^0.8.0;
