@@ -1,8 +1,8 @@
-## QA Report
+
 
 ## Low-01
 
-`batchRequote()` function don't check for matching array length with can cause `Array out of bound` error which is not handled.
+`batchRequote()` function don't check for matching array length which can cause `Array out of bound` error if not properly handled.
 
 ## Summary 
 
@@ -71,7 +71,7 @@ Modify function as below to address this issue.
 
 ## Low-02
 
-`claimRewards()` function in `BathHouseV2.sol`  don't check for matching array length with can cause `Array out of bound` error which is not handled.
+`claimRewards()` function in `BathHouseV2.sol`  don't check for matching array length which can cause `Array out of bound` error if not handled. 
 
 ## Summary 
 
