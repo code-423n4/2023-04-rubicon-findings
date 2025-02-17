@@ -6429,56 +6429,56 @@ Dear Rubicon v2 Team, as we have gone through each contract within the scope, we
 ## Low Risk Summary
 | Count | Explanation | Instances |
 |:--:|:-------|:--:|
-| [L-01] | CRITICAL CHANGES SHOULD USE TWO-STEP PROCEDURE | 1 |
-| [L-02] | ADD A TIMELOCK TO CRITICAL FUNCTIONS | 3 |
-| [L-03] | IN THE EVENTS, INCLUDE THE OLD AND NEW VALUES OF THE UPDATED PARAMETERS TO TRACK THE CHANGES MADE  | 3 |
-| [L-04] | MISSING EVENTS FOR ONLY FUNCTIONS THAT CHANGE CRITICAL PARAMETERS | 3 |
-| [L-05] | UPGRADEABLE CONTRACT IS MISSING A `__GAP[50]` STORAGE VARIABLE | 1 |
-| [L-06] | ADD CONSTRUCTOR INITIALIZERS | 2 |
-| [L-07] | THE CONTRACT IMPORTS A LIBRARY THAT IT DOES NOT USE, BUT SHOULD | 1 |
-| [L-08] | USE `increaseAllowance` INSTEAD OF THE FUNCTION `approve` | 1 |
-| [L-09] | DID NOT APPROVE TO ZERO FIRST | 1 |
-| [L-10] | INCONSISTENT SOLIDITY PRAGMA |  |
-| [L-11] | PREVENT DIV BY 0 |  |
-| [L-12] | MISSING EMERGENCY STOP (CIRCUIT BREAKER) PATTERN | 2 |
+| [L&#8209;01] | CRITICAL CHANGES SHOULD USE TWO-STEP PROCEDURE | 1 |
+| [L&#8209;02] | ADD A TIMELOCK TO CRITICAL FUNCTIONS | 3 |
+| [L&#8209;03] | IN THE EVENTS, INCLUDE THE OLD AND NEW VALUES OF THE UPDATED PARAMETERS TO TRACK THE CHANGES MADE  | 3 |
+| [L&#8209;04] | MISSING EVENTS FOR ONLY FUNCTIONS THAT CHANGE CRITICAL PARAMETERS | 3 |
+| [L&#8209;5] | UPGRADEABLE CONTRACT IS MISSING A `__GAP[50]` STORAGE VARIABLE | 1 |
+| [L&#8209;06] | ADD CONSTRUCTOR INITIALIZERS | 2 |
+| [L&#8209;07] | THE CONTRACT IMPORTS A LIBRARY THAT IT DOES NOT USE, BUT SHOULD | 1 |
+| [L&#8209;08] | USE `increaseAllowance` INSTEAD OF THE FUNCTION `approve` | 1 |
+| [L&#8209;09] | DID NOT APPROVE TO ZERO FIRST | 1 |
+| [L&#8209;10] | INCONSISTENT SOLIDITY PRAGMA |  |
+| [L&#8209;11] | PREVENT DIV BY 0 |  |
+| [L&#8209;12] | MISSING EMERGENCY STOP (CIRCUIT BREAKER) PATTERN | 2 |
 
 ## Non-Critical Summary
 | Count | Explanation | Instances |
 |:--:|:-------|:--:|
-| [N-01] | USE OF FLOATING PRAGMA | 1 |
-| [N-02] | USE A MORE RECENT VERSION OF SOLIDITY  | 5 |
-| [N-03] | CREATE YOUR OWN IMPORT NAMES INSTEAD OF USING THE REGULAR ONES | All Contracts |
-| [N-04] | MANDATORY CHECKS FOR EXTRA SAFETY IN THE SETTERS  | 4 |
-| [N-05] | NATSPEC COMMENTS SHOULD BE INCREASED IN CONTRACTS | 4 |
-| [N-06] | USE A SINGLE FILE FOR ALL SYSTEM-WIDE CONTRACTS/LIBRARY | 4 |
-| [N-07] | LACK OF NATSPEC DOCUMENTATION | All Contracts |
-| [N-08] | USE SCIENTIFIC NOTATION (E.G. 1E18) RATHER THAN EXPONENTIATION (E.G. 10**18) | 11 |
-| [N-09] | REMOVE THE COMMENTED CODE FROM THE PROJECT | 2 |
-| [N-10] | NATSPEC DONT COMPLY WITH SOLDITY STYLE GUIDE | 1 |
-| [N-11] | FUNCTION WRITING THAT DOES NOT COMPLY WITH THE SOLIDITY STYLE GUIDE | All Contracts |
-| [N-12] | NON-LIBRARY/INTERFACE FILES SHOULD USE FIXED COMPILER VERSIONS, NOT FLOATING ONES | All Contracts |
-| [N-13] | NEED FUZZING TEST | All Contracts |
-| [N-14] | SORT SOLIDITY OPERATIONS USING SHORT-CIRCUIT MODE | 12 |
-| [N-15] | USE OF `BYTES.CONCAT()` INSTEAD OF `ABI.ENCODEPACKED()` | 6 |
-| [N-16] | ASSEMBLY CODES SPECIFIC - SHOULD HAVE COMMENTS | 2 |
-| [N-17] | FUNCTION OVERLOADING | 4 |
-| [N-18] | USING WHILE FOR UNBOUNDED LOOPS ISN'T RECOMMENDED | 11 |
-| [N-19] | TOKENS ACCIDENTALLY SENT TO THE CONTRACT CANNOT BE RECOVERED | 2 |
-| [N-20] | CONTRACT DOES NOT FOLLOW THE SOLIDITY STYLE GUIDE'S SUGGESTED LAYOUT ORDERING | 1 |
+| [N&#8209;01] | USE OF FLOATING PRAGMA | 1 |
+| [N&#8209;02] | USE A MORE RECENT VERSION OF SOLIDITY  | 5 |
+| [N&#8209;03] | CREATE YOUR OWN IMPORT NAMES INSTEAD OF USING THE REGULAR ONES | All Contracts |
+| [N&#8209;04] | MANDATORY CHECKS FOR EXTRA SAFETY IN THE SETTERS  | 4 |
+| [N&#8209;05] | NATSPEC COMMENTS SHOULD BE INCREASED IN CONTRACTS | 4 |
+| [N&#8209;06] | USE A SINGLE FILE FOR ALL SYSTEM-WIDE CONTRACTS/LIBRARY | 4 |
+| [N&#8209;07] | LACK OF NATSPEC DOCUMENTATION | All Contracts |
+| [N&#8209;08] | USE SCIENTIFIC NOTATION (E.G. 1E18) RATHER THAN EXPONENTIATION (E.G. 10**18) | 11 |
+| [N&#8209;09] | REMOVE THE COMMENTED CODE FROM THE PROJECT | 2 |
+| [N&#8209;10] | NATSPEC DONT COMPLY WITH SOLDITY STYLE GUIDE | 1 |
+| [N&#8209;11] | FUNCTION WRITING THAT DOES NOT COMPLY WITH THE SOLIDITY STYLE GUIDE | All Contracts |
+| [N&#8209;12] | NON-LIBRARY/INTERFACE FILES SHOULD USE FIXED COMPILER VERSIONS, NOT FLOATING ONES | All Contracts |
+| [N&#8209;13] | NEED FUZZING TEST | All Contracts |
+| [N&#8209;14] | SORT SOLIDITY OPERATIONS USING SHORT-CIRCUIT MODE | 12 |
+| [N&#8209;15] | USE OF `BYTES.CONCAT()` INSTEAD OF `ABI.ENCODEPACKED()` | 6 |
+| [N&#8209;16] | ASSEMBLY CODES SPECIFIC - SHOULD HAVE COMMENTS | 2 |
+| [N&#8209;17] | FUNCTION OVERLOADING | 4 |
+| [N&#8209;18] | USING WHILE FOR UNBOUNDED LOOPS ISN'T RECOMMENDED | 11 |
+| [N&#8209;19] | TOKENS ACCIDENTALLY SENT TO THE CONTRACT CANNOT BE RECOVERED | 2 |
+| [N&#8209;20] | CONTRACT DOES NOT FOLLOW THE SOLIDITY STYLE GUIDE'S SUGGESTED LAYOUT ORDERING | 1 |
 
 ## Refactor Issues Summary
 | Count | Explanation | Instances |
 |:--:|:-------|:--:|
-| [R-01] | FUNCTION NAMING SUGGESTIONS | 2 |
-| [R-02] | SOME NUMBER VALUES CAN BE REFACTORED WITH `_` | 2 |
+| [R&#8209;01] | FUNCTION NAMING SUGGESTIONS | 2 |
+| [R&#8209;02] | SOME NUMBER VALUES CAN BE REFACTORED WITH `_` | 2 |
 
 ## Suggestion Details Summary
 | Count | Explanation | 
 |:--:|:-------|
-| [S-01] | WE SUGGEST USING THE OPENZEPPELIN SAFECAST LIBRARY |  |
-| [S-02] | WE SUGGEST USING THE OPENZEPPELIN ADDRESS LIBRARY |  |
-| [S-03] | WE SUGGEST USING THE BoringERC20 LIBRARY |  | 
-| [S-04] | WE SUGGEST USING A MORE RECENT SOLIDITY PRAGMA TO TAKE ADVANTAGE |  | 
+| [S&#8209;01] | WE SUGGEST USING THE OPENZEPPELIN SAFECAST LIBRARY |  |
+| [S&#8209;02] | WE SUGGEST USING THE OPENZEPPELIN ADDRESS LIBRARY |  |
+| [S&#8209;03] | WE SUGGEST USING THE BoringERC20 LIBRARY |  | 
+| [S&#8209;04] | WE SUGGEST USING A MORE RECENT SOLIDITY PRAGMA TO TAKE ADVANTAGE |  | 
 
 ***
 
@@ -7484,19 +7484,19 @@ Below are the overall average gas savings for the following tested functions, wi
 
 ## Gas Optimizations
 | Number |Issue|Instances|
-|-|:-|:-:|
-| [G-01] | Do not use `SafeMath` | - | 
-| [G-02] | Use a more gas efficient `synchronized` modifier | - | 
-| [G-03] | Multiple address mappings can be combined into a single mapping of an address to a struct, where appropriate | 2 | 
-| [G-04] | State variables only set in the constructor should be declared immutable | 4 | 
-| [G-05] | State variables can be cached instead of re-reading them from storage | 32 |
-| [G-06] | Avoid emitting storage values | 1 |
-| [G-07] | Structs can be packed to use fewer storage slots | 2 |
-| [G-08] | State variables can be packed to use fewer storage slots | 1 |
-| [G-09] | Rearrange storage variables to pack values more efficiently | 1 |
-| [G-10] | Return values from external calls can be cached to avoid unecessary call | 1 |
-| [G-11] | Multiple accesses of a mapping/array should use a storage pointer | 43 | 
-| [G-12] | Use assembly for value transfer and success check | 1 | 
+|:-:|:-|:-:|
+| [G&#8209;01] | Do not use `SafeMath` | - | 
+| [G&#8209;02] | Use a more gas efficient `synchronized` modifier | - | 
+| [G&#8209;03] | Multiple address mappings can be combined into a single mapping of an address to a struct, where appropriate | 2 | 
+| [G&#8209;04] | State variables only set in the constructor should be declared immutable | 4 | 
+| [G&#8209;05] | State variables can be cached instead of re-reading them from storage | 32 |
+| [G&#8209;06] | Avoid emitting storage values | 1 |
+| [G&#8209;07] | Structs can be packed to use fewer storage slots | 2 |
+| [G&#8209;08] | State variables can be packed to use fewer storage slots | 1 |
+| [G&#8209;09] | Rearrange storage variables to pack values more efficiently | 1 |
+| [G&#8209;10] | Return values from external calls can be cached to avoid unecessary call | 1 |
+| [G&#8209;11] | Multiple accesses of a mapping/array should use a storage pointer | 43 | 
+| [G&#8209;12] | Use assembly for value transfer and success check | 1 | 
 
 ## [G-01] Do not use `SafeMath`
 Since version 0.8.0, the compiler will throw an error for under/overflows. It does so by including extra opcodes to perform the necessary checks. Therefore, using `SafeMath` and the in-house `DSMath` contract is unnecessary and is wasting gas by doing extra computation (under/overflow checks). Save gas by not using `SafeMath` and the `DSMath` contract.
